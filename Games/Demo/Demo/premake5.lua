@@ -12,7 +12,8 @@ project "Demo"
     files
     {
         "%{prj.location}/Source/**.h",
-        "%{prj.location}/Source/**.cpp"
+        "%{prj.location}/Source/**.cpp",
+        "%{prj.location}/Content/**.glsl"
     }
 
     includedirs
