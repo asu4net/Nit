@@ -11,3 +11,6 @@ Intermediate/
 
 # Rider files and folder
 .idea/
+
+# vscode files and folder
+.vscode/
