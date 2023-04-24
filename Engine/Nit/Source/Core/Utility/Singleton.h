@@ -15,14 +15,14 @@ namespace Nit
             return *m_Instance;
         }
         
-        static T& CreateSingleton()
+        static T& Create()
         {
             assert(!m_Instance && "Instance already exists!");
             m_Instance = new T();
             return GetInstance();
         }
 
-        static void DestroySingleton()
+        static void Destroy()
         {
             assert(m_Instance && "There is no instance to destroy!");
             delete m_Instance;

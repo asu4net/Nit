@@ -85,7 +85,7 @@ namespace Nit
     
     Renderer2D& Renderer2D::CreateAndInitialize(const std::shared_ptr<Window>& window)
     {
-        Renderer2D& renderer2D = Renderer2D::CreateSingleton();
+        Renderer2D& renderer2D = Renderer2D::Create();
         renderer2D.Initialize();
         window->Events().ResizeEvent.Add([](const int width, const int height)
         {
@@ -98,7 +98,7 @@ namespace Nit
     {
         Renderer2D& renderer2D = GetInstance();
         renderer2D.Finalize();
-        DestroySingleton();
+        Destroy();
     }
 
     void Renderer2D::CreateShaders(const Renderer2DSettings& rendererSettings)

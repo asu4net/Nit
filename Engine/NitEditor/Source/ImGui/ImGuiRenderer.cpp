@@ -16,7 +16,7 @@ namespace Nit
     ImGuiRenderer& ImGuiRenderer::CreateAndInitialize(const std::shared_ptr<Window>& window, bool bSetDefaultConfiguration,
         const Delegate<void()>& customConfiguration)
     {
-        ImGuiRenderer& imGuiRenderer = CreateSingleton();
+        ImGuiRenderer& imGuiRenderer = Create();
         imGuiRenderer.Initialize(window, bSetDefaultConfiguration, customConfiguration);
         return imGuiRenderer;
     }
@@ -25,7 +25,7 @@ namespace Nit
     {
         ImGuiRenderer& imGuiRenderer = GetInstance();
         imGuiRenderer.Finalize();
-        DestroySingleton();
+        Destroy();
     }
 
     void ImGuiRenderer::DestroyRootWidget()

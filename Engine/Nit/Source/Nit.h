@@ -1,10 +1,14 @@
 #pragma once
 
 // Core
+#include "Core/Game.h"
 #include "Core/Delegates/Delegate.h"
 #include "Core/Delegates/MulticastDelegate.h"
 #include "Core/Utility/Misc.h"
 #include "Core/Utility/Singleton.h"
+#include "Core/Time.h"
+#include "Core/GameLayer.h"
+#include "Core/LayerStack.h"
 
 // Math
 
@@ -33,6 +37,5 @@
 
 #include "Window/Input/Input.h"
 #include "Window/Input/KeyCodes.h"
-#include "Window/Time/Time.h"
 #include "Window/Window.h"
 #include "Window/WindowEvents.h"
