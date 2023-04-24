@@ -1,4 +1,4 @@
-IncludeDirs["DemoSource"] = "%{wks.location}/Games/DemoSource/Source"
+IncludeDirs["DemoSource"] = "%{wks.location}/Games/Demo/DemoSource/Source"
 
 group "Games/Demo"
     include "DemoEditor/premake5.lua"

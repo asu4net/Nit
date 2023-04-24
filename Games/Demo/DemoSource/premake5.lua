@@ -12,13 +12,15 @@ project "DemoSource"
     files
     {
         "%{prj.location}/Source/**.h",
-        "%{prj.location}/Source/**.cpp"
+        "%{prj.location}/Source/**.cpp",
+        "%{prj.location}/Content/**.glsl"
     }
 
     includedirs
     {
         "%{prj.location}/Source",
-        "%{IncludeDirs.Nit}"
+        "%{IncludeDirs.Nit}",
+        "%{IncludeDirs.glm}"
     }
 
     links
@@ -29,6 +31,12 @@ project "DemoSource"
     defines 
     {
     }
+
+    postbuildcommands
+	{
+		("{COPY} ../%{file.relpath}/Content %{wks.location}/Binaries/" .. outputdir .. "/Demo/Content"),
+		("{COPY} ../%{file.relpath}/Content %{wks.location}/Binaries/" .. outputdir .. "/DemoEditor/Content")
+	}
 
     filter "system:windows"
         systemversion "latest"

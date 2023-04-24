@@ -1,6 +1,5 @@
-#include "GraphicApplication.h"
+#include "Demo.h"
 
-using namespace Nit;
 using namespace Nit;
 
 class DemoGame : public Game
@@ -18,9 +17,7 @@ protected:
         GridTexture = Texture2D::Create("Content/Textures/Checkerboard.png", {MagFilter::Nearest});
         CatTexture = Texture2D::Create("Content/Textures/bola.jpg");
         CppTexture = Texture2D::Create("Content/Textures/cpp.png");
-        
         // GetRootWidget()->PushWidget<Vector3Widget>(BallPosition, "Cat Pos");
-        
         Grid.Texture = GridTexture;
         Grid.Size *= 30;
         Grid.UVScale *= 30;

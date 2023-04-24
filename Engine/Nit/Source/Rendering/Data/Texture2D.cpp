@@ -4,6 +4,8 @@
 #include <stb_image.h>
 #include <glad/glad.h>
 
+#include "Core/Utility/Misc.h"
+
 namespace Nit
 {
     std::shared_ptr<Texture2D> Texture2D::Create(const std::string& filePath, const Texture2DSettings& settings)
@@ -98,7 +100,8 @@ namespace Nit
     {
         int width, height, channels;
         stbi_set_flip_vertically_on_load(1);
-        stbi_uc* data = stbi_load(filePath.c_str(), &width, &height, &channels, 0);
+        const std::string dir = CurrentDirectory() + "/" + filePath;
+        stbi_uc* data = stbi_load(dir.c_str(), &width, &height, &channels, 0);
         m_Width = width;
         m_Height = height;
 

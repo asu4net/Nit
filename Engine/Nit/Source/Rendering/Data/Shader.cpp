@@ -3,6 +3,8 @@
 #include <fstream>
 #include <vector>
 #include <glad/glad.h>
+
+#include "Core/Utility/Misc.h"
 #include "glm/gtc/type_ptr.hpp"
 
 namespace Nit
@@ -142,12 +144,14 @@ namespace Nit
     
     bool Shader::ReadFromFile(const std::string& fileLocation, std::string& vertexSource, std::string& fragmentSource)
     {
+        const std::string dir = CurrentDirectory() + "/" + fileLocation;
+        
         static std::string content;
-        std::ifstream fileStream(fileLocation, std::ios::in);
+        std::ifstream fileStream(dir, std::ios::in);
 
         if (!fileStream.is_open())
         {
-            printf("Failed to read %s! File doesn't exist.\n", fileLocation.c_str());
+            printf("Failed to read %s! File doesn't exist.\n", dir.c_str());
             return false;
         }
         

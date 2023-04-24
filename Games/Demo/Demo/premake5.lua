@@ -9,11 +9,12 @@ project "Demo"
     targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/%{prj.name}")
 
+    debugdir = "%{wks.location}/Games/Demo/DemoSource"
+
     files
     {
         "%{prj.location}/Source/**.h",
         "%{prj.location}/Source/**.cpp",
-        "%{prj.location}/Content/**.glsl"
     }
 
     includedirs

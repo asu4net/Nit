@@ -1,5 +1,11 @@
 #pragma once
 
+// Core
+#include "Core/Delegates/Delegate.h"
+#include "Core/Delegates/MulticastDelegate.h"
+#include "Core/Utility/Misc.h"
+#include "Core/Utility/Singleton.h"
+
 // Math
 
 #include "Math/Defaults.h"
