@@ -6,8 +6,8 @@ project "Demo"
     
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/%{prj.name}")
-    objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/%{prj.name}")
+    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/Demo")
+    objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/Demo")
 
     debugdir = "%{wks.location}/Games/Demo/DemoSource"
 

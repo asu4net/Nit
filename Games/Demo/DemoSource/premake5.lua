@@ -6,8 +6,8 @@ project "DemoSource"
     
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/%{prj.name}")
-    objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/%{prj.name}")
+    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/Demo")
+    objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/Demo")
 
     files
     {
@@ -34,8 +34,7 @@ project "DemoSource"
 
     postbuildcommands
 	{
-		("{COPY} ../%{file.relpath}/Content %{wks.location}/Binaries/" .. outputdir .. "/Demo/Content"),
-		("{COPY} ../%{file.relpath}/Content %{wks.location}/Binaries/" .. outputdir .. "/DemoEditor/Content")
+		("{COPY} ../%{file.relpath}/Content %{wks.location}/Binaries/" .. outputdir .. "/Demo/Content")
 	}
 
     filter "system:windows"
