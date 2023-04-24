@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Nit.h>
-#include "Camera/LogicCamera.h"
+
+class LogicCamera;
 
 namespace Nit
 {

@@ -227,7 +227,7 @@ enum class KeyCode : uint32_t
  *
  *  If this bit is set one or more Shift keys were held down.
  */
-#define MOD_SHIFT           0x0001
+#define KEY_MOD_SHIFT           0x0001
 /*! @brief If this bit is set one or more Control keys were held down.
  *
  *  If this bit is set one or more Control keys were held down.
@@ -237,7 +237,7 @@ enum class KeyCode : uint32_t
  *
  *  If this bit is set one or more Alt keys were held down.
  */
-#define MOD_ALT             0x0004
+#define KEY_MOD_ALT             0x0004
 /*! @brief If this bit is set one or more Super keys were held down.
  *
  *  If this bit is set one or more Super keys were held down.

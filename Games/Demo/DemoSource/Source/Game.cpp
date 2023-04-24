@@ -1,5 +1,6 @@
 ﻿#include "Game.h"
 #include "Camera/ViewportCameraController.h"
+#include "Camera/LogicCamera.h"
 
 namespace Nit
 {
