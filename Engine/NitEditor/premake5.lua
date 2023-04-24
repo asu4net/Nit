@@ -19,6 +19,7 @@ project "NitEditor"
     {
         "%{prj.location}/Source",
         "%{IncludeDirs.Nit}",
+        "%{IncludeDirs.glfw}",
         "%{IncludeDirs.imgui}",
         "%{IncludeDirs.imguizmo}"
     }
@@ -30,6 +31,7 @@ project "NitEditor"
     links
     {
         "Nit",
+        "glfw",
         "imgui",
         "imguizmo"
     }
