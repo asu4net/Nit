@@ -3,7 +3,7 @@
 #include <vector>
 
 #define DECLARE_EVENT(OwningType, EventName) \
-class EventName : public Shard::MulticastDelegate<void()> \
+class EventName : public Nit::MulticastDelegate<void()> \
 { \
     void Broadcast() \
     { \
@@ -13,7 +13,7 @@ class EventName : public Shard::MulticastDelegate<void()> \
 };
 
 #define DECLARE_EVENT_ONE_PARAM(OwningType, EventName, TypeOne, ParamOne) \
-class EventName : public Shard::MulticastDelegate<void(TypeOne)> \
+class EventName : public Nit::MulticastDelegate<void(TypeOne)> \
 { \
     void Broadcast(TypeOne ParamOne) \
     { \
@@ -23,7 +23,7 @@ class EventName : public Shard::MulticastDelegate<void(TypeOne)> \
 };
 
 #define DECLARE_EVENT_TWO_PARAM(OwningType, EventName, TypeOne, ParamOne, TypeTwo, ParamTwo) \
-class EventName : public Shard::MulticastDelegate<void(TypeOne, TypeTwo)> \
+class EventName : public Nit::MulticastDelegate<void(TypeOne, TypeTwo)> \
 { \
     void Broadcast(TypeOne ParamOne, TypeTwo ParamTwo) \
     { \

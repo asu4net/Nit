@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <memory>
-#include <vector>
 #include "ImGuiWidget.h"
-#include <ShardCore.h>
+#include "Core/Delegates/Delegate.h"
+#include "Core/Utility/Singleton.h"
 
 namespace Nit
 {

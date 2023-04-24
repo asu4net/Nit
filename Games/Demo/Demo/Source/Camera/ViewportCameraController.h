@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <ShardGraphics.h>
+#include <Nit.h>
 #include "CameraController.h"
 
 class ViewportCameraController : public CameraController
@@ -7,6 +7,6 @@ class ViewportCameraController : public CameraController
 public:
     float MoveSpeed;
     
-    ViewportCameraController(Shard::Graphics::Camera* owner);
+    ViewportCameraController(Nit::Camera* owner);
     void OnUpdate(const float deltaTime) override;
 };

@@ -132,7 +132,7 @@ namespace Nit
         // ImGui Dock Space Begin
         //---------------------------------------------------------
         
-        // ImGui::Begin("Shard Graphics", &dockSpaceOpen, windowFlags);
+        // ImGui::Begin("Nit Graphics", &dockSpaceOpen, windowFlags);
         //
         // if (!padding)
         //     ImGui::PopStyleVar();
@@ -144,7 +144,7 @@ namespace Nit
         // ImGuiIO& io = ImGui::GetIO();
         // if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
         // {
-        //     const ImGuiID dockSpaceId = ImGui::GetID("ShardGraphicsDockSpace");
+        //     const ImGuiID dockSpaceId = ImGui::GetID("NitGraphicsDockSpace");
         //     ImGui::DockSpace(dockSpaceId, ImVec2(0.0f, 0.0f), dockSpaceFlags);
         // }
         // else

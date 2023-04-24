@@ -18,7 +18,7 @@ namespace Nit
         
         struct Configuration
         {
-            std::string Title{"Shard Window"};
+            std::string Title{"Nit Window"};
             int Width{1280}, Height{720};
             glm::vec4 Color{Global::DarkGreyColor};
             int OpenGlMajorVersion{4}, OpenGlMinorVersion{6};

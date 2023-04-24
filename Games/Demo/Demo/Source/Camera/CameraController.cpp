@@ -1,6 +1,6 @@
 ﻿#include "CameraController.h"
 
-CameraController::CameraController(Shard::Graphics::Camera* owner)
+CameraController::CameraController(Nit::Camera* owner)
     : m_Owner(owner)
     , m_bEnabled(false)
 {

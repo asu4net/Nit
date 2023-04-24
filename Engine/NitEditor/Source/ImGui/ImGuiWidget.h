@@ -2,7 +2,7 @@
 #include <memory>
 #include <string>
 #include "imgui.h"
-#include "Delegates/MulticastDelegate.h"
+#include "Core/Delegates/MulticastDelegate.h"
 
 namespace Nit
 {

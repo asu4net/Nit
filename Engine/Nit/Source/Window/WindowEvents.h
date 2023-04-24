@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "ShardCore.h"
+#include "Core/Delegates/MulticastDelegate.h"
 #include "Math/Math.h"
 
 struct GLFWwindow;

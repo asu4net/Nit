@@ -21,7 +21,8 @@ project "NitEditor"
         "%{IncludeDirs.Nit}",
         "%{IncludeDirs.glfw}",
         "%{IncludeDirs.imgui}",
-        "%{IncludeDirs.imguizmo}"
+        "%{IncludeDirs.imguizmo}",
+        "%{IncludeDirs.glm}"
     }
 
     libdirs

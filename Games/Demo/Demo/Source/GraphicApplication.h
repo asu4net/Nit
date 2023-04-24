@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <ShardGraphics.h>
+#include <Nit.h>
 #include "Camera/LogicCamera.h"
 
 namespace Nit
@@ -8,16 +8,15 @@ namespace Nit
     class Camera;
     class ImGuiWidget;
     
-    class GraphicApplication
+    class Game
     {
         std::shared_ptr<Window> m_Window;   
 
     public:
         Renderer2D& Renderer2D;
-        ImGuiRenderer& ImGuiRenderer;
         
-        GraphicApplication();
-        virtual ~GraphicApplication();
+        Game();
+        virtual ~Game();
 
         const std::shared_ptr<LogicCamera>& GetCamera() const { return m_LogicCamera; }
         const std::shared_ptr<Window>& GetWindow() const { return m_Window; }

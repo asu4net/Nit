@@ -19,7 +19,8 @@ project "Demo"
     {
         "%{prj.location}/Source",
         "%{IncludeDirs.Nit}",
-        "%{IncludeDirs.DemoSource}"
+        "%{IncludeDirs.DemoSource}",
+        "%{IncludeDirs.glm}"
     }
 
     links

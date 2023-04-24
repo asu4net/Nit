@@ -1,6 +1,6 @@
 ﻿#include "LogicCamera.h"
 
-LogicCamera::LogicCamera(const std::shared_ptr<Shard::Graphics::Window>& window,
+LogicCamera::LogicCamera(const std::shared_ptr<Nit::Window>& window,
                          const Projection startProjection)
     : Camera(startProjection)
 {
@@ -23,7 +23,7 @@ void LogicCamera::Update(const float deltaTime)
         controller->Update(deltaTime);
 }
 
-Shard::Graphics::Camera LogicCamera::GetRenderData()
+Nit::Camera LogicCamera::GetRenderData()
 {
     return static_cast<Camera>(*this);
 }

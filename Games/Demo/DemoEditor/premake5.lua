@@ -20,7 +20,8 @@ project "DemoEditor"
         "%{prj.location}/Source",
         "%{IncludeDirs.Nit}",
         "%{IncludeDirs.NitEditor}",
-        "%{IncludeDirs.DemoSource}"
+        "%{IncludeDirs.DemoSource}",
+        "%{IncludeDirs.glm}"
     }
 
     links

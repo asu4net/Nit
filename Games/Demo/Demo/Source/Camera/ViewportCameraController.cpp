@@ -1,6 +1,6 @@
 ﻿#include "ViewportCameraController.h"
 
-ViewportCameraController::ViewportCameraController(Shard::Graphics::Camera* owner)
+ViewportCameraController::ViewportCameraController(Nit::Camera* owner)
     : CameraController(owner)
     , MoveSpeed(2.f)
 {
@@ -8,7 +8,7 @@ ViewportCameraController::ViewportCameraController(Shard::Graphics::Camera* owne
 
 void ViewportCameraController::OnUpdate(const float deltaTime)
 {
-    using namespace Shard::Graphics;
+    using namespace Nit;
     
     const float displacement = MoveSpeed * deltaTime;
     glm::vec3& position = GetOwner()->Position;

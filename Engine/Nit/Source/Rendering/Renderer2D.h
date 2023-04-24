@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Utility/Singleton.h"
+#include "Core/Utility/Singleton.h"
 #include "RenderCommandQueue.h"
 #include "Math/Math.h"
 #include <memory>

@@ -1,12 +1,12 @@
 ﻿#pragma once
-#include <ShardGraphics.h>
+#include <Nit.h>
 #include <vector>
 #include "CameraController.h"
 
-class LogicCamera : public Shard::Graphics::Camera
+class LogicCamera : public Nit::Camera
 {
 public:
-    LogicCamera(const std::shared_ptr<Shard::Graphics::Window>& window,
+    LogicCamera(const std::shared_ptr<Nit::Window>& window,
         const Projection startProjection = Projection::Perspective);
     
     ~LogicCamera() override;

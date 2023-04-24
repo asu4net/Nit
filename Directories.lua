@@ -1,7 +1,7 @@
 IncludeDirs = {}
 
-IncludeDirs["Nit"          ] = "%{wks.location}/Nit/Source"
-IncludeDirs["NitEditor"    ] = "%{wks.location}/NitEditor/Source"
+IncludeDirs["Nit"          ] = "%{wks.location}/Engine/Nit/Source"
+IncludeDirs["NitEditor"    ] = "%{wks.location}/Engine/NitEditor/Source"
 
 IncludeDirs["glm"          ] = "%{wks.location}/ThirdParty/glm"
 IncludeDirs["imgui"        ] = "%{wks.location}/ThirdParty/imgui"

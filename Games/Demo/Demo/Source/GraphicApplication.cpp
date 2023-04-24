@@ -3,25 +3,22 @@
 
 namespace Nit
 {
-    GraphicApplication::GraphicApplication()
+    Game::Game()
         : m_Window(Window::CreateAndInitialize())
         , Renderer2D(Renderer2D::CreateAndInitialize(m_Window))
-        , ImGuiRenderer(ImGuiRenderer::CreateAndInitialize(m_Window))
         , m_LogicCamera(std::make_shared<LogicCamera>(m_Window))
         , m_LastFrameTime(Time::GetTime())
     {
     }
     
-    GraphicApplication::~GraphicApplication()
+    Game::~Game()
     {
         Renderer2D::FinalizeAndDestroy();
-        ImGuiRenderer::FinalizeAndDestroy();
         m_Window->Finalize();
     }
 
-    void GraphicApplication::Create()
+    void Game::Create()
     {
-        m_RootWidget = ImGuiRenderer::GetInstance().CreateRootWidget<ImGuiWidget>("Settings:");
         m_LogicCamera->AddController<ViewportCameraController>();
         OnCreate();
         
@@ -34,12 +31,11 @@ namespace Nit
         }
     }
 
-    void GraphicApplication::Update(const float deltaTime)
+    void Game::Update(const float deltaTime)
     {
         Renderer2D.ClearScreen();
         m_LogicCamera->Update(deltaTime);
         OnUpdate(deltaTime);
-        ImGuiRenderer.DrawWidgets();
         m_Window->Update();
     }
 }

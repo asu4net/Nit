@@ -3,7 +3,7 @@
 using namespace Nit;
 using namespace Nit;
 
-class ExampleApplication : public GraphicApplication
+class DemoGame : public Game
 {
 public:
     std::shared_ptr<Texture> GridTexture;
@@ -19,7 +19,7 @@ protected:
         CatTexture = Texture2D::Create("Content/Textures/bola.jpg");
         CppTexture = Texture2D::Create("Content/Textures/cpp.png");
         
-        GetRootWidget()->PushWidget<Vector3Widget>(BallPosition, "Cat Pos");
+        // GetRootWidget()->PushWidget<Vector3Widget>(BallPosition, "Cat Pos");
         
         Grid.Texture = GridTexture;
         Grid.Size *= 30;
@@ -46,12 +46,11 @@ protected:
         Renderer2D.Begin();
         Renderer2D.SubmitQuad({glm::translate(Global::IdentityMatrix, BallPosition), Global::WhiteColor,  CatTexture});
         Renderer2D.End();
-        
     }
 };
 
 int main()
 {
-    ExampleApplication exampleApplication;
-    exampleApplication.Create();
+    DemoGame demoGame;
+    demoGame.Create();
 }
