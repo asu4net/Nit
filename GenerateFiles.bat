@@ -1,0 +1,1 @@
+call ThirdParty\premake\Binaries\premake5.exe vs2022

@@ -1,0 +1,13 @@
+# Binaries
+/Binaries/
+Intermediate/
+
+# Visual Studio files and folder 
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+
+# Rider files and folder
+.idea/
