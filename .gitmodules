@@ -7,6 +7,7 @@
 [submodule "Engine/Nit/ThirdParty/imgui"]
 	path = ThirdParty/imgui
 	url = https://github.com/asu4net/imgui.git
+	branch = docking
 [submodule "ThirdParty/imguizmo"]
 	path = ThirdParty/imguizmo
 	url = https://github.com/asu4net/imguizmo.git
