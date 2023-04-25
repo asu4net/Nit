@@ -2,13 +2,13 @@
 
 namespace Nit
 {
-    LayerStack::~LayerStack()
+    void LayerStack::Initialize()
     {
         for (const auto& gameLayer : m_GameLayers)
-            gameLayer->OnDestroy();
+            gameLayer->OnInitialize();
     }
 
-    void LayerStack::UpdateLayers(const TimeStep& timeStep)
+    void LayerStack::Update(const TimeStep& timeStep)
     {
         for (const auto& gameLayer : m_GameLayers)
             gameLayer->OnUpdate(timeStep);
@@ -18,5 +18,11 @@ namespace Nit
             for (const auto& gameLayer : m_GameLayers)
                 gameLayer->OnFixedUpdate(timeStep);
         }
+    }
+
+    void LayerStack::Finalize()
+    {
+        for (const auto& gameLayer : m_GameLayers)
+            gameLayer->OnFinalize();
     }
 }

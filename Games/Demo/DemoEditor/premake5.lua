@@ -23,6 +23,7 @@ project "DemoEditor"
         "%{IncludeDirs.Nit}",
         "%{IncludeDirs.NitEditor}",
         "%{IncludeDirs.DemoSource}",
+        "%{IncludeDirs.imgui}",
         "%{IncludeDirs.glm}"
     }
 

@@ -4,7 +4,7 @@
 
 using namespace Nit;
 
-void DemoGame::OnCreate()
+void DemoGame::OnInitialize()
 {
     Camera = std::make_shared<LogicCamera>(Game::GetInstance().GetWindow());
     Camera->AddController<ViewportCameraController>();

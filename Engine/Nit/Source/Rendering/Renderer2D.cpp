@@ -82,24 +82,6 @@ namespace Nit
             glm::vec2{(x * subTexWidth) / atlasWidth, ((y + 1) * subTexHeight) / atlasHeight },
         };
     }
-    
-    Renderer2D& Renderer2D::CreateAndInitialize(const std::shared_ptr<Window>& window)
-    {
-        Renderer2D& renderer2D = Renderer2D::Create();
-        renderer2D.Initialize();
-        window->Events().ResizeEvent.Add([](const int width, const int height)
-        {
-            Renderer2D::GetInstance().SetViewPort(0, 0, width, height);
-        });
-        return renderer2D;
-    }
-
-    void Renderer2D::FinalizeAndDestroy()
-    {
-        Renderer2D& renderer2D = GetInstance();
-        renderer2D.Finalize();
-        Destroy();
-    }
 
     void Renderer2D::CreateShaders(const Renderer2DSettings& rendererSettings)
     {
@@ -128,7 +110,7 @@ namespace Nit
         m_TextureShader->Compile(g_TextureVertexShaderSource, g_TextureFragmentShaderSource);
     }
     
-    void Renderer2D::Initialize(const Renderer2DSettings& rendererSettings)
+    void Renderer2D::Initialize(const std::shared_ptr<Window>& window, const Renderer2DSettings& rendererSettings)
     {
         m_CommandQueue = std::make_unique<RenderCommandQueue>();
         SetBlendingEnabled(true);
@@ -179,6 +161,10 @@ namespace Nit
         for (uint32_t i = 0; i < QuadRenderData::MaxTextureSlots; i++)
             g_TextureSlots[i] = i;
 
+        window->Events().ResizeEvent.Add([](const int width, const int height)
+        {
+            GetInstance().SetViewPort(0, 0, width, height);
+        });
     }
 
     void Renderer2D::Finalize()

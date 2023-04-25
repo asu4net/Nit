@@ -15,7 +15,7 @@ namespace Nit
             return *m_Instance;
         }
         
-        static T& Create()
+        static T& CreateSingleton()
         {
             assert(!m_Instance && "Instance already exists!");
             m_Instance = new T();

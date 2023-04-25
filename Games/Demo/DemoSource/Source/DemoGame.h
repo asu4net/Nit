@@ -16,6 +16,6 @@ public:
     glm::vec3 BallPosition = {.5f, .3f, 0.f};
     Nit::Quad Grid;
     
-    void OnCreate() override;
+    void OnInitialize() override;
     void OnUpdate(const Nit::TimeStep& timeStep) override;
 };

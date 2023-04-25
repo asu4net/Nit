@@ -43,11 +43,8 @@ namespace Nit
 
         Renderer2D() = default;
         Renderer2D(Renderer2D&&) = delete;
-
-        static Renderer2D& CreateAndInitialize(const std::shared_ptr<Window>& window);
-        static void FinalizeAndDestroy();
         
-        void Initialize(const Renderer2DSettings& rendererSettings = {});
+        void Initialize(const std::shared_ptr<Window>& window, const Renderer2DSettings& rendererSettings = {});
         void Finalize();
 
         void SetRenderData(const RenderData& renderData);

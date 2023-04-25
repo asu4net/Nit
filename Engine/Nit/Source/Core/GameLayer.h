@@ -8,11 +8,11 @@ namespace Nit
     protected:
         GameLayer() = default;
         virtual ~GameLayer() = default; 
-
-        virtual void OnCreate() {}
+        
+        virtual void OnInitialize() {}
         virtual void OnUpdate(const TimeStep& timeStep) {}
         virtual void OnFixedUpdate(const TimeStep& timeStep) {}
-        virtual void OnDestroy() {}
+        virtual void OnFinalize() {}
 
         friend class LayerStack;
     };

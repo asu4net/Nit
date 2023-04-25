@@ -1,8 +1,10 @@
 #include "DemoGame.h"
 
+using namespace Nit;
+
 int main()
 {
-    Nit::Game& game = Nit::Game::Create();
-    game.PushLayer<DemoGame>();
-    game.Start();
+    Game& game = Game::CreateSingleton();
+    game.GetLayerStack()->Push<DemoGame>();
+    game.Initialize();
 }

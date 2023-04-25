@@ -2,6 +2,8 @@
 #include <imgui.h>
 #include <ImGuizmo.h>
 #include <glfw/glfw3.h>
+
+#include "Core/Utility/Misc.h"
 #include "Implementation/imgui_impl_glfw.h"
 #include "Implementation/imgui_impl_opengl3.h"
 #include "Window/Window.h"
@@ -10,30 +12,10 @@ namespace Nit
 {
     ImGuiRenderer::ImGuiRenderer()
         : ConfigFlags(0)
+        , m_RootWidget(std::make_shared<ImGuiWidget>())
     {
-    }
-
-    ImGuiRenderer& ImGuiRenderer::CreateAndInitialize(const std::shared_ptr<Window>& window, bool bSetDefaultConfiguration,
-        const Delegate<void()>& customConfiguration)
-    {
-        ImGuiRenderer& imGuiRenderer = Create();
-        imGuiRenderer.Initialize(window, bSetDefaultConfiguration, customConfiguration);
-        return imGuiRenderer;
-    }
-
-    void ImGuiRenderer::FinalizeAndDestroy()
-    {
-        ImGuiRenderer& imGuiRenderer = GetInstance();
-        imGuiRenderer.Finalize();
-        Destroy();
-    }
-
-    void ImGuiRenderer::DestroyRootWidget()
-    {
-        if (!m_RootWidget) return;
-        m_RootWidget->Destroy();
-        m_RootWidget.reset();
-        m_RootWidget = nullptr;
+        m_RootWidget->Create();
+        m_RootWidget->ClearBeginEndDelegates();
     }
 
     void ImGuiRenderer::ConfigureFlags()
@@ -51,7 +33,9 @@ namespace Nit
     {
         // Font
         const ImGuiIO& io = ImGui::GetIO();
-        io.Fonts->AddFontFromFileTTF(R"(Content\Fonts\AlbertSans-VariableFont_wght.ttf)", 17);
+        
+        const std::string fontLocation = CurrentDirectory() + "\\" + "Content\\Fonts\\AlbertSans-VariableFont_wght.ttf";
+        io.Fonts->AddFontFromFileTTF(fontLocation.c_str(), 17);
         
         // Colors
         ImGui::StyleColorsDark();
@@ -84,7 +68,7 @@ namespace Nit
         ImGui_ImplOpenGL3_Init("#version 410");
     }
 
-    void ImGuiRenderer::DrawWidgets()
+    void ImGuiRenderer::Update()
     {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();

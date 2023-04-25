@@ -15,25 +15,15 @@ namespace Nit
         
         ImGuiRenderer();
         ImGuiRenderer(ImGuiRenderer&& other) = delete;
-
-        static ImGuiRenderer& CreateAndInitialize(const std::shared_ptr<Window>& window, bool bSetDefaultConfiguration = true, const Delegate<void()>& customConfiguration = {});
-        static void FinalizeAndDestroy();
         
         template<typename T, typename ...TArgs>
-        std::shared_ptr<T> CreateRootWidget(TArgs&& ...args)
+        std::shared_ptr<T> PushWidget(TArgs&& ...args)
         {
-            if (m_RootWidget)
-                DestroyRootWidget();
-            std::shared_ptr<T> widget = std::make_shared<T>(std::forward<TArgs>(args)...);
-            m_RootWidget = widget;
-            widget->Create();
-            return widget;
+            return m_RootWidget->PushWidget<T>(std::forward<TArgs>(args)...);
         }
-
-        void DestroyRootWidget();
         
         void Initialize(const std::shared_ptr<Window>& window, bool bSetDefaultConfiguration = true, Delegate<void()> customConfiguration = {});
-        void DrawWidgets();
+        void Update();
         void Finalize();
         
     private:

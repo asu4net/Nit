@@ -6,6 +6,7 @@
 
 //TODO: Add controller support
 //TODO: Add window icon support
+//TODO: Add overload to CreateRef
 
 namespace Nit
 {
@@ -28,7 +29,6 @@ namespace Nit
         
         virtual ~Window() = default;
         
-        static std::shared_ptr<Window> CreateAndInitialize(const Configuration& config = {});
         static std::shared_ptr<Window> Create();
         
         virtual void Initialize(const Configuration& config = {});

@@ -6,13 +6,6 @@
 
 namespace Nit
 {
-    std::shared_ptr<Window> Window::CreateAndInitialize(const Configuration& config)
-    {
-        auto window = Window::Create();
-        window->Initialize(config);
-        return window;
-    }
-
     std::shared_ptr<Window> Window::Create()
     {
         return std::make_shared<Window>();

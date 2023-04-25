@@ -5,25 +5,31 @@
 namespace Nit
 {
     Game::Game()
-        : m_LayerStack(std::make_shared<LayerStack>())
-        , m_Window(Window::CreateAndInitialize())
-        , m_Renderer2D(Renderer2D::CreateAndInitialize(m_Window))
+        : m_Window(Window::Create())
+        , m_Renderer2D(Renderer2D::CreateSingleton())
+        , m_LayerStack(std::make_shared<LayerStack>())
+    {}
+
+    void Game::Initialize()
     {
+        m_Window->Initialize();
+        m_Renderer2D.Initialize(m_Window);
+        m_LayerStack->Initialize();
+        
+        while (m_Window->IsOpened())
+        {
+            m_Renderer2D.ClearScreen(m_Window->GetBackgroundColor());
+            m_LayerStack->Update(m_Time.CalculateTimeStep());
+            m_Window->Update();
+        }
+
+        m_LayerStack->Finalize();
+        m_Renderer2D.Finalize();
+        m_Window->Finalize();
     }
 
     Game::~Game()
     {
-        Renderer2D::FinalizeAndDestroy();
-        m_Window->Finalize();
-    }
-
-    void Game::Start()
-    {
-        while (m_Window->IsOpened())
-        {
-            m_Renderer2D.ClearScreen(m_Window->GetBackgroundColor());
-            m_LayerStack->UpdateLayers(m_Time.CalculateTimeStep());
-            m_Window->Update();
-        }
+        Renderer2D::Destroy();
     }
 }
