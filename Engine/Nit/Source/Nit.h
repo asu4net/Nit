@@ -2,17 +2,8 @@
 
 // Core
 #include "Core/Game.h"
-#include "Core/Delegates/Delegate.h"
-#include "Core/Delegates/MulticastDelegate.h"
-#include "Core/Utility/Misc.h"
-#include "Core/Utility/Singleton.h"
-#include "Core/Time.h"
 #include "Core/GameLayer.h"
 #include "Core/LayerStack.h"
-
-// Math
-
-#include "Math/Defaults.h"
 
 // Rendering
 
