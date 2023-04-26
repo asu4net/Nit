@@ -1,7 +1,5 @@
 ﻿#pragma once
-#include <memory>
 #include "Texture.h"
-#include <string>
 
 namespace Nit
 {

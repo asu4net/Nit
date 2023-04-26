@@ -1,7 +1,4 @@
 ﻿#pragma once
-#include <memory>
-#include <glm/glm.hpp>
-#include "Math.h"
 
 namespace Nit
 {

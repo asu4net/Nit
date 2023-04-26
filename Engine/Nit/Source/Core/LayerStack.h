@@ -1,6 +1,4 @@
 #pragma once
-#include <memory>
-#include <vector>
 #include "GameLayer.h"
 
 //TODO: Pop and Get methods. Requirements: rtti

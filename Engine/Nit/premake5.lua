@@ -9,6 +9,11 @@ project "Nit"
     targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "NitPCH.h"
+    pchsource "Source/NitPCH.cpp"
+
+    forceincludes { "NitPCH.h" }
+
     files
     {
         "%{prj.location}/Source/**.h",

@@ -1,7 +1,4 @@
 ﻿#pragma once
-#include <memory>
-#include <string>
-#include "imgui.h"
 #include "Core/Delegates/MulticastDelegate.h"
 
 namespace Nit

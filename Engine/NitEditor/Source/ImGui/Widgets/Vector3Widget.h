@@ -1,8 +1,5 @@
 ﻿#pragma once
-#include <string>
-
 #include "ImGui/ImGuiWidget.h"
-#include "Math/Math.h"
 
 namespace Nit
 {

@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include "Core/Delegates/MulticastDelegate.h"
-#include "Math/Math.h"
 
 struct GLFWwindow;
 

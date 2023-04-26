@@ -1,5 +1,4 @@
 ﻿#include "RendererAPI.h"
-#include "Data/IndexBuffer.h"
 #include "Data/VertexArray.h"
 #include <glad/glad.h>
 

@@ -1,7 +1,4 @@
 ﻿#pragma once
-#include <memory>
-#include <string>
-#include "glm/fwd.hpp"
 
 namespace Nit
 {

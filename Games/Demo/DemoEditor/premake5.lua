@@ -11,6 +11,11 @@ project "DemoEditor"
 
     debugdir = "%{wks.location}/Games/Demo/DemoSource"
 
+    pchheader "DemoEditorPCH.h"
+    pchsource "Source/DemoEditorPCH.cpp"
+
+    forceincludes { "DemoEditorPCH.h" }
+
     files
     {
         "%{prj.location}/Source/**.h",
@@ -24,6 +29,7 @@ project "DemoEditor"
         "%{IncludeDirs.NitEditor}",
         "%{IncludeDirs.DemoSource}",
         "%{IncludeDirs.imgui}",
+        "%{IncludeDirs.imguizmo}",
         "%{IncludeDirs.glm}"
     }
 

@@ -1,11 +1,5 @@
 ﻿#include "Shader.h"
-#include <cassert>
-#include <fstream>
-#include <vector>
 #include <glad/glad.h>
-
-#include "Core/Utility/Misc.h"
-#include "glm/gtc/type_ptr.hpp"
 
 namespace Nit
 {

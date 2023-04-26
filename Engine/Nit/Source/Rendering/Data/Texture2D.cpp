@@ -4,8 +4,6 @@
 #include <stb_image.h>
 #include <glad/glad.h>
 
-#include "Core/Utility/Misc.h"
-
 namespace Nit
 {
     std::shared_ptr<Texture2D> Texture2D::Create(const std::string& filePath, const Texture2DSettings& settings)

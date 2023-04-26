@@ -1,5 +1,4 @@
 ﻿#include "Camera.h"
-#include "Window/Window.h"
 #include "Window/Input/Input.h"
 
 namespace Nit

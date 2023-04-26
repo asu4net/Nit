@@ -1,7 +1,5 @@
 #include "Time.h"
 
-#include <algorithm>
-
 namespace Nit
 {
     Time::Time()

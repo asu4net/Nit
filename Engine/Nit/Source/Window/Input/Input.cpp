@@ -1,6 +1,5 @@
 ﻿#include "Input.h"
-#include "glfw/glfw3.h"
-#include "Window/Window.h"
+#include <glfw/glfw3.h>
 
 namespace Nit 
 {

@@ -9,6 +9,11 @@ project "NitEditor"
     targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "NitEditorPCH.h"
+    pchsource "Source/NitEditorPCH.cpp"
+
+    forceincludes { "NitEditorPCH.h" }
+
     files
     {
         "%{prj.location}/Source/**.h",
@@ -39,6 +44,7 @@ project "NitEditor"
 
     defines 
     {
+        _CRT_SECURE_NO_WARNINGS
     }
 
     filter "system:windows"

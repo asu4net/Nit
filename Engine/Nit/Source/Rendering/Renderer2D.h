@@ -1,9 +1,5 @@
 ﻿#pragma once
-#include "Core/Utility/Singleton.h"
 #include "RenderCommandQueue.h"
-#include "Math/Math.h"
-#include <memory>
-
 #include "Camera.h"
 
 namespace Nit

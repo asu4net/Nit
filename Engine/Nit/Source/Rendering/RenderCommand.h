@@ -3,7 +3,6 @@
 #include "Data/VertexArray.h"
 #include "Data/Shader.h"
 #include "Data/Texture.h"
-#include <memory>
 
 namespace Nit
 {

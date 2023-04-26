@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <Nit.h>
-#include <vector>
 #include "CameraController.h"
 
 class LogicCamera : public Nit::Camera

@@ -9,6 +9,11 @@ project "DemoSource"
     targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/Demo")
     objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/Demo")
 
+    pchheader "DemoSourcePCH.h"
+    pchsource "Source/DemoSourcePCH.cpp"
+
+    forceincludes { "DemoSourcePCH.h" }
+
     files
     {
         "%{prj.location}/Source/**.h",

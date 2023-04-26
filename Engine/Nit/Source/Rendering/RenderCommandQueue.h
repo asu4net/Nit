@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include <memory>
-#include <vector>
 #include "RenderCommand.h"
 
 namespace Nit

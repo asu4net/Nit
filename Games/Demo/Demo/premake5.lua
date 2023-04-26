@@ -11,6 +11,11 @@ project "Demo"
 
     debugdir = "%{wks.location}/Games/Demo/DemoSource"
 
+    pchheader "DemoPCH.h"
+    pchsource "Source/DemoPCH.cpp"
+
+    forceincludes { "DemoPCH.h" }
+
     files
     {
         "%{prj.location}/Source/**.h",

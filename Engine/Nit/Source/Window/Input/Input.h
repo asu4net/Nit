@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include "glm/vec2.hpp"
-#include "KeyCodes.h"
 
 namespace Nit 
 {

@@ -1,6 +1,5 @@
 ﻿#include "Vector3Widget.h"
 
-#include "imgui_internal.h"
 
 namespace Nit
 {

@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <vector>
 #include "BufferElement.h"
 
 namespace Nit

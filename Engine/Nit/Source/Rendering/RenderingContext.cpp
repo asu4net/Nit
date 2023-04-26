@@ -1,6 +1,5 @@
 ﻿#include "RenderingContext.h"
-#include <cassert>
-#include "glad/glad.h"
+#include <glad/glad.h>
 #include <glfw/glfw3.h>
 
 namespace Nit

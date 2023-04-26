@@ -1,11 +1,5 @@
 ﻿#include "ImGuiRenderer.h"
-#include <imgui.h>
-#include <ImGuizmo.h>
 #include <glfw/glfw3.h>
-
-#include "Core/Utility/Misc.h"
-#include "Implementation/imgui_impl_glfw.h"
-#include "Implementation/imgui_impl_opengl3.h"
 #include "Window/Window.h"
 
 namespace Nit

@@ -1,6 +1,4 @@
 ﻿#include "Renderer2D.h"
-#include <array>
-
 #include "Window/Window.h"
 #include "RenderCommand.h"
 #include "RenderCommandQueue.h"

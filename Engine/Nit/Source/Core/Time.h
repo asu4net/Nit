@@ -1,5 +1,4 @@
 #pragma once
-#include "Utility/Misc.h"
 
 namespace Nit
 {

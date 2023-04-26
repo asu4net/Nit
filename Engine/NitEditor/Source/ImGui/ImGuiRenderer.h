@@ -1,8 +1,5 @@
 ﻿#pragma once
-#include <memory>
 #include "ImGuiWidget.h"
-#include "Core/Delegates/Delegate.h"
-#include "Core/Utility/Singleton.h"
 
 namespace Nit
 {
