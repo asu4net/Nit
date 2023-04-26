@@ -36,8 +36,7 @@ namespace Nit
     public:
         Shared<Shader> FlatColorShader() const { return m_FlatColorShader; }
         Shared<Shader> TextureShader() const { return m_TextureShader; }
-
-        Renderer2D() = default;
+        
         Renderer2D(Renderer2D&&) = delete;
         
         void Initialize(const Shared<Window>& window, const Renderer2DSettings& rendererSettings = {});
@@ -58,6 +57,8 @@ namespace Nit
         void SubmitQuad(const Quad& quadProperties);
 
     private:
+        Renderer2D() = default;
+        
         RenderData m_RenderData;
         Unique<RenderCommandQueue> m_CommandQueue;
         
@@ -68,5 +69,7 @@ namespace Nit
         void Flush();
         void NextBatch();
         void CreateShaders(const Renderer2DSettings& rendererSettings);
+
+        friend class Singleton<Renderer2D>;
     };
 }

@@ -10,7 +10,6 @@ namespace Nit
     public:
         ImGuiConfigFlags ConfigFlags;
         
-        ImGuiRenderer();
         ImGuiRenderer(ImGuiRenderer&& other) = delete;
         
         template<typename T, typename ...TArgs>
@@ -24,10 +23,14 @@ namespace Nit
         void Finalize();
         
     private:
+        ImGuiRenderer();
+        
         Weak<Window> m_Window;
         Shared<ImGuiWidget> m_RootWidget;
 
         void ConfigureFlags();
         void ConfigureStyle();
+
+        friend class Singleton<ImGuiRenderer>;
     };
 }
