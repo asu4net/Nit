@@ -35,7 +35,6 @@ project "DemoEditor"
 
     links
     {
-        "Nit",
         "NitEditor",
         "DemoSource"
     }

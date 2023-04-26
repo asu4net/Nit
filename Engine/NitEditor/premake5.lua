@@ -37,7 +37,6 @@ project "NitEditor"
     links
     {
         "Nit",
-        "glfw",
         "imgui",
         "imguizmo"
     }

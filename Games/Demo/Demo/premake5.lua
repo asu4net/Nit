@@ -32,7 +32,6 @@ project "Demo"
 
     links
     {
-        "Nit",
         "DemoSource"
     }
 
