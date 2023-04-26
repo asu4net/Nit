@@ -5,8 +5,8 @@ namespace Nit
     class Shader
     {
     public:
-        static std::shared_ptr<Shader> Create(const std::string& fileLocation);
-        static std::shared_ptr<Shader> Create();
+        static Shared<Shader> Create(const std::string& fileLocation);
+        static Shared<Shader> Create();
         
         Shader(const std::string& fileLocation);
         Shader();

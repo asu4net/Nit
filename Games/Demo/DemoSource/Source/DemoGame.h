@@ -7,11 +7,11 @@ class LogicCamera;
 class DemoGame : public Nit::GameLayer
 {
 public:
-    std::shared_ptr<LogicCamera> Camera;
-    
-    std::shared_ptr<Nit::Texture> GridTexture;
-    std::shared_ptr<Nit::Texture> CatTexture;
-    std::shared_ptr<Nit::Texture> CppTexture;
+    Nit::Shared<LogicCamera> Camera;
+
+    Nit::Shared<Nit::Texture> GridTexture;
+    Nit::Shared<Nit::Texture> CatTexture;
+    Nit::Shared<Nit::Texture> CppTexture;
 
     glm::vec3 BallPosition = {.5f, .3f, 0.f};
     Nit::Quad Grid;

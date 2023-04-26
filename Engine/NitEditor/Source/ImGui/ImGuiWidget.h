@@ -37,9 +37,9 @@ namespace Nit
         void Destroy();
         
         template<typename T, typename ...TArgs>
-        std::shared_ptr<T> PushWidget(TArgs&& ...args)
+        Shared<T> PushWidget(TArgs&& ...args)
         {
-            std::shared_ptr<T> widget = std::make_shared<T>(std::forward<TArgs>(args)...);
+            Shared<T> widget = std::make_shared<T>(std::forward<TArgs>(args)...);
             m_ChildWidgets.push_back(widget);
             widget->Create();
             return widget;
@@ -58,6 +58,6 @@ namespace Nit
         FWidgetCreateEvent m_WidgetCreateEvent;
         FWidgetUpdateEvent m_WidgetUpdateEvent;
         FWidgetDestroyEvent m_WidgetDestroyEvent;
-        std::vector<std::shared_ptr<ImGuiWidget>> m_ChildWidgets;
+        std::vector<Shared<ImGuiWidget>> m_ChildWidgets;
     };
 }

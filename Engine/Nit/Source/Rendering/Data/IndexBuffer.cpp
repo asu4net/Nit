@@ -3,7 +3,7 @@
 
 namespace Nit
 {
-    std::shared_ptr<IndexBuffer> IndexBuffer::Create(const uint32_t* indices, const uint32_t count)
+    Shared<IndexBuffer> IndexBuffer::Create(const uint32_t* indices, const uint32_t count)
     {
         return std::make_shared<IndexBuffer>(indices, count);
     }

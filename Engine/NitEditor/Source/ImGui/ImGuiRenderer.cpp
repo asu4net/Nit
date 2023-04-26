@@ -46,7 +46,7 @@ namespace Nit
         style.Colors[ImGuiCol_Button] = {0.356f, 0.356f, 0.416f, 1.f};
     }
 
-    void ImGuiRenderer::Initialize(const std::shared_ptr<Window>& window, bool bSetDefaultConfiguration, Delegate<void()> customConfiguration)
+    void ImGuiRenderer::Initialize(const Shared<Window>& window, bool bSetDefaultConfiguration, Delegate<void()> customConfiguration)
     {
         m_Window = window;
         IMGUI_CHECKVERSION();

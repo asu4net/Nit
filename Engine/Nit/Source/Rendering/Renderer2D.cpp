@@ -27,16 +27,16 @@ namespace Nit
 
         static constexpr uint32_t MaxVertices = MaxQuads * 4;
 
-        std::shared_ptr<VertexArray> VertexArray;
-        std::shared_ptr<VertexBuffer> VertexBuffer;
-        std::shared_ptr<IndexBuffer> IndexBuffer;
+        Shared<VertexArray> VertexArray;
+        Shared<VertexBuffer> VertexBuffer;
+        Shared<IndexBuffer> IndexBuffer;
 
         QuadVertex* VertexData = nullptr;
         QuadVertex* LastVertex = nullptr;
         uint32_t QuadCount = 0;
 
-        std::array<std::shared_ptr<Texture>, MaxTextureSlots> Textures;
-        std::shared_ptr<Texture> WhiteTexture;
+        std::array<Shared<Texture>, MaxTextureSlots> Textures;
+        Shared<Texture> WhiteTexture;
         uint32_t LastTextureSlot = 1;
         uint32_t IndexCount = 0;
     };
@@ -46,7 +46,7 @@ namespace Nit
 
     static void GetQuadVertexPositions(const glm::vec2& textureSize, const glm::vec2& quadSize, std::array<glm::vec3, 4>& vertexPositions)
     {
-        glm::vec2 vertexPosition = Global::OneVector;
+        glm::vec2 vertexPosition = Math::OneVector;
 
         if (glm::abs(textureSize.x - textureSize.y) > 0.0001f)
             vertexPosition = glm::normalize(glm::vec2(textureSize));
@@ -108,7 +108,7 @@ namespace Nit
         m_TextureShader->Compile(g_TextureVertexShaderSource, g_TextureFragmentShaderSource);
     }
     
-    void Renderer2D::Initialize(const std::shared_ptr<Window>& window, const Renderer2DSettings& rendererSettings)
+    void Renderer2D::Initialize(const Shared<Window>& window, const Renderer2DSettings& rendererSettings)
     {
         m_CommandQueue = std::make_unique<RenderCommandQueue>();
         SetBlendingEnabled(true);
@@ -174,7 +174,7 @@ namespace Nit
         m_RenderData = renderData;
     }
 
-    int GetTextureSlot(const std::shared_ptr<Texture>& texture)
+    int GetTextureSlot(const Shared<Texture>& texture)
     {
         int textureSlot = 0;
 

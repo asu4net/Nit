@@ -19,7 +19,7 @@ namespace Nit
         return glfWwindowHandler;
     }
     
-    std::shared_ptr<RenderingContext> InstantiateContext(void* windowHandler)
+    Shared<RenderingContext> InstantiateContext(void* windowHandler)
     {
         return std::make_shared<RenderingContext>(windowHandler);
     }

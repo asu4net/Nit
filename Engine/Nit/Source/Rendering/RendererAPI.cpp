@@ -48,7 +48,7 @@ namespace Nit
         }
     }
 
-    void RendererAPI::DrawElements(const std::shared_ptr<VertexArray>& vertexArray, const uint32_t elementCount)
+    void RendererAPI::DrawElements(const Shared<VertexArray>& vertexArray, const uint32_t elementCount)
     {
         vertexArray->Bind();
         glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, nullptr);

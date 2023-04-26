@@ -7,8 +7,8 @@ namespace Nit
     class VertexBuffer
     {
     public:
-        static std::shared_ptr<VertexBuffer> Create(const float* vertices, uint32_t size);
-        static std::shared_ptr<VertexBuffer> Create(uint32_t size);
+        static Shared<VertexBuffer> Create(const float* vertices, uint32_t size);
+        static Shared<VertexBuffer> Create(uint32_t size);
         
         VertexBuffer(const float* vertices, uint32_t size);
         VertexBuffer(uint32_t size);

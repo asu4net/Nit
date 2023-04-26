@@ -3,12 +3,12 @@
 
 namespace Nit
 {
-    std::shared_ptr<Shader> Shader::Create(const std::string& fileLocation)
+    Shared<Shader> Shader::Create(const std::string& fileLocation)
     {
         return std::make_shared<Shader>(fileLocation);
     }
 
-    std::shared_ptr<Shader> Shader::Create()
+    Shared<Shader> Shader::Create()
     {
         return std::make_shared<Shader>();
     }

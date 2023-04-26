@@ -23,7 +23,7 @@ namespace Nit
         void Clear();
         void SetBlendingEnabled(bool bEnabled);
         void SetBlendingMode(const BlendingMode blendingMode);
-        void DrawElements(const std::shared_ptr<VertexArray>& vertexArray, uint32_t elementCount);
+        void DrawElements(const Shared<VertexArray>& vertexArray, uint32_t elementCount);
         void SetDepthTestEnabled(bool bEnabled);
     };
 }

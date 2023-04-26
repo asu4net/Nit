@@ -5,7 +5,7 @@
 class LogicCamera : public Nit::Camera
 {
 public:
-    LogicCamera(const std::shared_ptr<Nit::Window>& window,
+    LogicCamera(const Nit::Shared<Nit::Window>& window,
         const Projection startProjection = Projection::Perspective);
     
     ~LogicCamera() override;

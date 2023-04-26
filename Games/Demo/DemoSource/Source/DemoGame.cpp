@@ -16,7 +16,7 @@ void DemoGame::OnInitialize()
     Grid.Texture = GridTexture;
     Grid.Size *= 30;
     Grid.UVScale *= 30;
-    Grid.Color = Global::DarkGreyColor;
+    Grid.Color = Math::DarkGreyColor;
 }
 
 void DemoGame::OnUpdate(const TimeStep& timeStep)
@@ -28,13 +28,13 @@ void DemoGame::OnUpdate(const TimeStep& timeStep)
     renderer.SetBlendingMode(BlendingMode::Alpha);
     renderer.Begin();
     renderer.SubmitQuad(Grid);
-    renderer.SubmitQuad({translate(Global::IdentityMatrix, {1, 0, 0}), Global::LightRedColor});
-    renderer.SubmitQuad({translate(Global::IdentityMatrix, {0, 1, 0}), Global::YellowColor});
-    renderer.SubmitQuad({Global::IdentityMatrix, Global::LightBlueColor});
-    renderer.SubmitQuad({translate(Global::IdentityMatrix, {0, -1, 0}), Global::WhiteColor, CppTexture});
+    renderer.SubmitQuad({translate(Math::IdentityMatrix, {1, 0, 0}), Math::LightRedColor});
+    renderer.SubmitQuad({translate(Math::IdentityMatrix, {0, 1, 0}), Math::YellowColor});
+    renderer.SubmitQuad({Math::IdentityMatrix, Math::LightBlueColor});
+    renderer.SubmitQuad({translate(Math::IdentityMatrix, {0, -1, 0}), Math::WhiteColor, CppTexture});
     renderer.End();
     renderer.SetBlendingMode(BlendingMode::Add);
     renderer.Begin();
-    renderer.SubmitQuad({translate(Global::IdentityMatrix, BallPosition), Global::WhiteColor, CatTexture});
+    renderer.SubmitQuad({translate(Math::IdentityMatrix, BallPosition), Math::WhiteColor, CatTexture});
     renderer.End();
 }

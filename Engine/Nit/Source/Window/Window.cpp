@@ -6,7 +6,7 @@
 
 namespace Nit
 {
-    std::shared_ptr<Window> Window::Create()
+    Shared<Window> Window::Create()
     {
         return std::make_shared<Window>();
     }

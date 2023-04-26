@@ -6,12 +6,12 @@
 
 namespace Nit
 {
-    std::shared_ptr<Texture2D> Texture2D::Create(const std::string& filePath, const Texture2DSettings& settings)
+    Shared<Texture2D> Texture2D::Create(const std::string& filePath, const Texture2DSettings& settings)
     {
         return std::make_shared<Texture2D>(filePath, settings);
     }
 
-    std::shared_ptr<Texture2D> Texture2D::Create(const uint32_t width, const uint32_t height,
+    Shared<Texture2D> Texture2D::Create(const uint32_t width, const uint32_t height,
         const Texture2DSettings& settings)
     {
         return std::make_shared<Texture2D>(width, height, settings);

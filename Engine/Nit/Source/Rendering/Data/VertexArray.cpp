@@ -25,7 +25,7 @@ namespace Nit
         }
     }
     
-    std::shared_ptr<VertexArray> VertexArray::Create()
+    Shared<VertexArray> VertexArray::Create()
     {
         return std::make_shared<VertexArray>();
     }
@@ -51,7 +51,7 @@ namespace Nit
         glBindVertexArray(0);
     }
 
-    void VertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+    void VertexArray::AddVertexBuffer(const Shared<VertexBuffer>& vertexBuffer)
     {
         assert(!vertexBuffer->GetLayout().GetElements().empty() && "Vertex buffer has no layout!");
         
@@ -75,7 +75,7 @@ namespace Nit
         m_VertexBuffers.push_back(vertexBuffer);
     }
     
-    void VertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+    void VertexArray::SetIndexBuffer(const Shared<IndexBuffer>& indexBuffer)
     {
         glBindVertexArray(m_VertexArrayId);
         indexBuffer->Bind();

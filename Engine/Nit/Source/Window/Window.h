@@ -18,7 +18,7 @@ namespace Nit
         {
             std::string Title{"Nit Window"};
             int Width{1280}, Height{720};
-            glm::vec4 Color{Global::DarkGreyColor};
+            glm::vec4 Color{Math::DarkGreyColor};
             int OpenGlMajorVersion{4}, OpenGlMinorVersion{6};
             bool VSync{true};
             CursorMode CursorMode{CursorMode::Normal};
@@ -26,7 +26,7 @@ namespace Nit
         
         virtual ~Window() = default;
         
-        static std::shared_ptr<Window> Create();
+        static Shared<Window> Create();
         
         virtual void Initialize(const Configuration& config = {});
         virtual void Finalize();
@@ -57,7 +57,7 @@ namespace Nit
 
         
     private:
-        std::shared_ptr<RenderingContext> m_Context;
+        Shared<RenderingContext> m_Context;
         WindowEvents m_Events;
         GLFWwindow* m_WindowHandler = nullptr;    
         Configuration m_Config;

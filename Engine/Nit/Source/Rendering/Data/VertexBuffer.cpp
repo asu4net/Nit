@@ -3,12 +3,12 @@
 
 namespace Nit
 {
-    std::shared_ptr<VertexBuffer> VertexBuffer::Create(const float* vertices, const uint32_t size)
+    Shared<VertexBuffer> VertexBuffer::Create(const float* vertices, const uint32_t size)
     {
         return std::make_shared<VertexBuffer>(vertices, size);
     }
 
-    std::shared_ptr<VertexBuffer> VertexBuffer::Create(const uint32_t size)
+    Shared<VertexBuffer> VertexBuffer::Create(const uint32_t size)
     {
         return std::make_shared<VertexBuffer>(size);
     }

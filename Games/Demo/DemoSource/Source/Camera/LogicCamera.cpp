@@ -1,6 +1,6 @@
 ﻿#include "LogicCamera.h"
 
-LogicCamera::LogicCamera(const std::shared_ptr<Nit::Window>& window,
+LogicCamera::LogicCamera(const Nit::Shared<Nit::Window>& window,
                          const Projection startProjection)
     : Camera(startProjection)
 {

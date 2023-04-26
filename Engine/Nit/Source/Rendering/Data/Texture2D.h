@@ -21,8 +21,8 @@ namespace Nit
     class Texture2D : public Texture
     {
     public:
-        static std::shared_ptr<Texture2D> Create(const std::string& filePath, const Texture2DSettings& settings = {});
-        static std::shared_ptr<Texture2D> Create(const uint32_t width, const uint32_t height, const Texture2DSettings& settings = {});
+        static Shared<Texture2D> Create(const std::string& filePath, const Texture2DSettings& settings = {});
+        static Shared<Texture2D> Create(const uint32_t width, const uint32_t height, const Texture2DSettings& settings = {});
         Texture2D(const std::string& filePath, const Texture2DSettings& settings = {});
         Texture2D(const uint32_t width, const uint32_t height, const Texture2DSettings& settings = {});
         ~Texture2D();

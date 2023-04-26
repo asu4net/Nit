@@ -9,24 +9,24 @@ namespace Nit
         , Fov(85.f)
         , NearPlane(0.1f)
         , FarPlane(1000.f)
-        , Position(Global::ForwardVector * -2.f)
-        , Rotation(Global::IdentityMatrix)
+        , Position(Math::ForwardVector * -2.f)
+        , Rotation(Math::IdentityMatrix)
         , AspectRatio(1280.f / 720.f)
-        , m_ProjectionViewMatrix(Global::IdentityMatrix)
+        , m_ProjectionViewMatrix(Math::IdentityMatrix)
     {
     }
 
     void Camera::UpdateMatrix()
     {
-        glm::mat4 viewMatrix = Global::IdentityMatrix;
+        glm::mat4 viewMatrix = Math::IdentityMatrix;
         CalculateView(viewMatrix);
 
-        glm::mat4 projectionMatrix = Global::IdentityMatrix;
+        glm::mat4 projectionMatrix = Math::IdentityMatrix;
         switch (CurrentProjection)
         {
         case Projection::Perspective: CalculatePerspectiveProjection(projectionMatrix); break;
         case Projection::Orthographic: CalculateOrthographicProjection(projectionMatrix); break;
-        case Projection::None: projectionMatrix = Global::IdentityMatrix; break;
+        case Projection::None: projectionMatrix = Math::IdentityMatrix; break;
         }
 
         m_ProjectionViewMatrix = projectionMatrix * viewMatrix;

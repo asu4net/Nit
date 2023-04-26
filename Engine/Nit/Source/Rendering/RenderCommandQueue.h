@@ -12,13 +12,13 @@ namespace Nit
         template<typename T, typename ...TArgs>
         void Submit(TArgs&& ...args)
         {
-            std::shared_ptr<T> command = std::make_shared<T>(std::forward<TArgs>(args)...);
+            Shared<T> command = std::make_shared<T>(std::forward<TArgs>(args)...);
             m_CommandQueue.push_back(command);
         }
 
         void ExecuteNext();
         
     private:
-        std::vector<std::shared_ptr<RenderCommand>> m_CommandQueue; 
+        std::vector<Shared<RenderCommand>> m_CommandQueue; 
     };
 }

@@ -2,7 +2,7 @@
 
 namespace Nit
 {
-    std::shared_ptr<class RenderingContext> InstantiateContext(void* windowHandler);
+    Shared<class RenderingContext> InstantiateContext(void* windowHandler);
     
     class RenderingContext
     {

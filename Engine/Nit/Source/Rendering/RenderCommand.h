@@ -15,10 +15,10 @@ namespace Nit
         virtual void Execute() = 0;
         
     protected:
-        const std::unique_ptr<RendererAPI>& GetRendererAPI() const { return m_RendererAPI; }
+        const Unique<RendererAPI>& GetRendererAPI() const { return m_RendererAPI; }
     
     private:
-        std::unique_ptr<RendererAPI> m_RendererAPI; 
+        Unique<RendererAPI> m_RendererAPI; 
     };
     
     class SetViewPortCommand : public RenderCommand
@@ -131,7 +131,7 @@ namespace Nit
     {
     public:
         
-        SetUniformCommand(const std::shared_ptr<Shader>& shader, const char* uniformName)
+        SetUniformCommand(const Shared<Shader>& shader, const char* uniformName)
             : RenderCommand()
             , m_Shader(shader)
             , m_UniformName(uniformName)
@@ -143,7 +143,7 @@ namespace Nit
         }
 
     protected:
-        const std::shared_ptr<Shader> m_Shader;
+        const Shared<Shader> m_Shader;
         const char* m_UniformName;
     };
     
@@ -151,7 +151,7 @@ namespace Nit
     {
     public:
         
-        SetUniformMat4Command(const std::shared_ptr<Shader>& shader, const char* uniformName, const glm::mat4& mat)
+        SetUniformMat4Command(const Shared<Shader>& shader, const char* uniformName, const glm::mat4& mat)
             : SetUniformCommand(shader, uniformName)
             , m_Mat(mat)
         {}
@@ -172,7 +172,7 @@ namespace Nit
     {
     public:
         
-        SetUniformVec4Command(const std::shared_ptr<Shader>& shader, const char* uniformName, const glm::vec4& vec)
+        SetUniformVec4Command(const Shared<Shader>& shader, const char* uniformName, const glm::vec4& vec)
             : SetUniformCommand(shader, uniformName)
             , m_Vec4(vec)
         {}
@@ -193,7 +193,7 @@ namespace Nit
     {
     public:
         
-        SetUniformIntCommand(const std::shared_ptr<Shader>& shader, const char* uniformName, const int num)
+        SetUniformIntCommand(const Shared<Shader>& shader, const char* uniformName, const int num)
             : SetUniformCommand(shader, uniformName)
             , m_Num(num)
         {}
@@ -213,7 +213,7 @@ namespace Nit
     class BindTextureCommand : public RenderCommand
     {
     public:
-        BindTextureCommand(const std::shared_ptr<Texture>& texture, const uint32_t slot = 0)
+        BindTextureCommand(const Shared<Texture>& texture, const uint32_t slot = 0)
             : m_Texture(texture)
             , m_Slot(slot)
         {}
@@ -226,14 +226,14 @@ namespace Nit
         }
         
     private:
-        const std::shared_ptr<Texture> m_Texture;
+        const Shared<Texture> m_Texture;
         const uint32_t m_Slot;
     };
 
     class DrawElementsCommand : public RenderCommand
     {
     public:
-        DrawElementsCommand(const std::shared_ptr<VertexArray>& vertexArray, const uint32_t elementCount)
+        DrawElementsCommand(const Shared<VertexArray>& vertexArray, const uint32_t elementCount)
             : RenderCommand()
             , m_VertexArray(vertexArray)
             , m_ElementCount(elementCount)
@@ -247,7 +247,7 @@ namespace Nit
         }
 
     private:
-        std::shared_ptr<VertexArray> m_VertexArray;
+        Shared<VertexArray> m_VertexArray;
         const uint32_t m_ElementCount;
     };
 }
