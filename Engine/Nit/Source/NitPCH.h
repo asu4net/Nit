@@ -32,4 +32,5 @@
 #include "Core/Delegates/MulticastDelegate.h"
 #include "Core/Base.h"
 #include "Core/Singleton.h"
+#include "Core/Id.h"
 

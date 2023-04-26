@@ -2,7 +2,7 @@ project "glad"
     kind "StaticLib"
     language "C++"
     cppdialect "C++20"
-    staticruntime "on"
+    staticruntime "off"
     
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 

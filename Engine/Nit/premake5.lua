@@ -2,7 +2,7 @@ project "Nit"
     kind "StaticLib"
     language "C++"
     cppdialect "C++20"
-    staticruntime "on"
+    staticruntime "off"
     
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -26,18 +26,23 @@ project "Nit"
         "%{IncludeDirs.glad}",
         "%{IncludeDirs.glfw}",
         "%{IncludeDirs.glm}",
-        "%{IncludeDirs.stb}"
+        "%{IncludeDirs.stb}",
+        "%{IncludeDirs.yaml}",
+        "%{IncludeDirs.rttr}"
     }
 
     links
     {
         "opengl32.lib",
         "glad",
-        "glfw"
+        "glfw",
+        "yaml-cpp",
+        "rttr"
     }
 
     defines 
     {
+        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING"
     }
 
     filter "system:windows"
