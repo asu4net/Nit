@@ -14,6 +14,3 @@
 [submodule "ThirdParty/yaml-cpp"]
 	path = ThirdParty/yaml-cpp
 	url = https://github.com/asu4net/yaml-cpp.git
-[submodule "ThirdParty/rttr"]
-	path = ThirdParty/rttr
-	url = https://github.com/asu4net/rttr.git
