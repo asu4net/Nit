@@ -25,7 +25,8 @@ project "DemoSource"
     {
         "%{prj.location}/Source",
         "%{IncludeDirs.Nit}",
-        "%{IncludeDirs.glm}"
+        "%{IncludeDirs.glm}",
+        "%{IncludeDirs.rttr}"
     }
 
     links
@@ -35,6 +36,7 @@ project "DemoSource"
 
     defines 
     {
+        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING"
     }
 
     postbuildcommands

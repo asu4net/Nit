@@ -15,6 +15,9 @@ namespace Nit
         
     private:
         uint64_t m_Id;
+
+        RTTR_REGISTRATION_FRIEND
+        RTTR_ENABLE()
     };
 }
 

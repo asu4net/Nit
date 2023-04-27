@@ -27,7 +27,8 @@ project "Demo"
         "%{prj.location}/Source",
         "%{IncludeDirs.Nit}",
         "%{IncludeDirs.DemoSource}",
-        "%{IncludeDirs.glm}"
+        "%{IncludeDirs.glm}",
+        "%{IncludeDirs.rttr}"
     }
 
     links
@@ -37,6 +38,7 @@ project "Demo"
 
     defines 
     {
+        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING"
     }
 
     filter "system:windows"

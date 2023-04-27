@@ -1,6 +1,12 @@
-#include "NitPCH.h"
 #include "Id.h"
-#include <random>
+
+RTTR_REGISTRATION
+{
+    rttr::registration::class_<Nit::Id>("Id")
+        .constructor<>()
+        .constructor<uint64_t>()
+        .property("id", &Nit::Id::m_Id);
+}
 
 namespace Nit
 {

@@ -10,6 +10,7 @@
 #include <thread>
 #include <utility>
 #include <cmath>
+#include <random>
 
 #include <string>
 #include <sstream>
@@ -25,6 +26,10 @@
 #include <glm/common.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <rttr/registration_friend.h>
+#include <rttr/registration>
+#include <rttr/type>
 
 #include "Math/Math.h"
 

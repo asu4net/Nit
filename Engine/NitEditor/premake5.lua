@@ -27,7 +27,8 @@ project "NitEditor"
         "%{IncludeDirs.glfw}",
         "%{IncludeDirs.imgui}",
         "%{IncludeDirs.imguizmo}",
-        "%{IncludeDirs.glm}"
+        "%{IncludeDirs.glm}",
+        "%{IncludeDirs.rttr}"
     }
 
     libdirs
@@ -43,7 +44,8 @@ project "NitEditor"
 
     defines 
     {
-        "_CRT_SECURE_NO_WARNINGS"
+        "_CRT_SECURE_NO_WARNINGS",
+        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING"
     }
 
     filter "system:windows"

@@ -30,7 +30,8 @@ project "DemoEditor"
         "%{IncludeDirs.DemoSource}",
         "%{IncludeDirs.imgui}",
         "%{IncludeDirs.imguizmo}",
-        "%{IncludeDirs.glm}"
+        "%{IncludeDirs.glm}",
+        "%{IncludeDirs.rttr}"
     }
 
     links
@@ -41,6 +42,7 @@ project "DemoEditor"
 
     defines 
     {
+        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING"
     }
 
     filter "system:windows"
