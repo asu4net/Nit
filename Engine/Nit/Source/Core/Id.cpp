@@ -10,7 +10,7 @@ RTTR_REGISTRATION
 
 namespace Nit
 {
-    //Idk wtf is this, but it works
+    //Idk wtf is this, but it generates a random number.
     static std::random_device g_RandomDevice;
     static std::mt19937_64 g_RandomEngine(g_RandomDevice());
     static std::uniform_int_distribution<uint64_t> g_Distribution(g_RandomDevice());
