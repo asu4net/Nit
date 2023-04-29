@@ -5,7 +5,7 @@ RTTR_REGISTRATION
     rttr::registration::class_<Nit::Id>("Id")
         .constructor<>()
         .constructor<uint64_t>()
-        .property("id", &Nit::Id::m_Id);
+        .property("idHandler", &Nit::Id::m_IdHandler);
 }
 
 namespace Nit
@@ -16,22 +16,22 @@ namespace Nit
     static std::uniform_int_distribution<uint64_t> g_Distribution(g_RandomDevice());
     
     Id::Id()
-        : m_Id(g_Distribution(g_RandomEngine))
+        : m_IdHandler(g_Distribution(g_RandomEngine))
     {
     }
 
     Id::Id(const uint64_t id)
-        : m_Id(id)
+        : m_IdHandler(id)
     {
     }
 
     bool Id::operator==(const Id& other) const
     {
-        return m_Id == other.m_Id;
+        return m_IdHandler == other.m_IdHandler;
     }
 
     bool Id::operator!=(const Id& other) const
     {
-        return m_Id != other.m_Id;
+        return m_IdHandler != other.m_IdHandler;
     }
 }

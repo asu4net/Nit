@@ -18,10 +18,11 @@ namespace Nit
         Asset asset{"alex", "jaja", Id()};
         YAMLSerializer serializer;
         YAML::Emitter emitter;
+        
         serializer.SerializeObject(asset, "Mi asset", emitter);
-
-
+        
         m_Window->Initialize();
+        
         m_Renderer2D.Initialize(m_Window);
         m_LayerStack->Initialize();
         

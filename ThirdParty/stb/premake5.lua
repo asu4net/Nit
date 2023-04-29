@@ -16,7 +16,6 @@ project "stb"
 
     filter "system:windows"
         systemversion "latest"
-        staticruntime "on"
         
     filter "configurations:Debug"
         defines "NIT_DEBUG"

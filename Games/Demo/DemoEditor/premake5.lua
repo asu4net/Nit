@@ -9,8 +9,6 @@ project "DemoEditor"
     targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/Demo")
     objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/Demo")
 
-    debugdir = "%{wks.location}/Games/Demo/DemoSource"
-
     pchheader "DemoEditorPCH.h"
     pchsource "Source/DemoEditorPCH.cpp"
 
@@ -36,6 +34,7 @@ project "DemoEditor"
 
     links
     {
+        "Nit",
         "NitEditor",
         "DemoSource"
     }

@@ -6,14 +6,14 @@ namespace Nit
     {
     public:
         Id();
-        Id(uint64_t id);
+        Id(uint64_t idHandler);
 
-        explicit operator uint64_t() const { return m_Id; }
+        explicit operator uint64_t() const { return m_IdHandler; }
         bool operator ==(const Id& other) const;
         bool operator !=(const Id& other) const;
 
     private:
-        uint64_t m_Id;
+        uint64_t m_IdHandler;
 
         RTTR_REGISTRATION_FRIEND
         RTTR_ENABLE()
