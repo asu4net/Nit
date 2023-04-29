@@ -42,12 +42,14 @@ namespace Nit
 
     void Camera::CalculatePerspectiveProjection(glm::mat4& projectionMatrix)
     {
+        if (isnan(AspectRatio)) return;
         projectionMatrix = glm::perspective(glm::radians(Fov), AspectRatio,
             NearPlane, FarPlane);
     }
 
     void Camera::CalculateOrthographicProjection(glm::mat4& projectionMatrix)
     {
+        if (isnan(AspectRatio)) return;
         const float right = AspectRatio * Size; //update aspect ratio
         const float left = -right;
         projectionMatrix = glm::ortho(left, right, -Size, Size, NearPlane, FarPlane);
