@@ -1,11 +1,11 @@
-#include "YAMLSerializer.h"
+#include "Serializer.h"
 #include <yaml-cpp/yaml.h>
 
 //TODO: Enums
 //TODO: Maps
 //TODO: Arrays
 
-namespace Nit
+namespace Nit::Serialization
 {
     template<typename T>
     bool TrySerializeVariant(const rttr::variant& variant, const std::string& name, YAML::Emitter& out)
@@ -99,7 +99,7 @@ namespace Nit
         out << YAML::EndMap;
     }
 
-    void YAMLSerializer::SerializeObject(const rttr::instance& object, const std::string& name,
+    void SerializeObject(const rttr::instance& object, const std::string& name,
         std::string& result)
     {
         YAML::Emitter out;

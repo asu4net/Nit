@@ -1,6 +1,6 @@
 #include "Game.h"
 #include "Asset.h"
-#include "YAMLSerializer.h"
+#include "Serializer.h"
 #include "Rendering/Renderer2D.h"
 #include "Window/Window.h"
 
@@ -16,7 +16,7 @@ namespace Nit
     {
         Asset asset{"alex", "jaja", Id()};
         std::string result;
-        YAMLSerializer::SerializeObject(asset, "Mi asset", result);
+        Serialization::SerializeObject(asset, "Mi asset", result);
         std::cout << result << std::endl;
         
         m_Window->Initialize();

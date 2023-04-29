@@ -1,13 +1,9 @@
 #pragma once
 
-namespace Nit
+namespace Nit::Serialization
 {
-    class YAMLSerializer
-    {
-    public:
-        static void SerializeObject(
+    void SerializeObject(
             const rttr::instance& object,
             const std::string& name,
             std::string& result);
-    };
 }
