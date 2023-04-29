@@ -44,6 +44,45 @@ namespace Math
     constexpr vec3 BackVector = { 0, 0, -1 };   
     constexpr vec3 ForwardVector = { 0, 0, 1 };
 
+    namespace InternalVec2Registration
+    {
+        RTTR_REGISTRATION
+        {
+            rttr::registration::class_<vec2>("vec2")
+                .constructor<>()
+                .constructor<float, float>()
+                .property("x", &vec3::x)
+                .property("y", &vec3::y);
+        }
+    }
+
+    namespace InternalVec3Registration
+    {
+        RTTR_REGISTRATION
+        {
+            rttr::registration::class_<vec3>("vec3")
+                .constructor<>()
+                .constructor<float, float, float>()
+                .property("x", &vec3::x)
+                .property("y", &vec3::y)
+                .property("z", &vec3::z);
+        }
+    }
+
+    namespace InternalVec4Registration
+    {
+        RTTR_REGISTRATION
+        {
+            rttr::registration::class_<vec4>("vec4")
+                .constructor<>()
+                .constructor<float, float, float, float>()
+                .property("x", &vec4::x)
+                .property("y", &vec4::y)
+                .property("z", &vec4::z)
+                .property("w", &vec4::w);
+        }
+    }
+    
     /////////////////////////
     /// QUATERNIONS
     ////////////////////////

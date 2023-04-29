@@ -16,6 +16,9 @@ namespace Nit
     private:
         std::string m_Name;
         std::string m_Path;
+        glm::vec3 m_TestVec = {3, 2, 1};
+        glm::vec2 m_TestVec2 = {3, 2};
+        glm::vec4 m_TestVec4 = {3, 2, 1, 0};
         Id m_Id;
         
         RTTR_REGISTRATION_FRIEND
