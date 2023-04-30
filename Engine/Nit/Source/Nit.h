@@ -4,8 +4,8 @@
 #include "Core/Game.h"
 #include "Core/GameLayer.h"
 #include "Core/LayerStack.h"
-#include "Core/AssetManager.h"
-#include "Core/Asset.h"
+#include "Core/Asset/AssetManager.h"
+#include "Core/Asset/AssetLink.h"
 #include "Core/Serialization.h"
 
 // Rendering

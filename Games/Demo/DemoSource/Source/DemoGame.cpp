@@ -8,6 +8,9 @@ void DemoGame::OnInitialize()
 {
     Camera = std::make_shared<LogicCamera>(Game::GetInstance().GetWindow());
     Camera->AddController<ViewportCameraController>();
+
+    AssetManager& assetManager = AssetManager::GetInstance();
+    AssetLink asset = assetManager.CreateAsset<Asset>("Name", "Path");
     
     GridTexture = Texture2D::Create("Content/Textures/Checkerboard.png", {MagFilter::Nearest});
     CatTexture = Texture2D::Create("Content/Textures/bola.jpg");

@@ -1,4 +1,6 @@
 #include "Game.h"
+
+#include "Asset/AssetManager.h"
 #include "Rendering/Renderer2D.h"
 #include "Window/Window.h"
 
@@ -7,6 +9,7 @@ namespace Nit
     Game::Game()
         : m_Window(Window::Create())
         , m_Renderer2D(Renderer2D::CreateSingleton())
+        , m_AssetManager(AssetManager::CreateSingleton())
         , m_LayerStack(std::make_shared<LayerStack>())
     {}
     
@@ -15,6 +18,7 @@ namespace Nit
         m_Window->Initialize();
         
         m_Renderer2D.Initialize(m_Window);
+        m_AssetManager.Initialize();
         m_LayerStack->Initialize();
         
        while (m_Window->IsOpened())
@@ -25,12 +29,14 @@ namespace Nit
         }
 
         m_LayerStack->Finalize();
+        m_AssetManager.Finalize();
         m_Renderer2D.Finalize();
         m_Window->Finalize();
     }
 
     Game::~Game()
     {
+        AssetManager::Destroy();
         Renderer2D::Destroy();
     }
 }
