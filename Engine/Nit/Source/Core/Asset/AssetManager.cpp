@@ -20,13 +20,6 @@ namespace Nit
             .property("Name", &AssetInfo::Name)
             .property("Path", &AssetInfo::Path);
     }
-    
-    Shared<Asset> AssetManager::GetFromId(const Id& id)
-    {
-        if (!m_IdAssetMap.contains(id))
-            return nullptr;
-        return m_IdAssetMap[id];
-    }
 
     void AssetManager::Initialize()
     {

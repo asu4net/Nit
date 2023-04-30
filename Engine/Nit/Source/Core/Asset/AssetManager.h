@@ -7,8 +7,6 @@ namespace Nit
     class AssetManager : public Singleton<AssetManager>
     {
     public:
-        Shared<Asset> GetFromId(const Id& id);
-        
         template<typename T>
         AssetLink<T> CreateAsset(const std::string& name, const std::string& path)
         {
@@ -18,22 +16,23 @@ namespace Nit
         template<typename T>
         AssetLink<T> CreateAssetWithId(const std::string& name, const std::string& path, const Id& id)
         {
+            AssetLink<T> link;
             const rttr::type t = rttr::type::get<T>();
 
             if (!t.is_valid() || !t.is_derived_from<Asset>())
-                return {};
+                return link;
             
             if (m_IdAssetMap.contains(id))
             {
                 const Shared<Asset> asset = m_IdAssetMap[id];
-                return { std::move(asset->GetName()), std::move(id) };
+                link.SetTarget(asset);
+                return link;
             }
 
-            Shared<T> asset = CreateShared<T>(name, path);
+            Shared<T> asset = CreateShared<T>(name, path, id);
             asset->Load();
             m_IdAssetMap[id] = asset;
-            AssetLink<T> link(name, id);
-            link.Initialize(asset);
+            link.SetTarget(asset);
             return link;
         }
         

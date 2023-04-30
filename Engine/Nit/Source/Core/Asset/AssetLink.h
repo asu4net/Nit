@@ -9,45 +9,25 @@ namespace Nit
     class AssetLink
     {
     public:
-        AssetLink()
-            : m_Name("Uninitialized")
-            , m_Id(0)
-            , m_bInitialized(false)
-        {
-        }
-
-        AssetLink(const std::string& name, const Id& id)
-            : m_Name(name)
-            , m_Id(id)
-            , m_bInitialized(false)
-        {
-        }
-        
         const std::string& GetName() const { return m_Name; }
         Id GetId() const { return m_Id; }
-        bool IsInitialized() const { return m_bInitialized; }
-        bool IsValid() const { return m_AssetRef.expired(); }
+        bool IsValid() const { return m_TargetAsset.expired(); }
 
-        void Initialize(const Weak<T>& asset)
+        Shared<T> GetTarget()
         {
-            if (!IsValid())
-                return;
-            const rttr::type t = rttr::type::get<T>();
-            if (!t.is_valid() || !t.is_derived_from<Asset>())
-                return;
-            m_AssetRef = asset;
-            m_bInitialized = true;
+            return m_TargetAsset.lock();
         }
         
-        Shared<T> Lock()
+        void SetTarget(const Weak<T>& asset)
         {
-            return m_AssetRef.lock();
+            m_TargetAsset = asset;
+            m_Name = GetTarget()->GetName();
+            m_Id = GetTarget()->GetId();
         }
         
     private:
-        std::string m_Name;
-        Id m_Id;
-        Weak<T> m_AssetRef;
-        bool m_bInitialized;
+        std::string m_Name{"Uninitialized"};
+        Id m_Id{0};
+        Weak<T> m_TargetAsset;
     };
 }
