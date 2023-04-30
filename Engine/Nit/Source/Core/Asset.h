@@ -6,7 +6,6 @@ namespace Nit
     {
     public:
         Asset();
-        Asset(Asset& other) = default;
         Asset(const std::string& name, const std::string& path, Id id);
 
         const std::string& GetName() const { return m_Name; }
@@ -14,8 +13,8 @@ namespace Nit
         Id GetId() { return m_Id; }
         
     private:
-        std::string m_Name;
-        std::string m_Path;
+        std::string m_Name = "None";
+        std::string m_Path = "None";
         glm::vec3 m_TestVec = {3, 2, 1};
         glm::vec2 m_TestVec2 = {3, 2};
         glm::vec4 m_TestVec4 = {3, 2, 1, 0};

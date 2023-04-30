@@ -27,8 +27,8 @@ project "Nit"
         "%{IncludeDirs.glfw}",
         "%{IncludeDirs.glm}",
         "%{IncludeDirs.stb}",
-        "%{IncludeDirs.yaml}",
-        "%{IncludeDirs.rttr}"
+        "%{IncludeDirs.rttr}",
+        "%{IncludeDirs.rapidjson}"
     }
 
     links
@@ -36,7 +36,6 @@ project "Nit"
         "opengl32.lib",
         "glad",
         "glfw",
-        "yaml-cpp",
         "rttr"
     }
 

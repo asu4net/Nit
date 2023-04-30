@@ -12,12 +12,30 @@ namespace Nit
         , m_LayerStack(std::make_shared<LayerStack>())
     {}
 
+    class Dummy
+    {
+    public:
+        Dummy() = default;
+        std::string variable;
+        RTTR_ENABLE();
+    };
+    
+    RTTR_REGISTRATION
+    {
+        rttr::registration::class_<Dummy>("Dummy")
+            .constructor<>()
+            .constructor<Dummy&>()
+            .property("variable", &Dummy::variable);
+    }
+    
     void Game::Initialize()
     {
         Asset asset{"alex", "jaja", Id()};
-        std::string result;
-        Serialization::SerializeObject(asset, "Mi asset", result);
+        const std::string result = Serialization::ToJson(asset);
         std::cout << result << std::endl;
+        
+        Asset copyAsset;
+        Serialization::FromJson(result, copyAsset);
         
         m_Window->Initialize();
         

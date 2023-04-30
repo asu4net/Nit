@@ -2,8 +2,6 @@
 
 namespace Nit::Serialization
 {
-    void SerializeObject(
-            const rttr::instance& object,
-            const std::string& name,
-            std::string& result);
+    bool FromJson(const std::string& json, const rttr::instance& object);
+    std::string ToJson(const rttr::instance& object);
 }
