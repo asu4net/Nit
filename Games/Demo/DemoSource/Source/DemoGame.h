@@ -8,11 +8,11 @@ class DemoGame : public Nit::GameLayer
 {
 public:
     Nit::Shared<LogicCamera> Camera;
-
-    Nit::Shared<Nit::Texture> GridTexture;
-    Nit::Shared<Nit::Texture> CatTexture;
-    Nit::Shared<Nit::Texture> CppTexture;
-
+    
+    Nit::AssetLink<Nit::Texture2D> GridTexture;
+    Nit::AssetLink<Nit::Texture2D> CatTexture;
+    Nit::AssetLink<Nit::Texture2D> CppTexture;
+    
     glm::vec3 BallPosition = {.5f, .3f, 0.f};
     Nit::Quad Grid;
     

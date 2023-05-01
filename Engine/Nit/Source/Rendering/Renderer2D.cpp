@@ -8,6 +8,7 @@
 #include "Data/Texture2D.h"
 #include "Data/VertexBuffer.h"
 #include "RawShaderStrings.h"
+#include "Core/Asset/AssetManager.h"
 
 namespace Nit
 {
@@ -36,7 +37,7 @@ namespace Nit
         uint32_t QuadCount = 0;
 
         std::array<Shared<Texture>, MaxTextureSlots> Textures;
-        Shared<Texture> WhiteTexture;
+        Shared<Texture2D> WhiteTexture;
         uint32_t LastTextureSlot = 1;
         uint32_t IndexCount = 0;
     };
@@ -110,6 +111,7 @@ namespace Nit
     
     void Renderer2D::Initialize(const Shared<Window>& window, const Renderer2DSettings& rendererSettings)
     {
+        AssetManager& assetManager = AssetManager::GetInstance();
         m_CommandQueue = std::make_unique<RenderCommandQueue>();
         SetBlendingEnabled(true);
         SetBlendingMode(BlendingMode::Alpha);
@@ -117,9 +119,11 @@ namespace Nit
         
         g_QuadRenderData.VertexData = new QuadVertex[QuadRenderData::MaxVertices];
         g_QuadRenderData.LastVertex = g_QuadRenderData.VertexData;
-        g_QuadRenderData.WhiteTexture = Texture2D::Create(1, 1);
+        Texture2DSettings settings { false, 1, 1 };
+        auto whiteTexture = assetManager.CreateAsset<Texture2D>("WhiteTexture", "", settings);
+        g_QuadRenderData.WhiteTexture = whiteTexture.Lock();
         constexpr uint32_t whiteTextureData = 0xffffffff;
-        std::static_pointer_cast<Texture2D>(g_QuadRenderData.WhiteTexture)->SetData(&whiteTextureData, sizeof(uint32_t));
+        g_QuadRenderData.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
         g_QuadRenderData.Textures[0] = g_QuadRenderData.WhiteTexture;
 
         g_QuadRenderData.VertexArray = VertexArray::Create();

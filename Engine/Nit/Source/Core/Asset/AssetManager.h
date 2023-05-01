@@ -7,29 +7,29 @@ namespace Nit
     class AssetManager : public Singleton<AssetManager>
     {
     public:
-        template<typename T>
-        AssetLink<T> CreateAsset(const std::string& name, const std::string& path)
+        template<typename T, typename ...TArgs>
+        AssetLink<T> CreateAsset(const std::string& name, const std::string& path, TArgs&& ...args)
         {
-            return CreateAssetWithId<T>(name, path, Id());
+            return CreateAssetWithId<T>(name, path, Id(), std::forward<TArgs>(args)...);
         }
         
-        template<typename T>
-        AssetLink<T> CreateAssetWithId(const std::string& name, const std::string& path, const Id& id)
+        template<typename T, typename ...TArgs>
+        AssetLink<T> CreateAssetWithId(const std::string& name, const std::string& path, const Id& id, TArgs&& ...args)
         {
             AssetLink<T> link;
             const rttr::type t = rttr::type::get<T>();
-
+            
             if (!t.is_valid() || !t.is_derived_from<Asset>())
                 return link;
             
             if (m_IdAssetMap.contains(id))
             {
-                const Shared<Asset> asset = m_IdAssetMap[id];
+                const Shared<T> asset = std::static_pointer_cast<T>(m_IdAssetMap[id]);
                 link.SetTarget(asset);
                 return link;
             }
 
-            Shared<T> asset = CreateShared<T>(name, path, id);
+            Shared<T> asset = CreateShared<T>(name, path, id, std::forward<TArgs>(args)...);
             asset->Load();
             m_IdAssetMap[id] = asset;
             link.SetTarget(asset);

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Texture.h"
+#include "Core/Asset/Asset.h"
 
 namespace Nit
 {
@@ -12,35 +13,37 @@ namespace Nit
     
     struct Texture2DSettings
     {
-        MagFilter MagFilter = MagFilter::Linear;
-        MinFilter MinFilter = MinFilter::Linear;
-        WrapMode WrapModeU = WrapMode::Repeat;
-        WrapMode WrapModeV = WrapMode::Repeat;
+        bool CreateFromFile{true};
+        uint32_t Width{0};
+        uint32_t Height{0};
+        MagFilter MagFilter{MagFilter::Linear};
+        MinFilter MinFilter{MinFilter::Linear};
+        WrapMode WrapModeU{WrapMode::Repeat};
+        WrapMode WrapModeV{WrapMode::Repeat};
     };
     
-    class Texture2D : public Texture
+    class Texture2D : public Texture, public Asset
     {
     public:
-        static Shared<Texture2D> Create(const std::string& filePath, const Texture2DSettings& settings = {});
-        static Shared<Texture2D> Create(const uint32_t width, const uint32_t height, const Texture2DSettings& settings = {});
-        Texture2D(const std::string& filePath, const Texture2DSettings& settings = {});
-        Texture2D(const uint32_t width, const uint32_t height, const Texture2DSettings& settings = {});
-        ~Texture2D();
-
-        void SetData(const void* data, uint32_t size);
+        Texture2D(const std::string& name, const std::string& path, const Id& id, const Texture2DSettings& settings ={});
         
-        uint32_t GetWidth() const override { return m_Width; }
-        uint32_t GetHeight() const override { return m_Height; }
+        void SetData(const void* data, uint32_t size);
+
+        bool Load() override;
+        bool Unload() override;
+        
+        uint32_t GetWidth() const override { return m_Settings.Width; }
+        uint32_t GetHeight() const override { return m_Settings.Height; }
         uint32_t GetTextureID() const override { return m_TextureID; }
         
         void Bind(uint32_t slot = 0) const override;
 
     private:
-        std::string m_FilePath;
-        uint32_t m_Width;
-        uint32_t m_Height;
-        uint32_t m_TextureID;
-        InternalFormat m_InternalFormat;
-        DataFormat m_DataFormat;
+        uint32_t m_TextureID{0};
+        InternalFormat m_InternalFormat{InternalFormat::None};
+        DataFormat m_DataFormat{DataFormat::None};
+        Texture2DSettings m_Settings{};
+
+        RTTR_ENABLE(Asset)
     };
 }

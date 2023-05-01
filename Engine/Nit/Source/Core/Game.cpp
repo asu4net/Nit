@@ -12,16 +12,15 @@ namespace Nit
         , m_AssetManager(AssetManager::CreateSingleton())
         , m_LayerStack(std::make_shared<LayerStack>())
     {}
-    
+
     void Game::Initialize()
     {
         m_Window->Initialize();
-        
         m_Renderer2D.Initialize(m_Window);
         m_AssetManager.Initialize();
         m_LayerStack->Initialize();
-        
-       while (m_Window->IsOpened())
+
+        while (m_Window->IsOpened())
         {
             m_Renderer2D.ClearScreen(m_Window->GetBackgroundColor());
             m_LayerStack->Update(m_Time.CalculateTimeStep());

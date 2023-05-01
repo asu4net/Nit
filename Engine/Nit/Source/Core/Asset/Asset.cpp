@@ -17,8 +17,8 @@ namespace Nit
 {
     Asset::Asset(const std::string& name, const std::string& path, const Id& id)
         : m_Name(name)
-        , m_Path(path)
-        , m_AbsolutePath(CurrentDirectory() + "\\" + path)
+        , m_Path(path.empty() ? "None" : path)
+        , m_AbsolutePath(path.empty() ? "None" : CurrentDirectory() + "\\" + path)
         , m_Id(id)
     {
     }

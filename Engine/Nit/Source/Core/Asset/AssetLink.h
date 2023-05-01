@@ -13,7 +13,7 @@ namespace Nit
         Id GetId() const { return m_Id; }
         bool IsValid() const { return m_TargetAsset.expired(); }
 
-        Shared<T> GetTarget()
+        Shared<T> Lock()
         {
             return m_TargetAsset.lock();
         }
@@ -21,8 +21,8 @@ namespace Nit
         void SetTarget(const Weak<T>& asset)
         {
             m_TargetAsset = asset;
-            m_Name = GetTarget()->GetName();
-            m_Id = GetTarget()->GetId();
+            m_Name = Lock()->GetName();
+            m_Id = Lock()->GetId();
         }
         
     private:
