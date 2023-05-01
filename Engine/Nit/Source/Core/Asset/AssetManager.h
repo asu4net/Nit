@@ -10,13 +10,7 @@ namespace Nit
     {
     public:
         template<typename T>
-        AssetLink<T> CreateAsset(const std::string& name, const std::string& path)
-        {
-            return CreateAssetWithId<T>(name, path, Id());
-        }
-        
-        template<typename T>
-        AssetLink<T> CreateAssetWithId(const std::string& name, const std::string& path, const Id& id)
+        AssetLink<T> CreateAsset(const std::string& name, const std::string& path, const Id& id = Id())
         {
             AssetLink<T> link;
             const rttr::type t = rttr::type::get<T>();
