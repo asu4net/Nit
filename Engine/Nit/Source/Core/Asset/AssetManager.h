@@ -28,8 +28,13 @@ namespace Nit
             Shared<T> asset = CreateShared<T>(name, path, id);
             if (!asset->Load())
                 return {};
+            
             m_IdAssetMap[id] = asset;
             link.SetTarget(asset);
+
+            if (asset->GetPath() != "None")
+                SerializeAsset(m_IdAssetMap[id]);
+            
             return link;
         }
         
@@ -38,10 +43,12 @@ namespace Nit
     
     private:
         std::unordered_map<Id, Shared<Asset>> m_IdAssetMap;
+        //TODO: Add name || path /id map
         
         AssetManager() = default;
-        
-        Id SaveAsset(const std::string& path, const std::string& type, const std::string& name);
+
+        void SerializeAsset(const Shared<Asset>& asset);
+        void DeserializeAsset(const std::string& jsonAssetInfo);
         
         friend class Singleton<AssetManager>;
     };

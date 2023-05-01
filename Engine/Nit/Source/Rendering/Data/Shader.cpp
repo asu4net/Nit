@@ -3,6 +3,13 @@
 
 namespace Nit
 {
+    RTTR_REGISTRATION
+    {
+        using namespace rttr;
+        registration::class_<Shader>("Shader")
+            .constructor<const std::string&, const std::string&, Id&>();
+    }
+    
     Shader::Shader(const std::string& name, const std::string& path, const Id& id)
         : Asset(name, path, id)
     {
