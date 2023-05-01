@@ -6,14 +6,15 @@ namespace Nit
     class Shader : public Asset
     {
     public:
-        Shader(const std::string& name, const std::string& path, const Id& id, bool bReadFromFile = true);
-
+        Shader(const std::string& name, const std::string& path, const Id& id);
+        
         bool Load() override;
         bool Unload() override;
         
         bool ReadFromFile(const std::string& fileLocation, std::string& vertexSource, std::string& fragmentSource);
         bool Initialized() const { return m_bInitialized; }
 
+        void Compile();
         void Compile(const std::string& vertexSource, const std::string& fragmentSource);
         
         void SetUniformMat4(const char* uniformName, const glm::mat4& mat) const;
@@ -27,7 +28,8 @@ namespace Nit
     private:
         uint32_t m_ShaderId{0};
         bool m_bInitialized{false};
-        bool m_bReadFromFile{true};
+        std::string m_VertexSource;
+        std::string m_FragmentSource;
         
         RTTR_ENABLE(Asset)
     };

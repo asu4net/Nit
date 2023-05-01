@@ -3,30 +3,29 @@
 
 namespace Nit
 {
-    Shader::Shader(const std::string& name, const std::string& path, const Id& id, bool bReadFromFile)
+    Shader::Shader(const std::string& name, const std::string& path, const Id& id)
         : Asset(name, path, id)
     {
     }
 
     bool Shader::Load()
     {
-        std::string vertexSource, fragmentSource;
-        if (m_bReadFromFile)
-        {
-            if (ReadFromFile(GetAbsolutePath(), vertexSource, fragmentSource))
-            {
-                Compile(vertexSource, fragmentSource);
-                return true;
-            }
-            return false;
-        }
-        return true;
+        const std::string absolutePath = GetAbsolutePath();
+        if (absolutePath == "None")
+            return true;
+        
+        return ReadFromFile(absolutePath, m_VertexSource, m_FragmentSource);
     }
 
     bool Shader::Unload()
     {
         glDeleteProgram(m_ShaderId);
         return true;
+    }
+
+    void Shader::Compile()
+    {
+        Compile(m_VertexSource, m_FragmentSource);
     }
 
     void Shader::Compile(const std::string& vertexSource, const std::string& fragmentSource)

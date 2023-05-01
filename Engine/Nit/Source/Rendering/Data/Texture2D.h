@@ -25,25 +25,28 @@ namespace Nit
     class Texture2D : public Texture, public Asset
     {
     public:
-        Texture2D(const std::string& name, const std::string& path, const Id& id, const Texture2DSettings& settings ={});
-        
-        void SetData(const void* data, uint32_t size);
+        Texture2D(const std::string& name, const std::string& path, const Id& id);
 
         bool Load() override;
+        void UploadToGPU(const Texture2DSettings& settings ={});
         bool Unload() override;
         
-        uint32_t GetWidth() const override { return m_Settings.Width; }
-        uint32_t GetHeight() const override { return m_Settings.Height; }
+        void SetData(const void* data, uint32_t size);
+        
+        uint32_t GetWidth() const override { return m_Width; }
+        uint32_t GetHeight() const override { return m_Height; }
         uint32_t GetTextureID() const override { return m_TextureID; }
         
         void Bind(uint32_t slot = 0) const override;
 
     private:
         uint32_t m_TextureID{0};
+        uint32_t m_Width{0};
+        uint32_t m_Height{0};
+        uint32_t m_Channels{0};
         InternalFormat m_InternalFormat{InternalFormat::None};
         DataFormat m_DataFormat{DataFormat::None};
-        Texture2DSettings m_Settings{};
-
+        unsigned char* m_Data{nullptr};
         RTTR_ENABLE(Asset)
     };
 }

@@ -11,13 +11,17 @@ void DemoGame::OnInitialize()
 
     AssetManager& assetManager = AssetManager::GetInstance();
 
+    GridTexture = assetManager.CreateAsset<Texture2D>("Grid", "Content/Textures/Checkerboard.png");
     Texture2DSettings gridSettings;
     gridSettings.MagFilter = MagFilter::Nearest;
-    GridTexture = assetManager.CreateAsset<Texture2D>("Grid", "Content/Textures/Checkerboard.png",
-        gridSettings);
+    GridTexture.Lock()->UploadToGPU(gridSettings);
+    
     CatTexture = assetManager.CreateAsset<Texture2D>("Bola", "Content/Textures/bola.jpg");
+    CatTexture.Lock()->UploadToGPU();
+    
     CppTexture = assetManager.CreateAsset<Texture2D>("Cpp", "Content/Textures/cpp.png");
-
+    CppTexture.Lock()->UploadToGPU();
+    
     Grid.Texture = GridTexture.Lock();
     Grid.Size *= 30;
     Grid.UVScale *= 30;

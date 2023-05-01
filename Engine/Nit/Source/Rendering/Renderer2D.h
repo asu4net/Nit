@@ -21,7 +21,6 @@ namespace Nit
 
     struct Renderer2DSettings
     {
-        bool bReadShadersFromFiles = true;
         std::string FlatColorShaderLocation = "Content\\Shaders\\FlatColor.glsl";
         std::string TextureShaderLocation = "Content\\Shaders\\Texture.glsl";
     };

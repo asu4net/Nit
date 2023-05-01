@@ -79,9 +79,8 @@ namespace Nit
         return DataFormat::None;
     }
     
-    Texture2D::Texture2D(const std::string& name, const std::string& path, const Id& id, const Texture2DSettings& settings)
+    Texture2D::Texture2D(const std::string& name, const std::string& path, const Id& id)
           : Nit::Asset(name, path, id)
-          , m_Settings(settings)
     {
     }
     
@@ -96,21 +95,35 @@ namespace Nit
 
     bool Texture2D::Load()
     {
-        if (m_Settings.CreateFromFile)
-        {
-            int width, height, channels;
-            stbi_set_flip_vertically_on_load(1);
-            stbi_uc* data = stbi_load(GetAbsolutePath().c_str(), &width, &height, &channels, 0);
-            m_Settings.Width = width;
-            m_Settings.Height = height;
+        const std::string absolutePath = GetAbsolutePath();
+        if (absolutePath == "None") return true;
 
+        int width, height, channels;
+        stbi_set_flip_vertically_on_load(1);
+        m_Data = stbi_load(GetAbsolutePath().c_str(), &width, &height, &channels, 0);
+
+        if (!m_Data)
+            return false;
+
+        m_Width = width;
+        m_Height = height;
+        m_Channels = channels;
+        
+        return true;
+    }
+
+    void Texture2D::UploadToGPU(const Texture2DSettings& settings)
+    {
+        Unload();
+        if (settings.CreateFromFile)
+        {
             GLenum internalFormat = 0, dataFormat = 0;
-            if (channels == 4)
+            if (m_Channels == 4)
             {
                 internalFormat = GL_RGBA8;
                 dataFormat = GL_RGBA;
             }
-            else if (channels == 3)
+            else if (m_Channels == 3)
             {
                 internalFormat = GL_RGB8;
                 dataFormat = GL_RGB;
@@ -121,34 +134,36 @@ namespace Nit
 
             glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
             glTextureStorage2D(m_TextureID, 1, internalFormat, GetWidth(), GetHeight());
+            
+            SetMinFilter(m_TextureID, settings.MinFilter);
+            SetMagFilter(m_TextureID, settings.MagFilter);
 
-            SetMinFilter(m_TextureID, m_Settings.MinFilter);
-            SetMagFilter(m_TextureID, m_Settings.MagFilter);
-
-            SetWrapMode(m_TextureID, TextureCoordinate::U, m_Settings.WrapModeU);
-            SetWrapMode(m_TextureID, TextureCoordinate::V, m_Settings.WrapModeV);
+            SetWrapMode(m_TextureID, TextureCoordinate::U, settings.WrapModeU);
+            SetWrapMode(m_TextureID, TextureCoordinate::V, settings.WrapModeV);
 
             glTextureSubImage2D(m_TextureID, 0, 0, 0, GetWidth(), GetHeight(),
-                dataFormat, GL_UNSIGNED_BYTE, data);
-            stbi_image_free(data);
-            return true;
+                dataFormat, GL_UNSIGNED_BYTE, m_Data);
+            stbi_image_free(m_Data);
+            return;
         }
 
+        m_Width = settings.Width;
+        m_Height = settings.Height;
+        
         constexpr GLenum internalFormat = GL_RGB8;
         constexpr GLenum dataFormat = GL_RGBA;
         
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
         glTextureStorage2D(m_TextureID, 1, internalFormat, GetWidth(), GetHeight());
         
-        SetMinFilter(m_TextureID, m_Settings.MinFilter);
-        SetMagFilter(m_TextureID, m_Settings.MagFilter);
+        SetMinFilter(m_TextureID, settings.MinFilter);
+        SetMagFilter(m_TextureID, settings.MagFilter);
         
-        SetWrapMode(m_TextureID, TextureCoordinate::U, m_Settings.WrapModeU);
-        SetWrapMode(m_TextureID, TextureCoordinate::V, m_Settings.WrapModeV);
+        SetWrapMode(m_TextureID, TextureCoordinate::U, settings.WrapModeU);
+        SetWrapMode(m_TextureID, TextureCoordinate::V, settings.WrapModeV);
 
         m_InternalFormat = GetInternalFormatFromOpenGl(internalFormat);
         m_DataFormat = GetDataFormatFromOpenGl(dataFormat);
-        return true;
     }
 
     bool Texture2D::Unload()

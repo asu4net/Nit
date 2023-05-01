@@ -9,14 +9,14 @@ namespace Nit
     class AssetManager : public Singleton<AssetManager>
     {
     public:
-        template<typename T, typename ...TArgs>
-        AssetLink<T> CreateAsset(const std::string& name, const std::string& path, TArgs&& ...args)
+        template<typename T>
+        AssetLink<T> CreateAsset(const std::string& name, const std::string& path)
         {
-            return CreateAssetWithId<T>(name, path, Id(), std::forward<TArgs>(args)...);
+            return CreateAssetWithId<T>(name, path, Id());
         }
         
-        template<typename T, typename ...TArgs>
-        AssetLink<T> CreateAssetWithId(const std::string& name, const std::string& path, const Id& id, TArgs&& ...args)
+        template<typename T>
+        AssetLink<T> CreateAssetWithId(const std::string& name, const std::string& path, const Id& id)
         {
             AssetLink<T> link;
             const rttr::type t = rttr::type::get<T>();
@@ -31,7 +31,7 @@ namespace Nit
                 return link;
             }
 
-            Shared<T> asset = CreateShared<T>(name, path, id, std::forward<TArgs>(args)...);
+            Shared<T> asset = CreateShared<T>(name, path, id);
             if (!asset->Load())
                 return {};
             m_IdAssetMap[id] = asset;
