@@ -29,7 +29,7 @@ namespace Nit
     {
         for (auto[id, asset] : m_IdAssetMap)
         {
-            asset->Unload();
+            assert(asset->Unload());
         }
     }
 

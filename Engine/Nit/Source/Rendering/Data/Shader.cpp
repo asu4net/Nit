@@ -3,29 +3,30 @@
 
 namespace Nit
 {
-    Shared<Shader> Shader::Create(const std::string& fileLocation)
+    Shader::Shader(const std::string& name, const std::string& path, const Id& id, bool bReadFromFile)
+        : Asset(name, path, id)
     {
-        return std::make_shared<Shader>(fileLocation);
     }
 
-    Shared<Shader> Shader::Create()
-    {
-        return std::make_shared<Shader>();
-    }
-
-    Shader::Shader(const std::string& fileLocation)
-        : m_ShaderId(0)
-        , m_bInitialized(false)
+    bool Shader::Load()
     {
         std::string vertexSource, fragmentSource;
-        if (ReadFromFile(fileLocation, vertexSource, fragmentSource))
-            Compile(vertexSource, fragmentSource);
+        if (m_bReadFromFile)
+        {
+            if (ReadFromFile(GetAbsolutePath(), vertexSource, fragmentSource))
+            {
+                Compile(vertexSource, fragmentSource);
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 
-    Shader::Shader()
-        : m_ShaderId(0)
-        , m_bInitialized(false)
+    bool Shader::Unload()
     {
+        glDeleteProgram(m_ShaderId);
+        return true;
     }
 
     void Shader::Compile(const std::string& vertexSource, const std::string& fragmentSource)
@@ -131,21 +132,14 @@ namespace Nit
         m_bInitialized = true;
     }
 
-    Shader::~Shader()
-    {
-        glDeleteProgram(m_ShaderId);
-    }
-    
     bool Shader::ReadFromFile(const std::string& fileLocation, std::string& vertexSource, std::string& fragmentSource)
     {
-        const std::string dir = CurrentDirectory() + "/" + fileLocation;
-        
         static std::string content;
-        std::ifstream fileStream(dir, std::ios::in);
+        std::ifstream fileStream(fileLocation, std::ios::in);
 
         if (!fileStream.is_open())
         {
-            printf("Failed to read %s! File doesn't exist.\n", dir.c_str());
+            printf("Failed to read %s! File doesn't exist.\n", fileLocation.c_str());
             return false;
         }
         

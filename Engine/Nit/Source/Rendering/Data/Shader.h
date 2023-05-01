@@ -1,17 +1,16 @@
 ﻿#pragma once
+#include "Core/Asset/Asset.h"
 
 namespace Nit
 {
-    class Shader
+    class Shader : public Asset
     {
     public:
-        static Shared<Shader> Create(const std::string& fileLocation);
-        static Shared<Shader> Create();
-        
-        Shader(const std::string& fileLocation);
-        Shader();
-        ~Shader();
+        Shader(const std::string& name, const std::string& path, const Id& id, bool bReadFromFile = true);
 
+        bool Load() override;
+        bool Unload() override;
+        
         bool ReadFromFile(const std::string& fileLocation, std::string& vertexSource, std::string& fragmentSource);
         bool Initialized() const { return m_bInitialized; }
 
@@ -26,7 +25,10 @@ namespace Nit
         void Unbind() const;
         
     private:
-        uint32_t m_ShaderId;
-        bool m_bInitialized;
+        uint32_t m_ShaderId{0};
+        bool m_bInitialized{false};
+        bool m_bReadFromFile{true};
+        
+        RTTR_ENABLE(Asset)
     };
 }

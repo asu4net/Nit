@@ -11,7 +11,7 @@ namespace Nit
     public:
         const std::string& GetName() const { return m_Name; }
         Id GetId() const { return m_Id; }
-        bool IsValid() const { return m_TargetAsset.expired(); }
+        bool IsValid() const { return !m_TargetAsset.expired(); }
 
         Shared<T> Lock()
         {

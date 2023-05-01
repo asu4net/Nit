@@ -81,32 +81,68 @@ namespace Nit
             glm::vec2{(x * subTexWidth) / atlasWidth, ((y + 1) * subTexHeight) / atlasHeight },
         };
     }
-
+    
     void Renderer2D::CreateShaders(const Renderer2DSettings& rendererSettings)
     {
+        AssetManager& assetManager = AssetManager::GetInstance();
+        
+        AssetLink<Shader> flatColorShaderLink;
+        AssetLink<Shader> textureShaderLink;
+        
         if (rendererSettings.bReadShadersFromFiles)
         {
-            m_FlatColorShader = Shader::Create(rendererSettings.FlatColorShaderLocation);
-            if (!m_FlatColorShader->Initialized())
+            flatColorShaderLink = assetManager.CreateAsset<Shader>
+                ("FlatColorShader", rendererSettings.FlatColorShaderLocation);
+
+            if (flatColorShaderLink.IsValid())
+                m_FlatColorShader = flatColorShaderLink.Lock();
+            
+            else
             {
+                flatColorShaderLink = assetManager.CreateAsset<Shader>
+                    ("FlatColorShader", rendererSettings.FlatColorShaderLocation, false);
+
+                m_FlatColorShader = flatColorShaderLink.Lock();
+                
                 m_FlatColorShader->Compile(g_FlatColorVertexShaderSource, g_FlatColorFragmentShaderSource);
                 printf("FlatColorShader: Using raw string shader source.\n");
             }
-        
-            m_TextureShader = Shader::Create(rendererSettings.TextureShaderLocation);
-            if (!m_TextureShader->Initialized())
+
+            textureShaderLink = assetManager.CreateAsset<Shader>
+                ("FlatColorShader", rendererSettings.TextureShaderLocation);
+            
+            if (textureShaderLink.IsValid())
+                m_TextureShader = textureShaderLink.Lock();
+            
+            else
             {
-                m_TextureShader->Compile(g_TextureVertexShaderSource, g_TextureFragmentShaderSource);
+                textureShaderLink = assetManager.CreateAsset<Shader>
+                    ("TextureShader", rendererSettings.TextureShaderLocation, false);
+
+                m_TextureShader = textureShaderLink.Lock();
+                
+                m_TextureShader->Compile(g_FlatColorVertexShaderSource, g_FlatColorFragmentShaderSource);
                 printf("TextureShader: Using raw string shader source.\n");
             }
+            
             return;
         }
 
-        m_FlatColorShader = Shader::Create();
+        flatColorShaderLink = assetManager.CreateAsset<Shader>
+                     ("FlatColorShader", rendererSettings.FlatColorShaderLocation, false);
+
+        m_FlatColorShader = flatColorShaderLink.Lock();
+                
         m_FlatColorShader->Compile(g_FlatColorVertexShaderSource, g_FlatColorFragmentShaderSource);
+        printf("FlatColorShader: Using raw string shader source.\n");
         
-        m_TextureShader = Shader::Create();
-        m_TextureShader->Compile(g_TextureVertexShaderSource, g_TextureFragmentShaderSource);
+        textureShaderLink = assetManager.CreateAsset<Shader>
+                    ("TextureShader", rendererSettings.TextureShaderLocation, false);
+
+        m_TextureShader = textureShaderLink.Lock();
+                
+        m_TextureShader->Compile(g_FlatColorVertexShaderSource, g_FlatColorFragmentShaderSource);
+        printf("TextureShader: Using raw string shader source.\n");
     }
     
     void Renderer2D::Initialize(const Shared<Window>& window, const Renderer2DSettings& rendererSettings)

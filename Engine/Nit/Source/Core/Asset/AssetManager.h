@@ -2,6 +2,8 @@
 #include "Asset.h"
 #include "AssetLink.h"
 
+//TODO: Use path or name as key
+
 namespace Nit
 {
     class AssetManager : public Singleton<AssetManager>
@@ -30,7 +32,8 @@ namespace Nit
             }
 
             Shared<T> asset = CreateShared<T>(name, path, id, std::forward<TArgs>(args)...);
-            asset->Load();
+            if (!asset->Load())
+                return {};
             m_IdAssetMap[id] = asset;
             link.SetTarget(asset);
             return link;
