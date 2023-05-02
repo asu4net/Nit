@@ -1,0 +1,8 @@
+{
+    "Name": "FlatColorShader",
+    "Path": "Content\\Shaders\\FlatColor.glsl",
+    "Id": {
+        "idHandler": 1358865748308823049
+    },
+    "TypeName": "Shader"
+}

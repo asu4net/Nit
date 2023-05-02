@@ -18,7 +18,7 @@ project "DemoSource"
     {
         "%{prj.location}/Source/**.h",
         "%{prj.location}/Source/**.cpp",
-        "%{prj.location}/Content/**.glsl"
+        "%{prj.location}/../Content/**.glsl"
     }
 
     includedirs
@@ -41,7 +41,7 @@ project "DemoSource"
 
     postbuildcommands
 	{
-		("{COPY} ../%{file.relpath}/Content %{wks.location}/Binaries/" .. outputdir .. "/Demo/Content")
+		("{COPY} %{wks.location}/Games/Demo/Content %{wks.location}/Binaries/" .. outputdir .. "/Demo/Content")
 	}
 
     filter "system:windows"

@@ -25,8 +25,12 @@ namespace Nit
     void AssetManager::SerializeAsset(const Shared<Asset>& asset)
     {
         const std::string jsonAssetInfo = Serialization::ToJson(asset);
-        std::ofstream fileAssetInfo(asset->GetAbsolutePath() + ".assetInfo"); //TODO: Use display name
+
+        std::ofstream fileAssetInfo("../" + asset->GetPath() + ".assetInfo"); //TODO: Use display name
+        std::ofstream fileAssetInfoExe(asset->GetPath() + ".assetInfo"); //TODO: Use display name
+        
         fileAssetInfo << jsonAssetInfo;
+        fileAssetInfoExe << jsonAssetInfo;
     }
 
     void AssetManager::DeserializeAsset(const std::string& jsonAssetInfo)
