@@ -24,35 +24,36 @@ namespace Nit
             CursorMode CursorMode{CursorMode::Normal};
         };
         
-        virtual ~Window() = default;
-        
         static Shared<Window> Create();
         
-        virtual void Initialize(const Configuration& config = {});
-        virtual void Finalize();
+        void Initialize(const Configuration& config = {});
+        void Finalize();
         
-        virtual WindowEvents& Events() { return m_Events; }
-        virtual void Close() { m_KeepWindowOpened = false; }
-        virtual bool IsOpened();
+        WindowEvents& Events() { return m_Events; }
+        void Close() { m_KeepWindowOpened = false; }
+        bool IsOpened();
         
-        virtual void SetVSync(bool enabled);
-        virtual bool IsVSync() const { return m_Config.VSync; }
+        void SetVSync(bool enabled);
+        bool IsVSync() const { return m_Config.VSync; }
 
-        virtual void SetTitle(const std::string& title);
-        virtual const std::string& GetTitle() const { return m_Config.Title; }
+        void SetTitle(const std::string& title);
+        const std::string& GetTitle() const { return m_Config.Title; }
         
-        virtual void SetCursorMode(const CursorMode mode);
-        virtual CursorMode GetCursorMode() const { return m_Config.CursorMode; }
+        void SetCursorMode(const CursorMode mode);
+        CursorMode GetCursorMode() const { return m_Config.CursorMode; }
         
-        virtual void SetBackgroundColor(const glm::vec4& color) { m_Config.Color = color; }
-        virtual glm::vec4 GetBackgroundColor() const { return m_Config.Color; }
+        void SetBackgroundColor(const glm::vec4& color) { m_Config.Color = color; }
+        glm::vec4 GetBackgroundColor() const { return m_Config.Color; }
         
-        virtual uint32_t GetWidth() const { return m_Config.Width; }
-        virtual uint32_t GetHeight() const { return m_Config.Height; }
-        virtual float GetAspect() const { return static_cast<float>(GetWidth()) / static_cast<float>(GetHeight()); }
+        uint32_t GetWidth() const { return m_Config.Width; }
+        uint32_t GetHeight() const { return m_Config.Height; }
+        float GetAspect() const { return static_cast<float>(GetWidth()) / static_cast<float>(GetHeight()); }
 
         void* GetHandler() const { return m_WindowHandler; }
 
+        std::string OpenFile(const std::string& filter);
+        std::string SaveFile(const std::string& filter);
+        
         virtual void Update();
 
         

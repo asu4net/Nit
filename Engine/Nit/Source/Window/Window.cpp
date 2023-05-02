@@ -1,8 +1,9 @@
 ﻿#include "Window.h"
-#include <glfw/glfw3.h>
-
 #include "Input/Input.h"
 #include "Rendering/RenderingContext.h"
+#include <GLFW/glfw3.h>
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3native.h>
 
 namespace Nit
 {
@@ -111,6 +112,53 @@ namespace Nit
     void WindowMouseButtonPressedCallback(GLFWwindow* windowHandler, const int mouseButton, const bool pressed) { GetEvents(windowHandler).CallMouseButtonPressedEvent(mouseButton, pressed); }
     void WindowMouseButtonReleasedCallback(GLFWwindow* windowHandler, const int mouseButton) { GetEvents(windowHandler).CallMouseButtonReleasedEvent(mouseButton); }
     void WindowScrollCallback(GLFWwindow* windowHandler, const glm::vec2& offset) { GetEvents(windowHandler).CallScrollEvent(offset); }
+
+    std::string Window::OpenFile(const std::string& filter)
+    {
+        OPENFILENAMEA ofn;
+        CHAR szFile[260] = { 0 };
+        CHAR currentDir[256] = { 0 };
+        ZeroMemory(&ofn, sizeof(OPENFILENAME));
+        ofn.lStructSize = sizeof(OPENFILENAME);
+        ofn.hwndOwner = glfwGetWin32Window(m_WindowHandler);
+        ofn.lpstrFile = szFile;
+        ofn.nMaxFile = sizeof(szFile);
+        if (GetCurrentDirectoryA(256, currentDir))
+            ofn.lpstrInitialDir = currentDir;
+        ofn.lpstrFilter = filter.c_str();
+        ofn.nFilterIndex = 1;
+        ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+        if (GetOpenFileNameA(&ofn) == TRUE)
+            return ofn.lpstrFile;
+
+        return {};
+    }
+
+    std::string Window::SaveFile(const std::string& filter)
+    {
+        OPENFILENAMEA ofn;
+        CHAR szFile[260] = { 0 };
+        CHAR currentDir[256] = { 0 };
+        ZeroMemory(&ofn, sizeof(OPENFILENAME));
+        ofn.lStructSize = sizeof(OPENFILENAME);
+        ofn.hwndOwner = glfwGetWin32Window(m_WindowHandler);
+        ofn.lpstrFile = szFile;
+        ofn.nMaxFile = sizeof(szFile);
+        if (GetCurrentDirectoryA(256, currentDir))
+            ofn.lpstrInitialDir = currentDir;
+        ofn.lpstrFilter = filter.c_str();
+        ofn.nFilterIndex = 1;
+        ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
+
+        // Sets the default extension by extracting it from the filter
+        ofn.lpstrDefExt = strchr(filter.c_str(), '\0') + 1;
+
+        if (GetSaveFileNameA(&ofn) == TRUE)
+            return ofn.lpstrFile;
+		
+        return {};
+    }
 
     void Window::Update()
     {

@@ -2,8 +2,6 @@
 #include "Asset.h"
 #include "AssetLink.h"
 
-//TODO: Use path or name as key
-
 namespace Nit
 {
     class AssetManager : public Singleton<AssetManager>
@@ -36,6 +34,8 @@ namespace Nit
             
             return link;
         }
+
+        bool ImportAsset(const std::filesystem::path& path);
         
         template<typename T>
         AssetLink<T> GetAssetByName(const std::string& assetName)
@@ -59,7 +59,8 @@ namespace Nit
         std::unordered_map<std::string, Id> m_NameIdMap;
         
         AssetManager() = default;
-        
+        bool SerializeAsset(const Shared<Asset>& asset);
+        bool DeserializeAsset(const std::filesystem::path& assetInfoPath);
         friend class Singleton<AssetManager>;
     };
 }

@@ -1,8 +1,8 @@
 {
     "Name": "Bola",
-    "Path": "Content/Textures/bola.jpg",
+    "Path": "/Content/Textures/Bola.jpg",
     "Id": {
-        "idHandler": 13264398354388182362
+        "idHandler": 272066687411687648
     },
     "TypeName": "Texture2D",
     "Texture2DSettings": {

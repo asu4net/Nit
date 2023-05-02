@@ -1,5 +1,8 @@
 ﻿#include "ImGuiRenderer.h"
 #include <glfw/glfw3.h>
+
+#include "Core/Game.h"
+#include "Core/Asset/AssetManager.h"
 #include "Window/Window.h"
 
 namespace Nit
@@ -97,14 +100,6 @@ namespace Nit
         //
         // if (!padding)
         //     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-        //
-        // for (const auto& widget : m_widgets)
-        // {
-        //     if (!widget->enabled) continue;
-        //     ImGui::Begin(widget->GetName(), widget->opened, widget->flags);
-        //     widget->OnUpdate();
-        //     ImGui::End();
-        // }
 
         //---------------------------------------------------------
         // ImGui Dock Space Begin
@@ -130,7 +125,33 @@ namespace Nit
         //     printf("Docking disabled");
         // }
         //
+
+        
+        
         m_RootWidget->Update();
+
+        //Temporary code
+        ImGui::Begin("Menu", 0, ImGuiWindowFlags_MenuBar);
+        if (ImGui::BeginMenuBar())
+        {
+            if (ImGui::BeginMenu("File"))
+            {
+                if (ImGui::MenuItem("Import", "Ctrl+I"))
+                {
+                    constexpr const char* filter = "Asset (*.)\0*.\0";
+                    const std::string path = Game::GetInstance().GetWindow()->OpenFile(filter);
+                    if (!path.empty())
+                    {
+                        AssetManager::GetInstance().ImportAsset(path);
+                    }
+                }
+                ImGui::EndMenu();
+            }
+            
+            ImGui::EndMenuBar();
+        }
+        ImGui::End();
+        
         //
         // ImGui::End();
 
@@ -139,6 +160,7 @@ namespace Nit
         //---------------------------------------------------------
 
         ImGuiIO& io = ImGui::GetIO();
+        
         if (!m_Window.expired())
         {
             const auto window = m_Window.lock();
