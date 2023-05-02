@@ -148,9 +148,14 @@ namespace Nit
         return true;
     }
 
+    void Texture2D::Initialize()
+    {
+        UploadToGPU();
+    }
+
     void Texture2D::UploadToGPU()
     {
-        Unload();
+        if (m_bUploaded) return;
         if (m_Settings.CreateFromFile)
         {
             GLenum internalFormat = 0, dataFormat = 0;
@@ -180,6 +185,7 @@ namespace Nit
             glTextureSubImage2D(m_TextureID, 0, 0, 0, GetWidth(), GetHeight(),
                 dataFormat, GL_UNSIGNED_BYTE, m_Data);
             stbi_image_free(m_Data);
+            m_bUploaded = true;
             return;
         }
 
@@ -200,6 +206,7 @@ namespace Nit
 
         m_InternalFormat = GetInternalFormatFromOpenGl(internalFormat);
         m_DataFormat = GetDataFormatFromOpenGl(dataFormat);
+        m_bUploaded = true;
     }
 
     bool Texture2D::Unload()

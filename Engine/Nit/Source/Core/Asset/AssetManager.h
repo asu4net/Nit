@@ -18,9 +18,9 @@ namespace Nit
             if (!t.is_valid() || !t.is_derived_from<Asset>())
                 return link;
             
-            if (m_IdAssetMap.contains(id))
+            if (m_IdAssetMap.contains(id) || m_NameIdMap.contains(name))
             {
-                const Shared<T> asset = std::static_pointer_cast<T>(m_IdAssetMap[id]);
+                const Shared<T> asset = std::static_pointer_cast<T>(m_IdAssetMap[m_NameIdMap[name]]);
                 link.SetTarget(asset);
                 return link;
             }
@@ -31,6 +31,7 @@ namespace Nit
 
             asset->SetTypeName(std::string(asset->get_type().get_name()));
             m_IdAssetMap[id] = asset;
+            m_NameIdMap[name] = id;
             link.SetTarget(asset);
 
             if (asset->GetPath() != "None")
@@ -44,6 +45,7 @@ namespace Nit
     
     private:
         std::unordered_map<Id, Shared<Asset>> m_IdAssetMap;
+        std::unordered_map<std::string, Id> m_NameIdMap;
         //TODO: Add name || path /id map
         
         AssetManager() = default;

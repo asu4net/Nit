@@ -64,12 +64,12 @@ namespace Nit
                 
                 rttr::instance assetInstance = variant;
                 Serialization::FromJson(ss.str(), assetInstance);
-                
                 Shared<Asset> asset = variant.get_value<Shared<Asset>>();
                 if (!asset->Load()) //TODO: destroy asset info file
                     continue;
-                
+                asset->Initialize();
                 m_IdAssetMap[asset->GetId()] = asset;
+                m_NameIdMap[asset->GetName()] = asset->GetId();
             }
         }
     }

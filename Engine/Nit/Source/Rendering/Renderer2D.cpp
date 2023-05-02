@@ -107,7 +107,7 @@ namespace Nit
         }
 
         AssetLink<Shader> textureShaderLink = assetManager.CreateAsset<Shader>
-            ("FlatColorShader", rendererSettings.TextureShaderLocation);
+            ("TextureShader", rendererSettings.TextureShaderLocation);
             
         if (textureShaderLink.IsValid())
         {

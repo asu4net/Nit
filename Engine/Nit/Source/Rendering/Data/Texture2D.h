@@ -29,6 +29,7 @@ namespace Nit
         Texture2D(const std::string& name, const std::string& path, const Id& id);
 
         bool Load() override;
+        void Initialize() override;
         void UploadToGPU();
         bool Unload() override;
         
@@ -50,6 +51,7 @@ namespace Nit
         InternalFormat m_InternalFormat{InternalFormat::None};
         DataFormat m_DataFormat{DataFormat::None};
         unsigned char* m_Data{nullptr};
+        bool m_bUploaded{false};
         RTTR_ENABLE(Asset)
         RTTR_REGISTRATION_FRIEND
     };
