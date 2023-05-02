@@ -6,6 +6,7 @@ namespace Nit
     class Shader : public Asset
     {
     public:
+        Shader() = default;
         Shader(const std::string& name, const std::string& path, const Id& id);
         
         bool Load() override;

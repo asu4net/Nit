@@ -10,18 +10,9 @@ void DemoGame::OnInitialize()
     Camera->AddController<ViewportCameraController>();
 
     AssetManager& assetManager = AssetManager::GetInstance();
-
-    GridTexture = assetManager.CreateAsset<Texture2D>("Grid", "Content/Textures/Checkerboard.png");
-    Texture2DSettings gridSettings;
-    gridSettings.MagFilter = MagFilter::Nearest;
-    GridTexture.Lock()->Configure(gridSettings);
-    GridTexture.Lock()->UploadToGPU();
-    
-    CatTexture = assetManager.CreateAsset<Texture2D>("Bola", "Content/Textures/bola.jpg");
-    CatTexture.Lock()->UploadToGPU();
-    
-    CppTexture = assetManager.CreateAsset<Texture2D>("Cpp", "Content/Textures/cpp.png");
-    CppTexture.Lock()->UploadToGPU();
+    GridTexture = assetManager.GetAssetByName<Texture2D>("Grid");
+    CatTexture = assetManager.GetAssetByName<Texture2D>("Bola");
+    CppTexture = assetManager.GetAssetByName<Texture2D>("Cpp");
     
     Grid.Texture = GridTexture.Lock();
     Grid.Size *= 30;

@@ -16,8 +16,8 @@ namespace Nit
     void Game::Initialize()
     {
         m_Window->Initialize();
-        m_Renderer2D.Initialize(m_Window);
         m_AssetManager.Initialize();
+        m_Renderer2D.Initialize(m_Window);
         m_LayerStack->Initialize();
 
         while (m_Window->IsOpened())
@@ -28,8 +28,8 @@ namespace Nit
         }
 
         m_LayerStack->Finalize();
-        m_AssetManager.Finalize();
         m_Renderer2D.Finalize();
+        m_AssetManager.Finalize();
         m_Window->Finalize();
     }
 

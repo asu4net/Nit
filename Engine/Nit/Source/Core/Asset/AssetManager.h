@@ -37,6 +37,20 @@ namespace Nit
             return link;
         }
         
+        template<typename T>
+        AssetLink<T> GetAssetByName(const std::string& assetName)
+        {
+            AssetLink<T> link;
+            const rttr::type t = rttr::type::get<T>();
+            
+            if (!t.is_valid() || !t.is_derived_from<Asset>() || !m_NameIdMap.contains(assetName))
+                return link;
+            
+            const Shared<T> asset = std::static_pointer_cast<T>(m_IdAssetMap[m_NameIdMap[assetName]]);
+            link.SetTarget(asset);
+            return link;
+        }
+        
         void Initialize();
         void Finalize();
     

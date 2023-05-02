@@ -4,24 +4,6 @@
 
 namespace Nit
 {
-    struct AssetInfo
-    {
-        Id Id{0};
-        std::string Type;
-        std::string Name;
-        std::string Path; //Relative to the asset folder
-    };
-    
-    RTTR_REGISTRATION
-    {
-        rttr::registration::class_<AssetInfo>("AssetInfo")
-            .constructor<>()
-            .property("Id",   &AssetInfo::Id)
-            .property("Type", &AssetInfo::Type)
-            .property("Name", &AssetInfo::Name)
-            .property("Path", &AssetInfo::Path);
-    }
-
     void AssetManager::Initialize()
     {
         static const std::string AssetDirectory = CurrentDirectory() + "\\Content";

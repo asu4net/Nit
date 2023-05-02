@@ -86,43 +86,27 @@ namespace Nit
     {
         AssetManager& assetManager = AssetManager::GetInstance();
 
-        AssetLink<Shader> flatColorShaderLink = assetManager.CreateAsset<Shader>
-            ("FlatColorShader", rendererSettings.FlatColorShaderLocation);
-
+        AssetLink<Shader> flatColorShaderLink = assetManager.GetAssetByName<Shader>("FlatColorShader");
+        
         if (flatColorShaderLink.IsValid())
-        {
             m_FlatColorShader = flatColorShaderLink.Lock();
-            m_FlatColorShader->Compile();
-        }
         
         else
         {
-            flatColorShaderLink = assetManager.CreateAsset<Shader>
-                ("FlatColorShader", "");
-
-            m_FlatColorShader = flatColorShaderLink.Lock();
-                
+            m_FlatColorShader = CreateShared<Shader>();
             m_FlatColorShader->Compile(g_FlatColorVertexShaderSource, g_FlatColorFragmentShaderSource);
             printf("FlatColorShader: Using raw string shader source.\n");
         }
 
-        AssetLink<Shader> textureShaderLink = assetManager.CreateAsset<Shader>
-            ("TextureShader", rendererSettings.TextureShaderLocation);
-            
+        AssetLink<Shader> textureShaderLink = assetManager.GetAssetByName<Shader>("TextureShader");
+        
         if (textureShaderLink.IsValid())
-        {
             m_TextureShader = textureShaderLink.Lock();
-            m_TextureShader->Compile();
-        }
-            
+        
         else
         {
-            textureShaderLink = assetManager.CreateAsset<Shader>
-                ("TextureShader", "");
-
-            m_TextureShader = textureShaderLink.Lock();
-                
-            m_TextureShader->Compile(g_FlatColorVertexShaderSource, g_FlatColorFragmentShaderSource);
+            m_TextureShader = CreateShared<Shader>();
+            m_TextureShader->Compile(g_TextureVertexShaderSource, g_TextureFragmentShaderSource);
             printf("TextureShader: Using raw string shader source.\n");
         }
     }
