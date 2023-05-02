@@ -2,7 +2,7 @@
     "Name": "TextureShader",
     "Path": "Content\\Shaders\\Texture.glsl",
     "Id": {
-        "idHandler": 14176507241235332775
+        "idHandler": 14017314591566187296
     },
     "TypeName": "Shader"
 }

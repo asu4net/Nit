@@ -1,0 +1,17 @@
+{
+    "Name": "Grid",
+    "Path": "Content/Textures/Checkerboard.png",
+    "Id": {
+        "idHandler": 14919932891784766720
+    },
+    "TypeName": "Texture2D",
+    "Texture2DSettings": {
+        "CreateFromFile": true,
+        "Width": 0,
+        "Height": 0,
+        "MagFilter": "Nearest",
+        "MinFilter": "Linear",
+        "WrapModeU": "Repeat",
+        "WrapModeV": "Repeat"
+    }
+}

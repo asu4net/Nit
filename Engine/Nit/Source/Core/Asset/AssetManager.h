@@ -33,9 +33,6 @@ namespace Nit
             m_IdAssetMap[id] = asset;
             m_NameIdMap[name] = id;
             link.SetTarget(asset);
-
-            if (asset->GetPath() != "None")
-                SerializeAsset(m_IdAssetMap[id]);
             
             return link;
         }
@@ -46,12 +43,8 @@ namespace Nit
     private:
         std::unordered_map<Id, Shared<Asset>> m_IdAssetMap;
         std::unordered_map<std::string, Id> m_NameIdMap;
-        //TODO: Add name || path /id map
         
         AssetManager() = default;
-
-        void SerializeAsset(const Shared<Asset>& asset);
-        void DeserializeAsset(const std::string& jsonAssetInfo);
         
         friend class Singleton<AssetManager>;
     };

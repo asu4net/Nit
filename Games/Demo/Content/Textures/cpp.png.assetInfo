@@ -1,0 +1,17 @@
+{
+    "Name": "Cpp",
+    "Path": "Content/Textures/cpp.png",
+    "Id": {
+        "idHandler": 13976696990043503687
+    },
+    "TypeName": "Texture2D",
+    "Texture2DSettings": {
+        "CreateFromFile": true,
+        "Width": 0,
+        "Height": 0,
+        "MagFilter": "Linear",
+        "MinFilter": "Linear",
+        "WrapModeU": "Repeat",
+        "WrapModeV": "Repeat"
+    }
+}

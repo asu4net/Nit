@@ -22,22 +22,6 @@ namespace Nit
             .property("Path", &AssetInfo::Path);
     }
 
-    void AssetManager::SerializeAsset(const Shared<Asset>& asset)
-    {
-        const std::string jsonAssetInfo = Serialization::ToJson(asset);
-
-        std::ofstream fileAssetInfo("../" + asset->GetPath() + ".assetInfo"); //TODO: Use display name
-        std::ofstream fileAssetInfoExe(asset->GetPath() + ".assetInfo"); //TODO: Use display name
-        
-        fileAssetInfo << jsonAssetInfo;
-        fileAssetInfoExe << jsonAssetInfo;
-    }
-
-    void AssetManager::DeserializeAsset(const std::string& jsonAssetInfo)
-    {
-        
-    }
-
     void AssetManager::Initialize()
     {
         static const std::string AssetDirectory = CurrentDirectory() + "\\Content";
@@ -82,6 +66,16 @@ namespace Nit
     {
         for (auto[id, asset] : m_IdAssetMap)
         {
+            if (asset->GetPath() != "None")
+            {
+                const std::string jsonAssetInfo = Serialization::ToJson(asset);
+
+                std::ofstream fileAssetInfo("../" + asset->GetPath() + ".assetInfo"); //TODO: Use display name
+                std::ofstream fileAssetInfoExe(asset->GetPath() + ".assetInfo"); //TODO: Use display name
+        
+                fileAssetInfo << jsonAssetInfo;
+                fileAssetInfoExe << jsonAssetInfo;
+            }
             assert(asset->Unload());
         }
     }

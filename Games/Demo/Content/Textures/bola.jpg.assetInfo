@@ -1,0 +1,17 @@
+{
+    "Name": "Bola",
+    "Path": "Content/Textures/bola.jpg",
+    "Id": {
+        "idHandler": 13264398354388182362
+    },
+    "TypeName": "Texture2D",
+    "Texture2DSettings": {
+        "CreateFromFile": true,
+        "Width": 0,
+        "Height": 0,
+        "MagFilter": "Linear",
+        "MinFilter": "Linear",
+        "WrapModeU": "Repeat",
+        "WrapModeV": "Repeat"
+    }
+}
