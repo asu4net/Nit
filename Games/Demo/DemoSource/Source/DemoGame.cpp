@@ -22,6 +22,10 @@ void DemoGame::OnInitialize()
 
 void DemoGame::OnUpdate(const TimeStep& timeStep)
 {
+    AssetManager& assetManager = AssetManager::GetInstance();
+    if (!CatTexture.IsValid())
+        CatTexture = assetManager.GetAssetByName<Texture2D>("Bola");
+    
     Camera->Update(timeStep.DeltaTime);
     Renderer2D& renderer = Renderer2D::GetInstance();
 

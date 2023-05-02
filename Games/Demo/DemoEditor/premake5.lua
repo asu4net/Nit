@@ -41,7 +41,8 @@ project "DemoEditor"
 
     defines 
     {
-        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING"
+        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING",
+        "NIT_EDITOR"
     }
 
     filter "system:windows"
