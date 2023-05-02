@@ -9,10 +9,11 @@ namespace Nit
         Shader(const std::string& name, const std::string& path, const Id& id);
         
         bool Load() override;
+        void Initialize() override;
         bool Unload() override;
         
         bool ReadFromFile(const std::string& fileLocation, std::string& vertexSource, std::string& fragmentSource);
-        bool Initialized() const { return m_bInitialized; }
+        bool Initialized() const { return m_bCompiled; }
 
         void Compile();
         void Compile(const std::string& vertexSource, const std::string& fragmentSource);
@@ -27,7 +28,7 @@ namespace Nit
         
     private:
         uint32_t m_ShaderId{0};
-        bool m_bInitialized{false};
+        bool m_bCompiled{false};
         std::string m_VertexSource;
         std::string m_FragmentSource;
         

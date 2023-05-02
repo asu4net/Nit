@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "RenderCommandQueue.h"
+#include "Data/Texture2D.h"
 #include "Camera.h"
 
 namespace Nit
@@ -11,7 +12,7 @@ namespace Nit
     {
         glm::mat4 ModelMatrix = Math::IdentityMatrix;
         glm::vec4 Color = Math::WhiteColor;
-        Shared<Texture> Texture = nullptr;
+        Shared<Texture2D> Texture = nullptr;
         bool bIsSubTexture = false;
         glm::vec2 SubTextureSize = Math::OneVector;
         glm::vec2 LocationInAtlas = Math::ZeroVector;

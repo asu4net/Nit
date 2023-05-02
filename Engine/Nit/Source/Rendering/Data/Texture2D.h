@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "Texture.h"
 #include "Core/Asset/Asset.h"
 
 namespace Nit
@@ -20,26 +19,30 @@ namespace Nit
         MinFilter MinFilter{MinFilter::Linear};
         WrapMode WrapModeU{WrapMode::Repeat};
         WrapMode WrapModeV{WrapMode::Repeat};
+
+        RTTR_ENABLE()
     };
     
-    class Texture2D : public Texture, public Asset
+    class Texture2D : public Asset
     {
     public:
         Texture2D(const std::string& name, const std::string& path, const Id& id);
 
         bool Load() override;
-        void UploadToGPU(const Texture2DSettings& settings ={});
+        void UploadToGPU();
         bool Unload() override;
         
+        void Configure(const Texture2DSettings& settings) { m_Settings = settings; }
         void SetData(const void* data, uint32_t size);
         
-        uint32_t GetWidth() const override { return m_Width; }
-        uint32_t GetHeight() const override { return m_Height; }
-        uint32_t GetTextureID() const override { return m_TextureID; }
+        uint32_t GetWidth() const { return m_Width; }
+        uint32_t GetHeight() const { return m_Height; }
+        uint32_t GetTextureID() const { return m_TextureID; }
         
-        void Bind(uint32_t slot = 0) const override;
+        void Bind(uint32_t slot = 0) const;
 
     private:
+        Texture2DSettings m_Settings;
         uint32_t m_TextureID{0};
         uint32_t m_Width{0};
         uint32_t m_Height{0};
@@ -48,5 +51,6 @@ namespace Nit
         DataFormat m_DataFormat{DataFormat::None};
         unsigned char* m_Data{nullptr};
         RTTR_ENABLE(Asset)
+        RTTR_REGISTRATION_FRIEND
     };
 }

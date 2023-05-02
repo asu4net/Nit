@@ -14,7 +14,6 @@
 #include "Rendering/Data/BufferLayout.h"
 #include "Rendering/Data/IndexBuffer.h"
 #include "Rendering/Data/Shader.h"
-#include "Rendering/Data/Texture.h"
 #include "Rendering/Data/Texture2D.h"
 #include "Rendering/Data/VertexArray.h"
 #include "Rendering/Data/VertexBuffer.h"

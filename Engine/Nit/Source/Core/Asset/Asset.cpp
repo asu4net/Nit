@@ -9,8 +9,8 @@ RTTR_REGISTRATION
         .constructor<const std::string&, const std::string&, Id&>()
         .property("Name", &Asset::m_Name)
         .property("Path", &Asset::m_Path)
-        .property("AbsolutePath", &Asset::m_AbsolutePath)
-        .property("Id", &Asset::m_Id);
+        .property("Id", &Asset::m_Id)
+        .property("TypeName", &Asset::m_TypeName);
 }
 
 namespace Nit

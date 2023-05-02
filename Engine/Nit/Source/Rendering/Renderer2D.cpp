@@ -36,7 +36,7 @@ namespace Nit
         QuadVertex* LastVertex = nullptr;
         uint32_t QuadCount = 0;
 
-        std::array<Shared<Texture>, MaxTextureSlots> Textures;
+        std::array<Shared<Texture2D>, MaxTextureSlots> Textures;
         Shared<Texture2D> WhiteTexture;
         uint32_t LastTextureSlot = 1;
         uint32_t IndexCount = 0;
@@ -139,7 +139,14 @@ namespace Nit
         g_QuadRenderData.LastVertex = g_QuadRenderData.VertexData;
         auto whiteTexture = assetManager.CreateAsset<Texture2D>("WhiteTexture", "");
         g_QuadRenderData.WhiteTexture = whiteTexture.Lock();
-        g_QuadRenderData.WhiteTexture->UploadToGPU({ false, 1, 1 });
+        
+        Texture2DSettings settings;
+        settings.CreateFromFile = false;
+        settings.Width = 1;
+        settings.Height = 1;
+
+        g_QuadRenderData.WhiteTexture->Configure(settings);
+        g_QuadRenderData.WhiteTexture->UploadToGPU();
         constexpr uint32_t whiteTextureData = 0xffffffff;
         g_QuadRenderData.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
         g_QuadRenderData.Textures[0] = g_QuadRenderData.WhiteTexture;
@@ -196,7 +203,7 @@ namespace Nit
         m_RenderData = renderData;
     }
 
-    int GetTextureSlot(const Shared<Texture>& texture)
+    int GetTextureSlot(const Shared<Texture2D>& texture)
     {
         int textureSlot = 0;
 

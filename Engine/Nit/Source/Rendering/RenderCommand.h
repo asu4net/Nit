@@ -2,7 +2,6 @@
 #include "RendererAPI.h"
 #include "Data/VertexArray.h"
 #include "Data/Shader.h"
-#include "Data/Texture.h"
 
 namespace Nit
 {
@@ -208,26 +207,6 @@ namespace Nit
 
     private:
         const int m_Num;
-    };
-
-    class BindTextureCommand : public RenderCommand
-    {
-    public:
-        BindTextureCommand(const Shared<Texture>& texture, const uint32_t slot = 0)
-            : m_Texture(texture)
-            , m_Slot(slot)
-        {}
-
-        const char* GetName() const override { return "BindTexture"; }
-
-        void Execute() override
-        {
-            m_Texture->Bind(m_Slot);
-        }
-        
-    private:
-        const Shared<Texture> m_Texture;
-        const uint32_t m_Slot;
     };
 
     class DrawElementsCommand : public RenderCommand

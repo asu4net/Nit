@@ -14,7 +14,8 @@ void DemoGame::OnInitialize()
     GridTexture = assetManager.CreateAsset<Texture2D>("Grid", "Content/Textures/Checkerboard.png");
     Texture2DSettings gridSettings;
     gridSettings.MagFilter = MagFilter::Nearest;
-    GridTexture.Lock()->UploadToGPU(gridSettings);
+    GridTexture.Lock()->Configure(gridSettings);
+    GridTexture.Lock()->UploadToGPU();
     
     CatTexture = assetManager.CreateAsset<Texture2D>("Bola", "Content/Textures/bola.jpg");
     CatTexture.Lock()->UploadToGPU();

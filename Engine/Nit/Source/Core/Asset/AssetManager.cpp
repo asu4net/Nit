@@ -1,7 +1,6 @@
 #include "NitPCH.h"
 #include "AssetManager.h"
 #include "Core/Serialization.h"
-#include "Rendering/Data/Shader.h"
 
 namespace Nit
 {
@@ -25,13 +24,7 @@ namespace Nit
 
     void AssetManager::SerializeAsset(const Shared<Asset>& asset)
     {
-        AssetInfo assetInfo{
-            asset->GetId(),
-            std::string(asset->get_type().get_name()),
-            asset->GetName(),
-            asset->GetPath()
-        };
-        const std::string jsonAssetInfo = Serialization::ToJson(assetInfo);
+        const std::string jsonAssetInfo = Serialization::ToJson(asset);
         std::ofstream fileAssetInfo(asset->GetAbsolutePath() + ".assetInfo"); //TODO: Use display name
         fileAssetInfo << jsonAssetInfo;
     }
@@ -55,17 +48,22 @@ namespace Nit
                 std::stringstream ss;
                 ss << stream.rdbuf();
 
-                AssetInfo assetInfo;
-                Serialization::FromJson(ss.str(), assetInfo);
-
-                rttr::type assetType = rttr::type::get_by_name(assetInfo.Type);
+                // AssetInfo assetInfo;
+                Asset assetData;
+                Serialization::FromJson(ss.str(), assetData);
+                
+                rttr::type assetType = rttr::type::get_by_name(assetData.GetTypeName());
                 
                 if (!assetType.is_valid())
                     continue; ////TODO: destroy asset info file
-                rttr::variant variant = assetType.create({assetInfo.Name, assetInfo.Path, assetInfo.Id});
+                
+                rttr::variant variant = assetType.create({assetData.GetName(), assetData.GetPath(), assetData.GetId()});
 
                 if (!variant.is_valid())
                     continue; ////TODO: destroy asset info file
+                
+                rttr::instance assetInstance = variant;
+                Serialization::FromJson(ss.str(), assetInstance);
                 
                 Shared<Asset> asset = variant.get_value<Shared<Asset>>();
                 if (!asset->Load()) //TODO: destroy asset info file

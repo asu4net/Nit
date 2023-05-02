@@ -6,6 +6,42 @@
 
 #include "Core/Asset/Asset.h"
 
+RTTR_REGISTRATION
+{
+    using namespace rttr;
+    using namespace Nit;
+
+    registration::enumeration<MinFilter>("MinFilter")
+    (
+        value("Linear", MinFilter::Linear),
+        value("Nearest", MinFilter::Nearest)
+    );
+    registration::enumeration<MagFilter>("MagFilter")
+    (
+        value("Linear", MagFilter::Linear),
+        value("Nearest", MagFilter::Nearest)
+    );
+    registration::enumeration<WrapMode>("WrapMode")
+    (
+        value("Repeat", WrapMode::Repeat),
+        value("ClampToEdge", WrapMode::ClampToEdge)
+    );
+
+    registration::class_<Texture2DSettings>("Texture2DSettings")
+        .constructor<>()
+        .property("CreateFromFile", &Texture2DSettings::CreateFromFile)
+        .property("Width", &Texture2DSettings::Width)
+        .property("Height", &Texture2DSettings::Height)
+        .property("MagFilter", &Texture2DSettings::MagFilter)
+        .property("MinFilter", &Texture2DSettings::MinFilter)
+        .property("WrapModeU", &Texture2DSettings::WrapModeU)
+        .property("WrapModeV", &Texture2DSettings::WrapModeV);
+
+    registration::class_<Texture2D>("Texture2D")
+        .constructor<const std::string&, const std::string&, const Id&>()
+        .property("Texture2DSettings", &Texture2D::m_Settings);
+}
+
 namespace Nit
 {
     static void SetMagFilter(const uint32_t textureId, const MagFilter magFilter)
@@ -112,10 +148,10 @@ namespace Nit
         return true;
     }
 
-    void Texture2D::UploadToGPU(const Texture2DSettings& settings)
+    void Texture2D::UploadToGPU()
     {
         Unload();
-        if (settings.CreateFromFile)
+        if (m_Settings.CreateFromFile)
         {
             GLenum internalFormat = 0, dataFormat = 0;
             if (m_Channels == 4)
@@ -135,11 +171,11 @@ namespace Nit
             glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
             glTextureStorage2D(m_TextureID, 1, internalFormat, GetWidth(), GetHeight());
             
-            SetMinFilter(m_TextureID, settings.MinFilter);
-            SetMagFilter(m_TextureID, settings.MagFilter);
+            SetMinFilter(m_TextureID, m_Settings.MinFilter);
+            SetMagFilter(m_TextureID, m_Settings.MagFilter);
 
-            SetWrapMode(m_TextureID, TextureCoordinate::U, settings.WrapModeU);
-            SetWrapMode(m_TextureID, TextureCoordinate::V, settings.WrapModeV);
+            SetWrapMode(m_TextureID, TextureCoordinate::U, m_Settings.WrapModeU);
+            SetWrapMode(m_TextureID, TextureCoordinate::V, m_Settings.WrapModeV);
 
             glTextureSubImage2D(m_TextureID, 0, 0, 0, GetWidth(), GetHeight(),
                 dataFormat, GL_UNSIGNED_BYTE, m_Data);
@@ -147,8 +183,8 @@ namespace Nit
             return;
         }
 
-        m_Width = settings.Width;
-        m_Height = settings.Height;
+        m_Width = m_Settings.Width;
+        m_Height = m_Settings.Height;
         
         constexpr GLenum internalFormat = GL_RGB8;
         constexpr GLenum dataFormat = GL_RGBA;
@@ -156,11 +192,11 @@ namespace Nit
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
         glTextureStorage2D(m_TextureID, 1, internalFormat, GetWidth(), GetHeight());
         
-        SetMinFilter(m_TextureID, settings.MinFilter);
-        SetMagFilter(m_TextureID, settings.MagFilter);
+        SetMinFilter(m_TextureID, m_Settings.MinFilter);
+        SetMagFilter(m_TextureID, m_Settings.MagFilter);
         
-        SetWrapMode(m_TextureID, TextureCoordinate::U, settings.WrapModeU);
-        SetWrapMode(m_TextureID, TextureCoordinate::V, settings.WrapModeV);
+        SetWrapMode(m_TextureID, TextureCoordinate::U, m_Settings.WrapModeU);
+        SetWrapMode(m_TextureID, TextureCoordinate::V, m_Settings.WrapModeV);
 
         m_InternalFormat = GetInternalFormatFromOpenGl(internalFormat);
         m_DataFormat = GetDataFormatFromOpenGl(dataFormat);

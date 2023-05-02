@@ -28,7 +28,8 @@ namespace Nit
             Shared<T> asset = CreateShared<T>(name, path, id);
             if (!asset->Load())
                 return {};
-            
+
+            asset->SetTypeName(std::string(asset->get_type().get_name()));
             m_IdAssetMap[id] = asset;
             link.SetTarget(asset);
 

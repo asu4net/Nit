@@ -24,6 +24,11 @@ namespace Nit
         return ReadFromFile(absolutePath, m_VertexSource, m_FragmentSource);
     }
 
+    void Shader::Initialize()
+    {
+        Compile();
+    }
+
     bool Shader::Unload()
     {
         glDeleteProgram(m_ShaderId);
@@ -37,7 +42,7 @@ namespace Nit
 
     void Shader::Compile(const std::string& vertexSource, const std::string& fragmentSource)
     {
-        if (m_bInitialized) return;
+        if (m_bCompiled) return;
         
         // Create an empty vertex shader handle
         const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -135,7 +140,7 @@ namespace Nit
         glDetachShader(m_ShaderId, vertexShader);
         glDetachShader(m_ShaderId, fragmentShader);
 
-        m_bInitialized = true;
+        m_bCompiled = true;
     }
 
     bool Shader::ReadFromFile(const std::string& fileLocation, std::string& vertexSource, std::string& fragmentSource)
