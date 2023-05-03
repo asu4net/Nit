@@ -12,6 +12,8 @@ public:
     Nit::AssetLink<Nit::Texture2D> GridTexture;
     Nit::AssetLink<Nit::Texture2D> CatTexture;
     Nit::AssetLink<Nit::Texture2D> CppTexture;
+    Nit::AssetLink<Nit::AudioBuffer> LaserAudio;
+    Nit::AudioSource LaserAudioSource;
     
     glm::vec3 BallPosition = {.5f, .3f, 0.f};
     Nit::Quad Grid;

@@ -13,6 +13,16 @@ void DemoGame::OnInitialize()
     GridTexture = assetManager.GetAssetByName<Texture2D>("Grid");
     CatTexture = assetManager.GetAssetByName<Texture2D>("Bola");
     CppTexture = assetManager.GetAssetByName<Texture2D>("Cpp");
+    LaserAudio = assetManager.GetAssetByName<AudioBuffer>("laser");
+
+    AudioManager& audioManager = AudioManager::GetInstance();
+    LaserAudioSource = audioManager.CreateAudioSource(LaserAudio.Lock());
+
+    Game::GetInstance().GetWindow()->Events().KeyPressedEvent.Add([&](int key, bool repeat)
+    {
+        if (key != KEY_SPACE) return;
+        audioManager.Play(LaserAudioSource);
+    });
     
     Grid.Texture = GridTexture.Lock();
     Grid.Size *= 30;

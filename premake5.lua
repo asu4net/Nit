@@ -19,6 +19,7 @@ group "ThirdParty"
     include "ThirdParty/stb/premake5.lua"
     include "ThirdParty/rttr/premake5.lua"
     include "ThirdParty/rapidjson/premake5.lua"
+    include "ThirdParty/openal/premake5.lua"
 group ""
 
 group "Engine"

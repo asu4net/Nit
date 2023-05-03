@@ -1,0 +1,8 @@
+{
+    "Name": "laser",
+    "Path": "/Content/Audios/laser.wav",
+    "Id": {
+        "idHandler": 3167360085290557965
+    },
+    "TypeName": "AudioBuffer"
+}

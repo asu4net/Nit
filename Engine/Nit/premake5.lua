@@ -14,6 +14,12 @@ project "Nit"
 
     forceincludes { "NitPCH.h" }
 
+    --openal
+    disablewarnings 
+	{ 
+		"5030"
+	}
+
     files
     {
         "%{prj.location}/Source/**.h",
@@ -28,7 +34,10 @@ project "Nit"
         "%{IncludeDirs.glm}",
         "%{IncludeDirs.stb}",
         "%{IncludeDirs.rttr}",
-        "%{IncludeDirs.rapidjson}"
+        "%{IncludeDirs.rapidjson}",
+        "%{IncludeDirs.openal}",
+        "%{IncludeDirs.openalSource}",
+        "%{IncludeDirs.openalCommon}"
     }
 
     links
@@ -36,12 +45,14 @@ project "Nit"
         "opengl32.lib",
         "glad",
         "glfw",
-        "rttr"
+        "rttr",
+        "openal"
     }
 
     defines 
     {
-        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING"
+        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING",
+        "AL_LIBTYPE_STATIC"
     }
 
     filter "system:windows"

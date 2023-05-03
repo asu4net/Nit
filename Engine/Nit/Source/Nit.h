@@ -26,6 +26,11 @@
 #include "Rendering/Camera.h"
 #include "Rendering/RawShaderStrings.h"
 
+// Audio
+#include "Audio/AudioBuffer.h"
+#include "Audio/AudioManager.h"
+#include "Audio/AudioSource.h"
+
 // Window
 
 #include "Window/Input/Input.h"

@@ -19,6 +19,7 @@ namespace Nit
         ~Game();
         Shared<Window> m_Window;
         class Renderer2D& m_Renderer2D;
+        class AudioManager& m_AudioManager;
         class AssetManager& m_AssetManager;
         Shared<LayerStack> m_LayerStack;
         Time m_Time;

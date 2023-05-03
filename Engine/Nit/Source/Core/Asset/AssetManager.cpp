@@ -1,5 +1,7 @@
 #include "NitPCH.h"
 #include "AssetManager.h"
+
+#include "Audio/AudioBuffer.h"
 #include "Core/Serialization.h"
 #include "Rendering/Data/Shader.h"
 #include "Rendering/Data/Texture2D.h"
@@ -95,6 +97,14 @@ namespace Nit
             if (!shaderLink.IsValid()) return false;
             SerializeAsset(shaderLink.Lock());
             shaderLink.Lock()->Compile();
+        }
+        if (path.extension() == ".wav")
+        {
+            const std::string folder = GetRelativeAssetPath(path.string());
+            auto audioLink = CreateAsset<AudioBuffer>(path.stem().string(), folder);
+            if (!audioLink.IsValid()) return false;
+            SerializeAsset(audioLink.Lock());
+            audioLink.Lock()->Initialize();
         }
         return false;
     }
