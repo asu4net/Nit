@@ -16,7 +16,7 @@ void DemoGame::OnInitialize()
     LaserAudio = assetManager.GetAssetByName<AudioBuffer>("laser");
 
     AudioManager& audioManager = AudioManager::GetInstance();
-    LaserAudioSource = audioManager.CreateAudioSource(LaserAudio.Lock());
+    LaserAudioSource = audioManager.CreateSource(LaserAudio.Lock());
 
     Game::GetInstance().GetWindow()->Events().KeyPressedEvent.Add([&](int key, bool repeat)
     {
