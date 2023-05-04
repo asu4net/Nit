@@ -107,3 +107,5 @@ project "Nit"
         defines "NIT_RELEASE"
         runtime "Release"
         optimize "on"
+
+        linkoptions { "-IGNORE:4006" }
