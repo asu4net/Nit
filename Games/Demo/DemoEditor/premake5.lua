@@ -42,7 +42,7 @@ project "DemoEditor"
     defines 
     {
         "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING",
-        "NIT_EDITOR"
+        "NIT_IMGUI"
     }
 
     filter "system:windows"
@@ -53,7 +53,7 @@ project "DemoEditor"
         runtime "Debug"
         symbols "on"
     
-    filter "configurations:Release"
+    filter "configurations:EditorRelease"
         defines "NIT_RELEASE"
         runtime "Release"
         optimize "on"

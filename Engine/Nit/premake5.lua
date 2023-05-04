@@ -51,6 +51,7 @@ project "Nit"
 
     defines 
     {
+        "_CRT_SECURE_NO_WARNINGS",
         "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING",
         "AL_LIBTYPE_STATIC"
     }
@@ -59,11 +60,50 @@ project "Nit"
         systemversion "latest"
     
     filter "configurations:Debug"
-        defines "NIT_DEBUG"
         runtime "Debug"
         symbols "on"
-    
-    filter "configurations:Release"
+
+        includedirs
+        {
+            "%{IncludeDirs.imgui}",
+            "%{IncludeDirs.imguizmo}"
+        }
+
+        links
+        {
+            "imgui",
+            "imguizmo"
+        }
+
+        defines
+        {
+            "NIT_DEBUG",
+            "NIT_IMGUI"
+        }
+
+    filter "configurations:EditorRelease"
+        runtime "Release"
+        optimize "on"
+
+        includedirs
+        {
+            "%{IncludeDirs.imgui}",
+            "%{IncludeDirs.imguizmo}"
+        }
+
+        links
+        {
+            "imgui",
+            "imguizmo"
+        }
+
+        defines
+        {
+            "NIT_RELEASE",
+            "NIT_IMGUI"
+        }
+
+    filter "configurations:GameRelease"
         defines "NIT_RELEASE"
         runtime "Release"
         optimize "on"

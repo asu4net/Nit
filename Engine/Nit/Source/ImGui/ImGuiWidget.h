@@ -1,4 +1,5 @@
 ﻿#pragma once
+#ifdef NIT_IMGUI
 #include "Core/Delegates/MulticastDelegate.h"
 
 namespace Nit
@@ -61,3 +62,4 @@ namespace Nit
         std::vector<Shared<ImGuiWidget>> m_ChildWidgets;
     };
 }
+#endif

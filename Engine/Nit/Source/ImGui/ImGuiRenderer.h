@@ -1,4 +1,5 @@
 ﻿#pragma once
+#ifdef NIT_IMGUI
 #include "ImGuiWidget.h"
 
 namespace Nit
@@ -34,3 +35,4 @@ namespace Nit
         friend class Singleton<ImGuiRenderer>;
     };
 }
+#endif

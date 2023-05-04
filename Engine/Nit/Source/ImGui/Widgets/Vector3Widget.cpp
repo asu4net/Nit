@@ -1,6 +1,6 @@
 ﻿#include "Vector3Widget.h"
 
-
+#ifdef NIT_IMGUI
 namespace Nit
 {
     Vector3Widget::Vector3Widget(glm::vec3& vector, const std::string& name, const float columnWidth, bool* opened, ImGuiWindowFlags flags)
@@ -75,3 +75,4 @@ namespace Nit
         ImGui::PopID();
     }
 }
+#endif

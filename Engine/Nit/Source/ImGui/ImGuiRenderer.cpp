@@ -1,6 +1,6 @@
-﻿#include "ImGuiRenderer.h"
+﻿#ifdef NIT_IMGUI
+#include "ImGuiRenderer.h"
 #include <glfw/glfw3.h>
-
 #include "Core/Game.h"
 #include "Core/Asset/AssetManager.h"
 #include "Window/Window.h"
@@ -125,32 +125,8 @@ namespace Nit
         //     printf("Docking disabled");
         // }
         //
-
-        
         
         m_RootWidget->Update();
-
-        //Temporary code
-        ImGui::Begin("Menu", 0, ImGuiWindowFlags_MenuBar);
-        if (ImGui::BeginMenuBar())
-        {
-            if (ImGui::BeginMenu("File"))
-            {
-                if (ImGui::MenuItem("Import", "Ctrl+I"))
-                {
-                    constexpr const char* filter = "Asset (*.)\0*.\0";
-                    const std::string path = Game::GetInstance().GetWindow()->OpenFile(filter);
-                    if (!path.empty())
-                    {
-                        AssetManager::GetInstance().ImportAsset(path);
-                    }
-                }
-                ImGui::EndMenu();
-            }
-            
-            ImGui::EndMenuBar();
-        }
-        ImGui::End();
         
         //
         // ImGui::End();
@@ -188,3 +164,4 @@ namespace Nit
         ImGui::DestroyContext();
     }
 }
+#endif

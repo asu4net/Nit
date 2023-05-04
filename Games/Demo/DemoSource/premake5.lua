@@ -26,7 +26,9 @@ project "DemoSource"
         "%{prj.location}/Source",
         "%{IncludeDirs.Nit}",
         "%{IncludeDirs.glm}",
-        "%{IncludeDirs.rttr}"
+        "%{IncludeDirs.rttr}",
+        "%{IncludeDirs.imgui}",
+        "%{IncludeDirs.imguizmo}"
     }
 
     links
@@ -48,11 +50,38 @@ project "DemoSource"
         systemversion "latest"
     
     filter "configurations:Debug"
-        defines "NIT_DEBUG"
         runtime "Debug"
         symbols "on"
-    
-    filter "configurations:Release"
+
+        includedirs
+        {
+            "%{IncludeDirs.imgui}",
+            "%{IncludeDirs.imguizmo}"
+        }
+
+        defines
+        {
+            "NIT_DEBUG",
+            "NIT_IMGUI"
+        }
+
+    filter "configurations:EditorRelease"
+        runtime "Release"
+        optimize "on"
+
+        includedirs
+        {
+            "%{IncludeDirs.imgui}",
+            "%{IncludeDirs.imguizmo}"
+        }
+
+        defines
+        {
+            "NIT_RELEASE",
+            "NIT_IMGUI"
+        }
+
+    filter "configurations:GameRelease"
         defines "NIT_RELEASE"
         runtime "Release"
         optimize "on"

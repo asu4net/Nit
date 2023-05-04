@@ -1,11 +1,12 @@
 workspace "Nit"
     architecture "x86_64"
-    startproject "Demo"
-    
+    startproject "DemoEditor"
+
     configurations
     {
         "Debug",
-        "Release"
+        "GameRelease",
+        "EditorRelease"
     }
 
 include "Directories.lua"

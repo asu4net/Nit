@@ -6,8 +6,6 @@ namespace Nit
     class EditorLayer : public GameLayer
     {
     public:
-        class ImGuiRenderer& ImGuiRenderer;
-        
         EditorLayer();
 
         void OnInitialize() override;

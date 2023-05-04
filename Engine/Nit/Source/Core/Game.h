@@ -17,12 +17,17 @@ namespace Nit
     private:
         Game();
         ~Game();
+        
         Shared<Window> m_Window;
         class Renderer2D& m_Renderer2D;
         class AudioManager& m_AudioManager;
         class AssetManager& m_AssetManager;
         Shared<LayerStack> m_LayerStack;
         Time m_Time;
+
+        #ifdef NIT_IMGUI
+        class ImGuiRenderer& m_ImGuiRenderer;
+        #endif
 
         friend class Singleton<Game>;
     };

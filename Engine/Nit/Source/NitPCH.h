@@ -32,6 +32,14 @@
 #include <rttr/registration>
 #include <rttr/type>
 
+#ifdef NIT_IMGUI
+#include <imgui.h>
+#include <ImGuizmo.h>
+#include <imgui_internal.h>
+#include "ImGui/Implementation/imgui_impl_glfw.h"
+#include "ImGui/Implementation/imgui_impl_opengl3.h"
+#endif
+
 #include "Math/Math.h"
 
 #include "Core/Delegates/Delegate.h"

@@ -28,6 +28,10 @@ void DemoGame::OnInitialize()
     Grid.Size *= 30;
     Grid.UVScale *= 30;
     Grid.Color = Math::DarkGreyColor;
+
+#ifdef NIT_IMGUI
+    ImGuiRenderer::GetInstance().PushWidget<Vector3Widget>(BallPosition, "Ball Pos");
+#endif
 }
 
 void DemoGame::OnUpdate(const TimeStep& timeStep)

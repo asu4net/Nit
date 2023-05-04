@@ -1,4 +1,5 @@
 ﻿#pragma once
+#ifdef NIT_IMGUI
 #include "ImGui/ImGuiWidget.h"
 
 namespace Nit
@@ -20,3 +21,4 @@ namespace Nit
         float m_ColumnWidth;
     };
 }
+#endif

@@ -1,4 +1,5 @@
-﻿#include "ImGuiWidget.h"
+﻿#ifdef NIT_IMGUI
+#include "ImGuiWidget.h"
 
 namespace Nit
 {
@@ -51,3 +52,4 @@ namespace Nit
     void ImGuiWidget::OnUpdate() {}
     void ImGuiWidget::OnDestroy() {}
 }
+#endif
