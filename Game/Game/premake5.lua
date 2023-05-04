@@ -1,44 +1,50 @@
-project "Demo"
-    kind "ConsoleApp"
+project "Game"
+    kind "StaticLib"
     language "C++"
     cppdialect "C++20"
     staticruntime "off"
     
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/Demo")
-    objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/Demo")
+    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/Game")
+    objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/Game")
 
-    pchheader "DemoPCH.h"
-    pchsource "Source/DemoPCH.cpp"
+    pchheader "GamePCH.h"
+    pchsource "Source/GamePCH.cpp"
 
-    forceincludes { "DemoPCH.h" }
+    forceincludes { "GamePCH.h" }
 
     files
     {
         "%{prj.location}/Source/**.h",
         "%{prj.location}/Source/**.cpp",
+        "%{prj.location}/../Content/**.glsl"
     }
 
     includedirs
     {
         "%{prj.location}/Source",
         "%{IncludeDirs.Nit}",
-        "%{IncludeDirs.DemoSource}",
         "%{IncludeDirs.glm}",
         "%{IncludeDirs.rttr}",
+        "%{IncludeDirs.imgui}",
+        "%{IncludeDirs.imguizmo}"
     }
 
     links
     {
-        "Nit",
-        "DemoSource"
+        "Nit"
     }
 
     defines 
     {
         "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING"
     }
+
+    postbuildcommands
+	{
+		("{COPY} %{wks.location}/Game/Content %{wks.location}/Binaries/" .. outputdir .. "/Game/Content")
+	}
 
     filter "system:windows"
         systemversion "latest"
@@ -56,6 +62,22 @@ project "Demo"
         defines
         {
             "NIT_DEBUG",
+            "NIT_IMGUI"
+        }
+
+    filter "configurations:EditorRelease"
+        runtime "Release"
+        optimize "on"
+
+        includedirs
+        {
+            "%{IncludeDirs.imgui}",
+            "%{IncludeDirs.imguizmo}"
+        }
+
+        defines
+        {
+            "NIT_RELEASE",
             "NIT_IMGUI"
         }
 

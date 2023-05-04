@@ -4,7 +4,7 @@
 class ViewportCameraController;
 class LogicCamera;
 
-class DemoGame : public Nit::GameLayer
+class TheGameLayer : public Nit::GameLayer
 {
 public:
     Nit::Shared<LogicCamera> Camera;
@@ -20,4 +20,5 @@ public:
     
     void OnInitialize() override;
     void OnUpdate(const Nit::TimeStep& timeStep) override;
+    void OnFinalize() override;
 };

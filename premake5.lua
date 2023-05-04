@@ -28,4 +28,4 @@ group "Engine"
     include "Engine/NitEditor/premake5.lua"
 group ""
 
-include "Games/Demo/premake5.lua"
+include "Game/premake5.lua"

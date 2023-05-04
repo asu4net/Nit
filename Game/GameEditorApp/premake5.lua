@@ -1,4 +1,4 @@
-project "DemoEditor"
+project "GameEditorApp"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++20"
@@ -6,13 +6,13 @@ project "DemoEditor"
     
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/Demo")
-    objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/Demo")
+    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/Game")
+    objdir ("%{wks.location}/Intermediate/" .. outputdir .. "/Game")
 
-    pchheader "DemoEditorPCH.h"
-    pchsource "Source/DemoEditorPCH.cpp"
+    pchheader "GameEditorAppPCH.h"
+    pchsource "Source/GameEditorAppPCH.cpp"
 
-    forceincludes { "DemoEditorPCH.h" }
+    forceincludes { "GameEditorAppPCH.h" }
 
     files
     {
@@ -25,7 +25,7 @@ project "DemoEditor"
         "%{prj.location}/Source",
         "%{IncludeDirs.Nit}",
         "%{IncludeDirs.NitEditor}",
-        "%{IncludeDirs.DemoSource}",
+        "%{IncludeDirs.Game}",
         "%{IncludeDirs.imgui}",
         "%{IncludeDirs.imguizmo}",
         "%{IncludeDirs.glm}",
@@ -36,7 +36,7 @@ project "DemoEditor"
     {
         "Nit",
         "NitEditor",
-        "DemoSource"
+        "Game"
     }
 
     defines 

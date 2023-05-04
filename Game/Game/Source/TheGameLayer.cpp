@@ -1,10 +1,10 @@
-#include "DemoGame.h"
+#include "TheGameLayer.h"
 #include "Camera/LogicCamera.h"
 #include "Camera/ViewportCameraController.h"
 
 using namespace Nit;
 
-void DemoGame::OnInitialize()
+void TheGameLayer::OnInitialize()
 {
     Camera = std::make_shared<LogicCamera>(Game::GetInstance().GetWindow());
     Camera->AddController<ViewportCameraController>();
@@ -34,7 +34,7 @@ void DemoGame::OnInitialize()
 #endif
 }
 
-void DemoGame::OnUpdate(const TimeStep& timeStep)
+void TheGameLayer::OnUpdate(const TimeStep& timeStep)
 {
     AssetManager& assetManager = AssetManager::GetInstance();
     if (!CatTexture.IsValid())
@@ -56,4 +56,10 @@ void DemoGame::OnUpdate(const TimeStep& timeStep)
     renderer.Begin();
     renderer.SubmitQuad({translate(Math::IdentityMatrix, BallPosition), Math::WhiteColor, CatTexture.Lock()});
     renderer.End();
+}
+
+void TheGameLayer::OnFinalize()
+{
+    AudioManager& audioManager = AudioManager::GetInstance();
+    audioManager.DestroySource(LaserAudioSource);
 }
