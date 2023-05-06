@@ -14,7 +14,8 @@ void TheGameLayer::OnInitialize()
     CatTexture = assetManager.GetAssetByName<Texture2D>("Bola");
     CppTexture = assetManager.GetAssetByName<Texture2D>("Cpp");
     LaserAudio = assetManager.GetAssetByName<AudioBuffer>("laser");
-
+    TheFont = assetManager.GetAssetByName<Font>("SFSlapstickComic");
+    
     AudioManager& audioManager = AudioManager::GetInstance();
     LaserAudioSource = audioManager.CreateSource(LaserAudio.Lock());
 
@@ -47,7 +48,10 @@ void TheGameLayer::OnUpdate(const TimeStep& timeStep)
     renderer.SetBlendingMode(BlendingMode::Alpha);
     renderer.Begin();
     renderer.SubmitQuad(Grid);
-    renderer.SubmitQuad({translate(Math::IdentityMatrix, {1, 0, 0}), Math::LightRedColor});
+    glm::mat4 transform = Math::IdentityMatrix;
+    transform *= glm::translate(transform, {1, 0, 0});
+    transform *= glm::scale(transform,  {10, 10, 1});
+    renderer.SubmitQuad({transform, Math::WhiteColor, TheFont.Lock()->GetFontAtlas()});
     renderer.SubmitQuad({translate(Math::IdentityMatrix, {0, 1, 0}), Math::YellowColor});
     renderer.SubmitQuad({Math::IdentityMatrix, Math::LightBlueColor});
     renderer.SubmitQuad({translate(Math::IdentityMatrix, {0, -1, 0}), Math::WhiteColor, CppTexture.Lock()});

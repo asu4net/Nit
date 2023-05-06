@@ -5,6 +5,7 @@
 #include "Core/Serialization.h"
 #include "Rendering/Data/Shader.h"
 #include "Rendering/Data/Texture2D.h"
+#include "Rendering/Text/Font.h"
 
 namespace Nit
 {
@@ -105,6 +106,14 @@ namespace Nit
             if (!audioLink.IsValid()) return false;
             SerializeAsset(audioLink.Lock());
             audioLink.Lock()->Initialize();
+        }
+        if (path.extension() == ".ttf")
+        {
+            const std::string folder = GetRelativeAssetPath(path.string());
+            auto fontLink = CreateAsset<Font>(path.stem().string(), folder);
+            if (!fontLink.IsValid()) return false;
+            SerializeAsset(fontLink.Lock());
+            fontLink.Lock()->Initialize();
         }
         return false;
     }

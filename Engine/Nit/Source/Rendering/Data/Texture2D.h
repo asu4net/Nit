@@ -7,7 +7,7 @@ namespace Nit
     enum class MagFilter { Linear, Nearest };
     enum class WrapMode { Repeat, ClampToEdge };
     enum class TextureCoordinate { U, V };
-    enum class InternalFormat { None, RGB8 };
+    enum class InternalFormat { None, RGB8, RGBA8 };
     enum class DataFormat { None, RGB, RGBA };
     
     struct Texture2DSettings

@@ -79,15 +79,27 @@ namespace Nit
         }
     }
 
-    static InternalFormat GetInternalFormatFromOpenGl(GLenum internalFormat)
+    static InternalFormat GetInternalFormatFromOpenGl(const GLenum internalFormat)
     {
+        switch (internalFormat)
+        {
+        case GL_RGB8:
+            return InternalFormat::RGB8;
+        case GL_RGBA8:
+            return InternalFormat::RGBA8;
+        }
         return InternalFormat::RGB8;
     }
     
-    // static GLenum GetOpenGlInternalFormat(InternalFormat)
-    // {
-    //     return GL_RGB8;
-    // }
+    static GLenum GetOpenGlInternalFormat(const InternalFormat internalFormat)
+    {
+        switch (internalFormat) {
+            case InternalFormat::None: return 0;
+            case InternalFormat::RGB8: return GL_RGB8;
+            case InternalFormat::RGBA8: return GL_RGBA8;
+        default: return 0;
+        }
+    }
 
     static GLenum GetOpenGlDataFormat(const DataFormat dataFormat)
     {
@@ -192,7 +204,7 @@ namespace Nit
         m_Width = m_Settings.Width;
         m_Height = m_Settings.Height;
         
-        constexpr GLenum internalFormat = GL_RGB8;
+        constexpr GLenum internalFormat = GL_RGBA8;
         constexpr GLenum dataFormat = GL_RGBA;
         
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);

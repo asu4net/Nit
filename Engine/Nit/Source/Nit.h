@@ -25,6 +25,7 @@
 #include "Rendering/RenderingContext.h"
 #include "Rendering/Camera.h"
 #include "Rendering/RawShaderStrings.h"
+#include "Rendering/Text/Font.h"
 
 // ImGui
 #ifdef NIT_IMGUI
