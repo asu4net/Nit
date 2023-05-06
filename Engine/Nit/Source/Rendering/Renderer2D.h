@@ -8,6 +8,11 @@ namespace Nit
     class Camera;
     class Window;
 
+    enum class Flip
+    {
+        None, X, Y, Both
+    };
+    
     struct Quad
     {
         glm::mat4 ModelMatrix = Math::IdentityMatrix;
@@ -18,6 +23,7 @@ namespace Nit
         glm::vec2 LocationInAtlas = Math::ZeroVector;
         glm::vec2 UVScale = Math::OneVector;
         glm::vec2 Size = Math::OneVector;
+        Flip Flip = Flip::None;
     };
 
     struct Renderer2DSettings

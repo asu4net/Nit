@@ -66,7 +66,8 @@ namespace Nit
         };
     }
 
-    static void GetQuadVertexUV(const glm::vec2& subTexSize, const glm::vec2& atlasSize, const glm::vec2& location, std::array<glm::vec2, 4>& vertexUV)
+    static void GetQuadVertexUV(const glm::vec2& subTexSize, const glm::vec2& atlasSize, const glm::vec2& location,
+        std::array<glm::vec2, 4>& vertexUV, Flip flip)
     {
         const float x{location.x}, y{location.y};
         const float atlasWidth = atlasSize.x;
@@ -74,12 +75,36 @@ namespace Nit
         const float subTexWidth = subTexSize.x;
         const float subTexHeight = subTexSize.y;
 
-        vertexUV = {
+        const std::array uv = {
             glm::vec2{(x * subTexWidth) / atlasWidth, (y * subTexHeight) / atlasHeight },
             glm::vec2{((x + 1) * subTexWidth) / atlasWidth, (y * subTexHeight) / atlasHeight },
             glm::vec2{((x + 1) * subTexWidth) / atlasWidth, ((y + 1) * subTexHeight) / atlasHeight },
             glm::vec2{(x * subTexWidth) / atlasWidth, ((y + 1) * subTexHeight) / atlasHeight },
         };
+
+        switch (flip)
+        {
+        case Flip::None:
+            vertexUV = uv;
+            return;
+        case Flip::X:
+            vertexUV[0] = uv[1];
+            vertexUV[1] = uv[0];
+            vertexUV[2] = uv[3];
+            vertexUV[3] = uv[2];
+            return;
+        case Flip::Y:
+            vertexUV[0] = uv[2];
+            vertexUV[1] = uv[3];
+            vertexUV[2] = uv[0];
+            vertexUV[3] = uv[1];
+            return;
+        case Flip::Both:
+            vertexUV[0] = uv[3];
+            vertexUV[1] = uv[2];
+            vertexUV[2] = uv[1];
+            vertexUV[3] = uv[0];
+        }
     }
     
     void Renderer2D::CreateShaders(const Renderer2DSettings& rendererSettings)
@@ -221,14 +246,17 @@ namespace Nit
             NextBatch();
         
         std::array<glm::vec3, 4> vertexPositions{};
+
         const float textureWidth = quadProperties.Texture ? static_cast<float>(quadProperties.Texture->GetWidth()) : 1;
         const float textureHeight = quadProperties.Texture ? static_cast<float>(quadProperties.Texture->GetHeight()) : 1;
         const glm::vec2 textureSize = {textureWidth, textureHeight};
+        
         GetQuadVertexPositions(textureSize, quadProperties.Size, vertexPositions);
-
+        
         std::array<glm::vec2, 4> vertexUV{};
+
         const glm::vec2 subTexSize = quadProperties.bIsSubTexture ? quadProperties.SubTextureSize : textureSize;
-        GetQuadVertexUV(subTexSize, textureSize, quadProperties.LocationInAtlas, vertexUV);
+        GetQuadVertexUV(subTexSize, textureSize, quadProperties.LocationInAtlas, vertexUV, quadProperties.Flip);
         
         for (int i = 0; i < 4; i++)
         {

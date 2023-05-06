@@ -71,18 +71,25 @@ namespace Nit
         m_FontAtlas->Configure(settings);
         m_FontAtlas->UploadToGPU();
         m_FontAtlas->SetData(m_PixelsRgb, pixelsRgbLenght * sizeof(unsigned char));
-        //m_FontAtlas->SetRawData(m_PixelsRgb);
     }
 
-    glm::vec2 Font::GetCharLocation(const char c)
+    void Font::GetBakedChar(const char c, std::array<glm::vec2, 4>& vertexUV, std::array<glm::vec3, 4>& vertexPositions)
     {
         const auto* bakedChar = static_cast<stbtt_bakedchar*>(m_BakedChar);
         float xPos{0}, yPos{0};
-        auto* alignedQuad = new stbtt_aligned_quad();
-        stbtt_GetBakedQuad(bakedChar, m_Width, m_Height, c, &xPos, &yPos, alignedQuad, true);
-        //TODO: Finish
-        delete alignedQuad;
-        return {};
+        auto* q = new stbtt_aligned_quad();
+        stbtt_GetBakedQuad(bakedChar, m_Width, m_Height, c, &xPos, &yPos, q, true);
+
+        glm::vec2 s = { (q->s1 - q->s0), (q->t1 - q->t0) };
+        s = glm::normalize(s);
+        s.x /= 2;
+        s.y /= 2;
+        vertexPositions[0] = {-s.x, -s.y, 0}; vertexUV[0] = {q->s0, q->t1};
+        vertexPositions[1] = { s.x, -s.y, 0}; vertexUV[1] = {q->s1, q->t1};
+        vertexPositions[2] = { s.x,  s.y, 0}; vertexUV[2] = {q->s1, q->t0};
+        vertexPositions[3] = {-s.x,  s.y, 0}; vertexUV[3] = {q->s0, q->t0};
+        
+        delete q;
     }
 
     void Font::Initialize()
