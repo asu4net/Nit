@@ -1,0 +1,17 @@
+{
+    "Name": "FontAtlas",
+    "Path": "/Content/Textures/Pang/FontAtlas.png",
+    "Id": {
+        "idHandler": 3033637919576814909
+    },
+    "TypeName": "Texture2D",
+    "Texture2DSettings": {
+        "CreateFromFile": true,
+        "Width": 0,
+        "Height": 0,
+        "MagFilter": "Nearest",
+        "MinFilter": "Nearest",
+        "WrapModeU": "Repeat",
+        "WrapModeV": "Repeat"
+    }
+}
