@@ -240,36 +240,77 @@ namespace Nit
         return textureSlot;
     }
 
-    void Renderer2D::SubmitQuad(const Quad& quadProperties)
+    void Renderer2D::SubmitQuad(const Quad& quad)
     {
         if (g_QuadRenderData.QuadCount > QuadRenderData::MaxQuads || g_QuadRenderData.LastTextureSlot > QuadRenderData::MaxTextureSlots)
             NextBatch();
         
         std::array<glm::vec3, 4> vertexPositions{};
 
-        const float textureWidth = quadProperties.Texture ? static_cast<float>(quadProperties.Texture->GetWidth()) : 1;
-        const float textureHeight = quadProperties.Texture ? static_cast<float>(quadProperties.Texture->GetHeight()) : 1;
+        const float textureWidth = quad.Texture ? static_cast<float>(quad.Texture->GetWidth()) : 1;
+        const float textureHeight = quad.Texture ? static_cast<float>(quad.Texture->GetHeight()) : 1;
         const glm::vec2 textureSize = {textureWidth, textureHeight};
         
-        GetQuadVertexPositions(textureSize, quadProperties.Size, vertexPositions);
+        GetQuadVertexPositions(textureSize, quad.Size, vertexPositions);
         
         std::array<glm::vec2, 4> vertexUV{};
 
-        const glm::vec2 subTexSize = quadProperties.bIsSubTexture ? quadProperties.SubTextureSize : textureSize;
-        GetQuadVertexUV(subTexSize, textureSize, quadProperties.LocationInAtlas, vertexUV, quadProperties.Flip);
+        const glm::vec2 subTexSize = quad.bIsSubTexture ? quad.SubTextureSize : textureSize;
+        GetQuadVertexUV(subTexSize, textureSize, quad.LocationInAtlas, vertexUV, quad.Flip);
         
         for (int i = 0; i < 4; i++)
         {
-            g_QuadRenderData.LastVertex->Position = quadProperties.ModelMatrix * glm::vec4(vertexPositions[i], 1.0f);
-            g_QuadRenderData.LastVertex->Color = quadProperties.Color;
+            g_QuadRenderData.LastVertex->Position = quad.ModelMatrix * glm::vec4(vertexPositions[i], 1.0f);
+            g_QuadRenderData.LastVertex->Color = quad.Color;
             g_QuadRenderData.LastVertex->UV = vertexUV[i];
-            g_QuadRenderData.LastVertex->UVScale = quadProperties.UVScale;
-            g_QuadRenderData.LastVertex->TextureSlot = GetTextureSlot(quadProperties.Texture);
+            g_QuadRenderData.LastVertex->UVScale = quad.UVScale;
+            g_QuadRenderData.LastVertex->TextureSlot = GetTextureSlot(quad.Texture);
             g_QuadRenderData.LastVertex++;
         }
 
         g_QuadRenderData.IndexCount += 6;
         g_QuadRenderData.QuadCount++;
+    }
+
+    void Renderer2D::SubmitTextQuad(const TextQuad& textQuad)
+    {
+        const Shared<Texture2D> atlas = textQuad.Font->GetFontAtlas();
+
+        glm::vec3 offset = Math::ZeroVector;
+        
+        for (const char c : textQuad.Text)
+        {
+            AlignedQuad q{};
+            textQuad.Font->GetBakedChar(c, q);
+            std::array<glm::vec3, 4> vertexPositions{};
+            std::array<glm::vec2, 4> vertexUV{};
+
+            vertexPositions[0] = {q.X0, q.Y0, 0}; vertexUV[3] = {q.S0, q.T0};
+            vertexPositions[1] = {q.X1, q.Y0, 0}; vertexUV[2] = {q.S1, q.T0};
+            vertexPositions[2] = {q.X1, q.Y1, 0}; vertexUV[1] = {q.S1, q.T1};
+            vertexPositions[3] = {q.X0, q.Y1, 0}; vertexUV[0] = {q.S0, q.T1};
+
+            static constexpr float scale = 0.005f;
+            
+            glm::mat4 transform = glm::translate(textQuad.ModelMatrix, offset);
+            transform *= glm::scale(Math::IdentityMatrix, {scale, scale, scale});
+            
+            for (int i = 0; i < 4; i++)
+            {
+                g_QuadRenderData.LastVertex->Position = transform * glm::vec4(vertexPositions[i], 1.0f);
+                g_QuadRenderData.LastVertex->Color = textQuad.Color;
+                g_QuadRenderData.LastVertex->UV = vertexUV[i];
+                g_QuadRenderData.LastVertex->UVScale = Math::WhiteColor;
+                g_QuadRenderData.LastVertex->TextureSlot = GetTextureSlot(atlas);
+                g_QuadRenderData.LastVertex++;
+            }
+
+            g_QuadRenderData.IndexCount += 6;
+            g_QuadRenderData.QuadCount++;
+
+            offset.x += q.XPos * scale;
+            offset.y += q.YPos * scale;
+        }
     }
 
     void Renderer2D::Flush()

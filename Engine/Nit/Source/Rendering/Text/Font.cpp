@@ -73,23 +73,17 @@ namespace Nit
         m_FontAtlas->SetData(m_PixelsRgb, pixelsRgbLenght * sizeof(unsigned char));
     }
 
-    void Font::GetBakedChar(const char c, std::array<glm::vec2, 4>& vertexUV, std::array<glm::vec3, 4>& vertexPositions)
+    void Font::GetBakedChar(const char c, AlignedQuad& q)
     {
         const auto* bakedChar = static_cast<stbtt_bakedchar*>(m_BakedChar);
         float xPos{0}, yPos{0};
-        auto* q = new stbtt_aligned_quad();
-        stbtt_GetBakedQuad(bakedChar, m_Width, m_Height, c, &xPos, &yPos, q, true);
-
-        glm::vec2 s = { (q->s1 - q->s0), (q->t1 - q->t0) };
-        s = glm::normalize(s);
-        s.x /= 2;
-        s.y /= 2;
-        vertexPositions[0] = {-s.x, -s.y, 0}; vertexUV[0] = {q->s0, q->t1};
-        vertexPositions[1] = { s.x, -s.y, 0}; vertexUV[1] = {q->s1, q->t1};
-        vertexPositions[2] = { s.x,  s.y, 0}; vertexUV[2] = {q->s1, q->t0};
-        vertexPositions[3] = {-s.x,  s.y, 0}; vertexUV[3] = {q->s0, q->t0};
-        
-        delete q;
+        stbtt_aligned_quad quad;
+        stbtt_GetBakedQuad(bakedChar, m_Width, m_Height, c, &xPos, &yPos, &quad, true);
+        q.X0 = quad.x0; q.X1 = quad.x1;
+        q.Y0 = quad.y0; q.Y1 = quad.y1;
+        q.S0 = quad.s0; q.S1 = quad.s1;
+        q.T0 = quad.t0; q.T1 = quad.t1;
+        q.XPos = xPos; q.YPos = yPos;
     }
 
     void Font::Initialize()

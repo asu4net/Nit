@@ -2,6 +2,7 @@
 #include "RenderCommandQueue.h"
 #include "Data/Texture2D.h"
 #include "Camera.h"
+#include "Text/Font.h"
 
 namespace Nit
 {
@@ -24,6 +25,15 @@ namespace Nit
         glm::vec2 UVScale = Math::OneVector;
         glm::vec2 Size = Math::OneVector;
         Flip Flip = Flip::None;
+    };
+
+    struct TextQuad
+    {
+        std::string Text;
+        glm::mat4 ModelMatrix = Math::IdentityMatrix;
+        glm::vec4 Color = Math::WhiteColor;
+        Shared<Font> Font = nullptr;
+        glm::vec2 Size = Math::OneVector;
     };
 
     struct Renderer2DSettings
@@ -60,7 +70,8 @@ namespace Nit
         void SetBlendingMode(const BlendingMode blendingMode);
         void SetDepthTestEnabled(const bool bEnabled);
         void SetBlendingEnabled(const bool bEnabled);
-        void SubmitQuad(const Quad& quadProperties);
+        void SubmitQuad(const Quad& quad);
+        void SubmitTextQuad(const TextQuad&  textQuad);
 
     private:
         Renderer2D() = default;

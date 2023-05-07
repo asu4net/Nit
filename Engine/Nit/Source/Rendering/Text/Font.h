@@ -3,6 +3,14 @@
 
 namespace Nit
 {
+
+    struct AlignedQuad
+    {
+        float X0,Y0,S0,T0; // top-left
+        float X1,Y1,S1,T1; // bottom-right
+        float XPos, YPos;
+    } ;
+    
     class Font : public Asset
     {
     public:
@@ -13,7 +21,7 @@ namespace Nit
         bool Unload() override;
         void Create();
 
-        void GetBakedChar(char c, std::array<glm::vec2, 4>& vertexUV, std::array<glm::vec3, 4>& vertexPositions);
+        void GetBakedChar(char c, AlignedQuad& q);
 
         const Shared<class Texture2D>& GetFontAtlas() const { return m_FontAtlas; } 
         
