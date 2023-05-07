@@ -285,15 +285,15 @@ namespace Nit
             std::array<glm::vec3, 4> vertexPositions{};
             std::array<glm::vec2, 4> vertexUV{};
 
-            vertexPositions[0] = {q.X0, q.Y0, 0}; vertexUV[3] = {q.S0, q.T0};
-            vertexPositions[1] = {q.X1, q.Y0, 0}; vertexUV[2] = {q.S1, q.T0};
-            vertexPositions[2] = {q.X1, q.Y1, 0}; vertexUV[1] = {q.S1, q.T1};
-            vertexPositions[3] = {q.X0, q.Y1, 0}; vertexUV[0] = {q.S0, q.T1};
+            vertexPositions[3] = {q.X0, q.Y0, 0}; vertexUV[3] = {q.S0, q.T0};
+            vertexPositions[2] = {q.X1, q.Y0, 0}; vertexUV[2] = {q.S1, q.T0};
+            vertexPositions[1] = {q.X1, q.Y1, 0}; vertexUV[1] = {q.S1, q.T1};
+            vertexPositions[0] = {q.X0, q.Y1, 0}; vertexUV[0] = {q.S0, q.T1};
 
             static constexpr float scale = 0.005f;
             
             glm::mat4 transform = glm::translate(textQuad.ModelMatrix, offset);
-            transform *= glm::scale(Math::IdentityMatrix, {scale, scale, scale});
+            transform *= glm::scale(Math::IdentityMatrix, {scale, -scale, scale});
             
             for (int i = 0; i < 4; i++)
             {
