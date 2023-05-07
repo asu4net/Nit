@@ -30,6 +30,12 @@ void TheGameLayer::OnInitialize()
     Grid.UVScale *= 30;
     Grid.Color = Math::DarkGreyColor;
 
+    HelloWorldMessage.Text = "hello world";
+    HelloWorldMessage.Font = TheFont.Lock();
+    HelloWorldMessage.ModelMatrix = glm::translate(Math::IdentityMatrix, {0, 1.6, 0});
+    HelloWorldMessage.Spacing = 0.9f;
+    HelloWorldMessage.Size = { 2, 2 };
+
 #ifdef NIT_IMGUI
     ImGuiRenderer::GetInstance().PushWidget<Vector3Widget>(BallPosition, "Ball Pos");
 #endif
@@ -48,20 +54,11 @@ void TheGameLayer::OnUpdate(const TimeStep& timeStep)
     renderer.SetBlendingMode(BlendingMode::Alpha);
     renderer.Begin();
     renderer.SubmitQuad(Grid);
-    glm::mat4 transform = Math::IdentityMatrix;
-    transform *= glm::translate(transform, {1, 0, 0});
-    transform *= glm::scale(transform,  {5, 5, 1});
-    
     renderer.SubmitQuad({translate(Math::IdentityMatrix, {0, 1, 0}), Math::YellowColor});
     renderer.SubmitQuad({Math::IdentityMatrix, Math::LightBlueColor});
     renderer.SubmitQuad({translate(Math::IdentityMatrix, {0, -1, 0}), Math::WhiteColor, CppTexture.Lock()});
     renderer.SubmitQuad({translate(Math::IdentityMatrix, {1, 0, 0}), Math::LightRedColor});
-    TextQuad textQuad;
-    textQuad.Text = "hello world";
-    textQuad.Font = TheFont.Lock();
-    textQuad.ModelMatrix = glm::translate(Math::IdentityMatrix, {0, 1.6, 0});
-    
-    renderer.SubmitTextQuad(textQuad);
+    renderer.SubmitTextQuad(HelloWorldMessage);
     renderer.End();
     renderer.SetBlendingMode(BlendingMode::Add);
     renderer.Begin();

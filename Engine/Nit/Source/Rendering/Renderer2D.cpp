@@ -290,10 +290,11 @@ namespace Nit
             vertexPositions[1] = {q.X1, q.Y1, 0}; vertexUV[1] = {q.S1, q.T1};
             vertexPositions[0] = {q.X0, q.Y1, 0}; vertexUV[0] = {q.S0, q.T1};
 
-            static constexpr float scale = 0.005f;
+            static constexpr float Scale = 0.002f;
             
             glm::mat4 transform = glm::translate(textQuad.ModelMatrix, offset);
-            transform *= glm::scale(Math::IdentityMatrix, {scale, -scale, scale});
+            transform *= glm::scale(Math::IdentityMatrix, {Scale * textQuad.Size.x,
+                -Scale * textQuad.Size.y, Scale});
             
             for (int i = 0; i < 4; i++)
             {
@@ -308,8 +309,8 @@ namespace Nit
             g_QuadRenderData.IndexCount += 6;
             g_QuadRenderData.QuadCount++;
 
-            offset.x += q.XPos * scale;
-            offset.y += q.YPos * scale;
+            offset.x += q.XPos * Scale * textQuad.Spacing * textQuad.Size.x;
+            offset.y += q.YPos * Scale * textQuad.Size.y;
         }
     }
 

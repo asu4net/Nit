@@ -34,6 +34,7 @@ namespace Nit
         glm::vec4 Color = Math::WhiteColor;
         Shared<Font> Font = nullptr;
         glm::vec2 Size = Math::OneVector;
+        float Spacing = 1;
     };
 
     struct Renderer2DSettings
