@@ -37,7 +37,8 @@ project "Nit"
         "%{IncludeDirs.rapidjson}",
         "%{IncludeDirs.openal}",
         "%{IncludeDirs.openalSource}",
-        "%{IncludeDirs.openalCommon}"
+        "%{IncludeDirs.openalCommon}",
+        "%{IncludeDirs.box2d}"
     }
 
     links
@@ -46,7 +47,8 @@ project "Nit"
         "glad",
         "glfw",
         "rttr",
-        "openal"
+        "openal",
+        "box2d"
     }
 
     defines 

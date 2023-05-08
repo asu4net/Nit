@@ -17,3 +17,6 @@
 [submodule "ThirdParty/rapidjson"]
 	path = ThirdParty/rapidjson
 	url = https://github.com/asu4net/rapidjson.git
+[submodule "ThirdParty/box2d"]
+	path = ThirdParty/box2d
+	url = https://github.com/asu4net/box2d.git
