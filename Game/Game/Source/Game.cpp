@@ -1,12 +1,12 @@
-#include "TheGameLayer.h"
+#include "Game.h"
 #include "Camera/LogicCamera.h"
 #include "Camera/ViewportCameraController.h"
 
 using namespace Nit;
 
-void TheGameLayer::OnInitialize()
+void Game::OnStart()
 {
-    Camera = std::make_shared<LogicCamera>(Game::GetInstance().GetWindow());
+    Camera = std::make_shared<LogicCamera>(Engine::GetInstance().GetWindow());
     Camera->AddController<ViewportCameraController>();
 
     AssetManager& assetManager = AssetManager::GetInstance();
@@ -19,7 +19,7 @@ void TheGameLayer::OnInitialize()
     AudioManager& audioManager = AudioManager::GetInstance();
     LaserAudioSource = audioManager.CreateSource(LaserAudio.Lock());
 
-    Game::GetInstance().GetWindow()->Events().KeyPressedEvent.Add([&](int key, bool repeat)
+    Engine::GetInstance().GetWindow()->Events().KeyPressedEvent.Add([&](int key, bool repeat)
     {
         if (key != KEY_SPACE) return;
         audioManager.Play(LaserAudioSource);
@@ -41,7 +41,7 @@ void TheGameLayer::OnInitialize()
 #endif
 }
 
-void TheGameLayer::OnUpdate(const TimeStep& timeStep)
+void Game::OnUpdate(const TimeStep& timeStep)
 {
     AssetManager& assetManager = AssetManager::GetInstance();
     if (!CatTexture.IsValid())
@@ -50,6 +50,7 @@ void TheGameLayer::OnUpdate(const TimeStep& timeStep)
     Camera->Update(timeStep.DeltaTime);
     Renderer2D& renderer = Renderer2D::GetInstance();
 
+    renderer.ClearScreen(Math::DarkGreyColor);
     renderer.SetRenderData({Camera->GetRenderData()});
     renderer.SetBlendingMode(BlendingMode::Alpha);
     renderer.Begin();
@@ -66,7 +67,7 @@ void TheGameLayer::OnUpdate(const TimeStep& timeStep)
     renderer.End();
 }
 
-void TheGameLayer::OnFinalize()
+void Game::OnFinish()
 {
     AudioManager& audioManager = AudioManager::GetInstance();
     audioManager.DestroySource(LaserAudioSource);

@@ -1,3 +1,3 @@
 #pragma once
 
-#include "EditorLayer.h"
+#include "Editor.h"

@@ -118,7 +118,7 @@ namespace Nit
         return false;
     }
 
-    void AssetManager::Initialize()
+    void AssetManager::Start()
     {
         static const std::string AssetDirectory = CurrentDirectory() + "\\Content";
         for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(AssetDirectory))
@@ -129,7 +129,7 @@ namespace Nit
         }
     }
 
-    void AssetManager::Finalize()
+    void AssetManager::Finish()
     {
         for (auto[id, asset] : m_IdAssetMap)
         {

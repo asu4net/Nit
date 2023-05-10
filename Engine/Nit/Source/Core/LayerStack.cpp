@@ -2,10 +2,10 @@
 
 namespace Nit
 {
-    void LayerStack::Initialize()
+    void LayerStack::Start()
     {
         for (const auto& gameLayer : m_GameLayers)
-            gameLayer->OnInitialize();
+            gameLayer->OnStart();
     }
 
     void LayerStack::Update(const TimeStep& timeStep)
@@ -20,9 +20,9 @@ namespace Nit
         }
     }
 
-    void LayerStack::Finalize()
+    void LayerStack::Finish()
     {
         for (const auto& gameLayer : m_GameLayers)
-            gameLayer->OnFinalize();
+            gameLayer->OnFinish();
     }
 }

@@ -3,16 +3,16 @@
 
 namespace Nit
 {
-    class GameLayer
+    class EngineLayer
     {
     protected:
-        GameLayer() = default;
-        virtual ~GameLayer() = default; 
+        EngineLayer() = default;
+        virtual ~EngineLayer() = default; 
         
-        virtual void OnInitialize() {}
+        virtual void OnStart() {}
         virtual void OnUpdate(const TimeStep& timeStep) {}
         virtual void OnFixedUpdate(const TimeStep& timeStep) {}
-        virtual void OnFinalize() {}
+        virtual void OnFinish() {}
 
         friend class LayerStack;
     };

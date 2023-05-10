@@ -3,7 +3,7 @@
 
 namespace Nit
 {
-    void AudioManager::Initialize()
+    void AudioManager::Start()
     {
         m_Device = alcOpenDevice(nullptr);
         
@@ -17,7 +17,7 @@ namespace Nit
         assert(false && "AudioManager Initialization failed");
     }
 
-    void AudioManager::Finalize()
+    void AudioManager::Finish()
     {
         alcDestroyContext(m_Context);
         alcCloseDevice(m_Device);

@@ -27,6 +27,7 @@ project "GameApp"
         "%{IncludeDirs.Game}",
         "%{IncludeDirs.glm}",
         "%{IncludeDirs.rttr}",
+        "%{IncludeDirs.entt}"
     }
 
     links

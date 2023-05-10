@@ -38,7 +38,8 @@ project "Nit"
         "%{IncludeDirs.openal}",
         "%{IncludeDirs.openalSource}",
         "%{IncludeDirs.openalCommon}",
-        "%{IncludeDirs.box2d}"
+        "%{IncludeDirs.box2d}",
+        "%{IncludeDirs.entt}"
     }
 
     links

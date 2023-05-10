@@ -10,8 +10,8 @@ namespace Nit
     class AudioManager : public Singleton<AudioManager>
     {
     public:
-        void Initialize();
-        void Finalize();
+        void Start();
+        void Finish();
 
         AudioSource CreateSource(const Shared<AudioBuffer>& audioBuffer);
 

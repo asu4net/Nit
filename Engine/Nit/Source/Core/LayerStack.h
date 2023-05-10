@@ -1,5 +1,5 @@
 #pragma once
-#include "GameLayer.h"
+#include "EngineLayer.h"
 
 //TODO: Pop and Get methods. Requirements: rtti
 
@@ -21,7 +21,7 @@ namespace Nit
         template<typename T>
         Shared<T> Get()
         {
-            for (Shared<GameLayer> gameLayer : m_GameLayers)
+            for (Shared<EngineLayer> gameLayer : m_GameLayers)
             {
                 if (Shared<T> castedLayer = std::dynamic_pointer_cast<T>(gameLayer))
                     return castedLayer;
@@ -29,11 +29,11 @@ namespace Nit
             return nullptr;
         }
 
-        void Initialize();
+        void Start();
         void Update(const TimeStep& timeStep);
-        void Finalize();
+        void Finish();
 
     private:
-        std::vector<Shared<GameLayer>> m_GameLayers;
+        std::vector<Shared<EngineLayer>> m_GameLayers;
     };
 }

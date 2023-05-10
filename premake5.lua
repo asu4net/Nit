@@ -22,6 +22,7 @@ group "ThirdParty"
     include "ThirdParty/rapidjson/premake5.lua"
     include "ThirdParty/openal/premake5.lua"
     include "ThirdParty/box2d/premake5.lua"
+    include "ThirdParty/entt/premake5.lua"
 group ""
 
 group "Engine"

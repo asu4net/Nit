@@ -1,13 +1,13 @@
-#include "EditorLayer.h"
+#include "Editor.h"
 #include "ImGui/ImGuiRenderer.h"
 
 namespace Nit
 {
-    EditorLayer::EditorLayer()
+    Editor::Editor()
     {
     }
 
-    void EditorLayer::OnInitialize()
+    void Editor::OnStart()
     {
         const Shared<ImGuiWidget> widget = ImGuiRenderer::GetInstance().PushWidget<ImGuiWidget>();
         
@@ -23,7 +23,7 @@ namespace Nit
                     if (ImGui::MenuItem("Import", "Ctrl+I"))
                     {
                         constexpr const char* filter = "Asset (*.)\0*.\0";
-                        const std::string path = Game::GetInstance().GetWindow()->OpenFile(filter);
+                        const std::string path = Engine::GetInstance().GetWindow()->OpenFile(filter);
                         if (!path.empty())
                         {
                             AssetManager::GetInstance().ImportAsset(path);
@@ -38,7 +38,7 @@ namespace Nit
         });
     }
 
-    void EditorLayer::OnUpdate(const TimeStep& timeStep)
+    void Editor::OnUpdate(const TimeStep& timeStep)
     {
     }
 }

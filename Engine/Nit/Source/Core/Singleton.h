@@ -22,7 +22,7 @@ namespace Nit
             return GetInstance();
         }
 
-        static void Destroy()
+        static void DestroySingleton()
         {
             assert(m_Instance && "There is no instance to destroy!");
             delete m_Instance;

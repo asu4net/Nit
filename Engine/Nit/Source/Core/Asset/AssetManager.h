@@ -51,8 +51,8 @@ namespace Nit
             return link;
         }
         
-        void Initialize();
-        void Finalize();
+        void Start();
+        void Finish();
     
     private:
         std::unordered_map<Id, Shared<Asset>> m_IdAssetMap;

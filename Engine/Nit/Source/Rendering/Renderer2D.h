@@ -56,8 +56,8 @@ namespace Nit
         
         Renderer2D(Renderer2D&&) = delete;
         
-        void Initialize(const Shared<Window>& window, const Renderer2DSettings& rendererSettings = {});
-        void Finalize();
+        void Start(const Shared<Window>& window, const Renderer2DSettings& rendererSettings = {});
+        void Finish();
 
         void SetRenderData(const RenderData& renderData);
         

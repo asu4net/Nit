@@ -3,12 +3,12 @@
 
 namespace Nit
 {
-    class EditorLayer : public GameLayer
+    class Editor : public EngineLayer
     {
     public:
-        EditorLayer();
+        Editor();
 
-        void OnInitialize() override;
+        void OnStart() override;
         void OnUpdate(const TimeStep& timeStep) override;
     };
 }

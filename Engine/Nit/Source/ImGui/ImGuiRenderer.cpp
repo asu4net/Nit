@@ -1,7 +1,7 @@
 ﻿#ifdef NIT_IMGUI
 #include "ImGuiRenderer.h"
 #include <glfw/glfw3.h>
-#include "Core/Game.h"
+#include "Core/Engine.h"
 #include "Core/Asset/AssetManager.h"
 #include "Window/Window.h"
 
@@ -49,7 +49,7 @@ namespace Nit
         style.Colors[ImGuiCol_Button] = {0.356f, 0.356f, 0.416f, 1.f};
     }
 
-    void ImGuiRenderer::Initialize(const Shared<Window>& window, bool bSetDefaultConfiguration, Delegate<void()> customConfiguration)
+    void ImGuiRenderer::Start(const Shared<Window>& window, bool bSetDefaultConfiguration, Delegate<void()> customConfiguration)
     {
         m_Window = window;
         IMGUI_CHECKVERSION();
@@ -156,7 +156,7 @@ namespace Nit
         }
     }
 
-    void ImGuiRenderer::Finalize()
+    void ImGuiRenderer::Finish()
     {
         m_RootWidget->Destroy();
         ImGui_ImplOpenGL3_Shutdown();

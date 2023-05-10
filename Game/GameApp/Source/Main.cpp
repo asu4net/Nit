@@ -1,11 +1,11 @@
 #include <Nit.h>
-#include "TheGameLayer.h"
+#include "Game.h"
 
 using namespace Nit;
 
 int main()
 {
-    Game& game = Game::CreateSingleton();
-    game.GetLayerStack()->Push<TheGameLayer>();
-    game.Initialize();
+    Engine& engine = Engine::CreateSingleton();
+    engine.GetLayerStack()->Push<Game>();
+    engine.Start();
 }

@@ -29,7 +29,8 @@ project "GameEditorApp"
         "%{IncludeDirs.imgui}",
         "%{IncludeDirs.imguizmo}",
         "%{IncludeDirs.glm}",
-        "%{IncludeDirs.rttr}"
+        "%{IncludeDirs.rttr}",
+        "%{IncludeDirs.entt}"
     }
 
     links

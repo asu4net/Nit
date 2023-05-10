@@ -136,7 +136,7 @@ namespace Nit
         }
     }
     
-    void Renderer2D::Initialize(const Shared<Window>& window, const Renderer2DSettings& rendererSettings)
+    void Renderer2D::Start(const Shared<Window>& window, const Renderer2DSettings& rendererSettings)
     {
         AssetManager& assetManager = AssetManager::GetInstance();
         m_CommandQueue = std::make_unique<RenderCommandQueue>();
@@ -203,7 +203,7 @@ namespace Nit
         });
     }
 
-    void Renderer2D::Finalize()
+    void Renderer2D::Finish()
     {
     }
 
@@ -316,15 +316,16 @@ namespace Nit
 
     void Renderer2D::Flush()
     {
-        g_QuadRenderData.VertexBuffer->SetData(g_QuadRenderData.VertexData,
-                                         static_cast<uint32_t>(reinterpret_cast<uint8_t*>(g_QuadRenderData.LastVertex) -
-                                             reinterpret_cast<uint8_t*>(g_QuadRenderData.VertexData)));
+        if (const uint32_t vertexDataSize = static_cast<uint32_t>(reinterpret_cast<uint8_t*>(g_QuadRenderData.LastVertex) -
+            reinterpret_cast<uint8_t*>(g_QuadRenderData.VertexData)))
+        {
+            g_QuadRenderData.VertexBuffer->SetData(g_QuadRenderData.VertexData, vertexDataSize);
 
-        for (uint32_t i = 0; i < g_QuadRenderData.LastTextureSlot; i++)
-            g_QuadRenderData.Textures[i]->Bind(i);
+            for (uint32_t i = 0; i < g_QuadRenderData.LastTextureSlot; i++)
+                g_QuadRenderData.Textures[i]->Bind(i);
         
-        m_CommandQueue->Submit<DrawElementsCommand>(g_QuadRenderData.VertexArray, g_QuadRenderData.IndexCount);
-
+            m_CommandQueue->Submit<DrawElementsCommand>(g_QuadRenderData.VertexArray, g_QuadRenderData.IndexCount);
+        }
         // TODO: Move this to other thread
         while (!m_CommandQueue->IsEmpty()) m_CommandQueue->ExecuteNext();
     }

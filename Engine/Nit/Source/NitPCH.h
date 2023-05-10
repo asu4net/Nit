@@ -40,6 +40,8 @@
 #include "ImGui/Implementation/imgui_impl_opengl3.h"
 #endif
 
+#include <entt.hpp>
+
 #include "Math/Math.h"
 
 #include "Core/Delegates/Delegate.h"

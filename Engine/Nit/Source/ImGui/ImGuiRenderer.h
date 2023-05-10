@@ -19,9 +19,9 @@ namespace Nit
             return m_RootWidget->PushWidget<T>(std::forward<TArgs>(args)...);
         }
         
-        void Initialize(const Shared<Window>& window, bool bSetDefaultConfiguration = true, Delegate<void()> customConfiguration = {});
+        void Start(const Shared<Window>& window, bool bSetDefaultConfiguration = true, Delegate<void()> customConfiguration = {});
         void Update();
-        void Finalize();
+        void Finish();
         
     private:
         ImGuiRenderer();

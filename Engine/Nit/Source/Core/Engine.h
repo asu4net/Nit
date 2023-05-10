@@ -4,19 +4,19 @@
 
 namespace Nit
 {
-    class Game : public Singleton<Game>
+    class Engine : public Singleton<Engine>
     {
     public:
-        Game(Game&&) = delete;
+        Engine(Engine&&) = delete;
         
         const Shared<LayerStack>& GetLayerStack() const { return m_LayerStack; }
         const Shared<class Window>& GetWindow() const { return m_Window; }
         
-        void Initialize();
+        void Start();
         
     private:
-        Game();
-        ~Game();
+        Engine();
+        ~Engine();
         
         Shared<Window> m_Window;
         class Renderer2D& m_Renderer2D;
@@ -29,6 +29,6 @@ namespace Nit
         class ImGuiRenderer& m_ImGuiRenderer;
         #endif
 
-        friend class Singleton<Game>;
+        friend class Singleton<Engine>;
     };
 }

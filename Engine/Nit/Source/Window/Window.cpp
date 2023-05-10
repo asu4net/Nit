@@ -12,7 +12,7 @@ namespace Nit
         return std::make_shared<Window>();
     }
 
-    void Window::Initialize(const Configuration& config)
+    void Window::Start(const Configuration& config)
     {
         assert(!m_bCreated && "Window already created!");
         Events().CallBeginInitializeEvent();
@@ -48,7 +48,7 @@ namespace Nit
         m_bCreated = true;
     }
     
-    void Window::Finalize()
+    void Window::Finish()
     {
         Events().CallBeginFinalizeEvent();
         assert(m_bCreated && "You're trying to destroy an uncreated window!");

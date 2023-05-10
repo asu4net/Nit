@@ -28,7 +28,8 @@ project "Game"
         "%{IncludeDirs.glm}",
         "%{IncludeDirs.rttr}",
         "%{IncludeDirs.imgui}",
-        "%{IncludeDirs.imguizmo}"
+        "%{IncludeDirs.imguizmo}",
+        "%{IncludeDirs.entt}"
     }
 
     links

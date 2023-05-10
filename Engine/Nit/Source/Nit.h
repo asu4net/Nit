@@ -1,8 +1,8 @@
 #pragma once
 
 // Core
-#include "Core/Game.h"
-#include "Core/GameLayer.h"
+#include "Core/Engine.h"
+#include "Core/EngineLayer.h"
 #include "Core/LayerStack.h"
 #include "Core/Asset/AssetManager.h"
 #include "Core/Asset/AssetLink.h"

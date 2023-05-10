@@ -18,7 +18,6 @@ namespace Nit
         {
             std::string Title{"Nit Window"};
             int Width{1280}, Height{720};
-            glm::vec4 Color{Math::DarkGreyColor};
             int OpenGlMajorVersion{4}, OpenGlMinorVersion{6};
             bool VSync{true};
             CursorMode CursorMode{CursorMode::Normal};
@@ -26,8 +25,8 @@ namespace Nit
         
         static Shared<Window> Create();
         
-        void Initialize(const Configuration& config = {});
-        void Finalize();
+        void Start(const Configuration& config = {});
+        void Finish();
         
         WindowEvents& Events() { return m_Events; }
         void Close() { m_KeepWindowOpened = false; }
@@ -41,9 +40,6 @@ namespace Nit
         
         void SetCursorMode(const CursorMode mode);
         CursorMode GetCursorMode() const { return m_Config.CursorMode; }
-        
-        void SetBackgroundColor(const glm::vec4& color) { m_Config.Color = color; }
-        glm::vec4 GetBackgroundColor() const { return m_Config.Color; }
         
         uint32_t GetWidth() const { return m_Config.Width; }
         uint32_t GetHeight() const { return m_Config.Height; }
