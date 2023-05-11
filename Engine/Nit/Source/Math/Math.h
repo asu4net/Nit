@@ -3,7 +3,7 @@
 
 namespace Nit
 {
-    inline vec3 LookAt(const quat& rot, const vec3& axis)
+    inline vec3 lookAt(const quat& rot, const vec3& axis)
     {
         const mat4 matRot = toMat4(rot);
         const vec4 dir = vec4(axis, 1);
