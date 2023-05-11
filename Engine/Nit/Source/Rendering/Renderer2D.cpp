@@ -14,10 +14,10 @@ namespace Nit
 {
     struct QuadVertex
     {
-        glm::vec3 Position;
-        glm::vec4 Color;
-        glm::vec2 UV;
-        glm::vec2 UVScale;
+        vec3 Position;
+        vec4 Color;
+        vec2 UV;
+        vec2 UVScale;
         uint32_t TextureSlot;
     };
 
@@ -45,12 +45,12 @@ namespace Nit
     static QuadRenderData g_QuadRenderData;
     static int32_t g_TextureSlots[QuadRenderData::MaxTextureSlots];
 
-    static void GetQuadVertexPositions(const glm::vec2& textureSize, const glm::vec2& quadSize, std::array<glm::vec3, 4>& vertexPositions)
+    static void GetQuadVertexPositions(const vec2& textureSize, const vec2& quadSize, std::array<vec3, 4>& vertexPositions)
     {
-        glm::vec2 vertexPosition = Math::OneVector;
+        vec2 vertexPosition = VecOne;
 
         if (glm::abs(textureSize.x - textureSize.y) > 0.0001f)
-            vertexPosition = glm::normalize(glm::vec2(textureSize));
+            vertexPosition = glm::normalize(vec2(textureSize));
         
         vertexPosition.x /= 2;
         vertexPosition.y /= 2;
@@ -59,15 +59,15 @@ namespace Nit
         
         vertexPositions =
         {
-            glm::vec3{-vertexPosition.x, -vertexPosition.y, 0.f},
-            glm::vec3{ vertexPosition.x, -vertexPosition.y, 0.f},
-            glm::vec3{vertexPosition.x, vertexPosition.y, 0.f},
-            glm::vec3{-vertexPosition.x, vertexPosition.y, 0.f},
+            vec3{-vertexPosition.x, -vertexPosition.y, 0.f},
+            vec3{ vertexPosition.x, -vertexPosition.y, 0.f},
+            vec3{vertexPosition.x, vertexPosition.y, 0.f},
+            vec3{-vertexPosition.x, vertexPosition.y, 0.f},
         };
     }
 
-    static void GetQuadVertexUV(const glm::vec2& subTexSize, const glm::vec2& atlasSize, const glm::vec2& location,
-        std::array<glm::vec2, 4>& vertexUV, Flip flip)
+    static void GetQuadVertexUV(const vec2& subTexSize, const vec2& atlasSize, const vec2& location,
+        std::array<vec2, 4>& vertexUV, Flip flip)
     {
         const float x{location.x}, y{location.y};
         const float atlasWidth = atlasSize.x;
@@ -76,10 +76,10 @@ namespace Nit
         const float subTexHeight = subTexSize.y;
 
         const std::array uv = {
-            glm::vec2{(x * subTexWidth) / atlasWidth, (y * subTexHeight) / atlasHeight },
-            glm::vec2{((x + 1) * subTexWidth) / atlasWidth, (y * subTexHeight) / atlasHeight },
-            glm::vec2{((x + 1) * subTexWidth) / atlasWidth, ((y + 1) * subTexHeight) / atlasHeight },
-            glm::vec2{(x * subTexWidth) / atlasWidth, ((y + 1) * subTexHeight) / atlasHeight },
+            vec2{(x * subTexWidth) / atlasWidth, (y * subTexHeight) / atlasHeight },
+            vec2{((x + 1) * subTexWidth) / atlasWidth, (y * subTexHeight) / atlasHeight },
+            vec2{((x + 1) * subTexWidth) / atlasWidth, ((y + 1) * subTexHeight) / atlasHeight },
+            vec2{(x * subTexWidth) / atlasWidth, ((y + 1) * subTexHeight) / atlasHeight },
         };
 
         switch (flip)
@@ -245,22 +245,22 @@ namespace Nit
         if (g_QuadRenderData.QuadCount > QuadRenderData::MaxQuads || g_QuadRenderData.LastTextureSlot > QuadRenderData::MaxTextureSlots)
             NextBatch();
         
-        std::array<glm::vec3, 4> vertexPositions{};
+        std::array<vec3, 4> vertexPositions{};
 
         const float textureWidth = quad.Texture ? static_cast<float>(quad.Texture->GetWidth()) : 1;
         const float textureHeight = quad.Texture ? static_cast<float>(quad.Texture->GetHeight()) : 1;
-        const glm::vec2 textureSize = {textureWidth, textureHeight};
+        const vec2 textureSize = {textureWidth, textureHeight};
         
         GetQuadVertexPositions(textureSize, quad.Size, vertexPositions);
         
-        std::array<glm::vec2, 4> vertexUV{};
+        std::array<vec2, 4> vertexUV{};
 
-        const glm::vec2 subTexSize = quad.bIsSubTexture ? quad.SubTextureSize : textureSize;
+        const vec2 subTexSize = quad.bIsSubTexture ? quad.SubTextureSize : textureSize;
         GetQuadVertexUV(subTexSize, textureSize, quad.LocationInAtlas, vertexUV, quad.Flip);
         
         for (int i = 0; i < 4; i++)
         {
-            g_QuadRenderData.LastVertex->Position = quad.ModelMatrix * glm::vec4(vertexPositions[i], 1.0f);
+            g_QuadRenderData.LastVertex->Position = quad.ModelMatrix * vec4(vertexPositions[i], 1.0f);
             g_QuadRenderData.LastVertex->Color = quad.Color;
             g_QuadRenderData.LastVertex->UV = vertexUV[i];
             g_QuadRenderData.LastVertex->UVScale = quad.UVScale;
@@ -276,14 +276,14 @@ namespace Nit
     {
         const Shared<Texture2D> atlas = textQuad.Font->GetFontAtlas();
 
-        glm::vec3 offset = Math::ZeroVector;
+        vec3 offset = VecZero;
         
         for (const char c : textQuad.Text)
         {
             AlignedQuad q{};
             textQuad.Font->GetBakedChar(c, q);
-            std::array<glm::vec3, 4> vertexPositions{};
-            std::array<glm::vec2, 4> vertexUV{};
+            std::array<vec3, 4> vertexPositions{};
+            std::array<vec2, 4> vertexUV{};
 
             vertexPositions[3] = {q.X0, q.Y0, 0}; vertexUV[3] = {q.S0, q.T0};
             vertexPositions[2] = {q.X1, q.Y0, 0}; vertexUV[2] = {q.S1, q.T0};
@@ -292,16 +292,16 @@ namespace Nit
 
             static constexpr float Scale = 0.002f;
             
-            glm::mat4 transform = glm::translate(textQuad.ModelMatrix, offset);
-            transform *= glm::scale(Math::IdentityMatrix, {Scale * textQuad.Size.x,
+            mat4 transform = glm::translate(textQuad.ModelMatrix, offset);
+            transform *= glm::scale(MatIdentity, {Scale * textQuad.Size.x,
                 -Scale * textQuad.Size.y, Scale});
             
             for (int i = 0; i < 4; i++)
             {
-                g_QuadRenderData.LastVertex->Position = transform * glm::vec4(vertexPositions[i], 1.0f);
+                g_QuadRenderData.LastVertex->Position = transform * vec4(vertexPositions[i], 1.0f);
                 g_QuadRenderData.LastVertex->Color = textQuad.Color;
                 g_QuadRenderData.LastVertex->UV = vertexUV[i];
-                g_QuadRenderData.LastVertex->UVScale = Math::WhiteColor;
+                g_QuadRenderData.LastVertex->UVScale = White;
                 g_QuadRenderData.LastVertex->TextureSlot = GetTextureSlot(atlas);
                 g_QuadRenderData.LastVertex++;
             }
@@ -357,7 +357,7 @@ namespace Nit
         Flush();
     }
 
-    void Renderer2D::ClearScreen(const glm::vec4 clearColor)
+    void Renderer2D::ClearScreen(const vec4 clearColor)
     {
         m_CommandQueue->Submit<SetClearColorCommand>(clearColor);
         m_CommandQueue->Submit<ClearCommand>();

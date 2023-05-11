@@ -108,10 +108,10 @@ namespace Nit
     void WindowCloseCallback(GLFWwindow* windowHandler) { GetEvents(windowHandler).CallCloseEvent(); }
     void WindowKeyPressedCallback(GLFWwindow* windowHandler, const int key, const bool pressed) { GetEvents(windowHandler).CallKeyPressedEvent(key, pressed); }
     void WindowKeyReleasedCallback(GLFWwindow* windowHandler, const int key) { GetEvents(windowHandler).CallKeyReleasedEvent(key); }
-    void WindowCursorPosCallback(GLFWwindow* windowHandler, const glm::vec2& pos) { GetEvents(windowHandler).CallCursorPosEvent(pos); }
+    void WindowCursorPosCallback(GLFWwindow* windowHandler, const vec2& pos) { GetEvents(windowHandler).CallCursorPosEvent(pos); }
     void WindowMouseButtonPressedCallback(GLFWwindow* windowHandler, const int mouseButton, const bool pressed) { GetEvents(windowHandler).CallMouseButtonPressedEvent(mouseButton, pressed); }
     void WindowMouseButtonReleasedCallback(GLFWwindow* windowHandler, const int mouseButton) { GetEvents(windowHandler).CallMouseButtonReleasedEvent(mouseButton); }
-    void WindowScrollCallback(GLFWwindow* windowHandler, const glm::vec2& offset) { GetEvents(windowHandler).CallScrollEvent(offset); }
+    void WindowScrollCallback(GLFWwindow* windowHandler, const vec2& offset) { GetEvents(windowHandler).CallScrollEvent(offset); }
 
     std::string Window::OpenFile(const std::string& filter)
     {
@@ -188,7 +188,7 @@ namespace Nit
         });
         glfwSetCursorPosCallback(m_WindowHandler, [](GLFWwindow* windowHandler, const double xPos, const double yPos)
         {
-            const glm::vec2 cursorPosition = {static_cast<float>(xPos), static_cast<float>(yPos)};
+            const vec2 cursorPosition = {static_cast<float>(xPos), static_cast<float>(yPos)};
             WindowCursorPosCallback(windowHandler, cursorPosition);
         });
         glfwSetMouseButtonCallback(m_WindowHandler, [](GLFWwindow* windowHandler, const int button, const int action, const int mods)
@@ -207,7 +207,7 @@ namespace Nit
         });
         glfwSetScrollCallback(m_WindowHandler, [](GLFWwindow* windowHandler, const double xOffset, const double yOffset)
         {
-            const glm::vec2 offset = {static_cast<float>(xOffset), static_cast<float>(yOffset)};
+            const vec2 offset = {static_cast<float>(xOffset), static_cast<float>(yOffset)};
             WindowScrollCallback(windowHandler, offset);
         });
     }

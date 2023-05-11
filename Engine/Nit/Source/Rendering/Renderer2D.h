@@ -16,24 +16,24 @@ namespace Nit
     
     struct Quad
     {
-        glm::mat4 ModelMatrix = Math::IdentityMatrix;
-        glm::vec4 Color = Math::WhiteColor;
+        mat4 ModelMatrix = MatIdentity;
+        vec4 Color = White;
         Shared<Texture2D> Texture = nullptr;
         bool bIsSubTexture = false;
-        glm::vec2 SubTextureSize = Math::OneVector;
-        glm::vec2 LocationInAtlas = Math::ZeroVector;
-        glm::vec2 UVScale = Math::OneVector;
-        glm::vec2 Size = Math::OneVector;
+        vec2 SubTextureSize = VecOne;
+        vec2 LocationInAtlas = VecZero;
+        vec2 UVScale = VecOne;
+        vec2 Size = VecOne;
         Flip Flip = Flip::None;
     };
 
     struct TextQuad
     {
         std::string Text;
-        glm::mat4 ModelMatrix = Math::IdentityMatrix;
-        glm::vec4 Color = Math::WhiteColor;
+        mat4 ModelMatrix = MatIdentity;
+        vec4 Color = White;
         Shared<Font> Font = nullptr;
-        glm::vec2 Size = Math::OneVector;
+        vec2 Size = VecOne;
         float Spacing = 1;
     };
 
@@ -66,7 +66,7 @@ namespace Nit
         
         const Unique<RenderCommandQueue>& CommandQueue() const { return m_CommandQueue; } 
         
-        void ClearScreen(const glm::vec4 clearColor = Math::DarkGreyColor);
+        void ClearScreen(const vec4 clearColor = DarkGrey);
         void SetViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
         void SetBlendingMode(const BlendingMode blendingMode);
         void SetDepthTestEnabled(const bool bEnabled);

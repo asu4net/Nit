@@ -66,35 +66,35 @@ namespace Nit
         alSourcei(audioSource.GetHandler(), AL_LOOPING, loop);
     }
 
-    void AudioManager::Translate(const AudioSource& audioSource, const glm::vec3& position)
+    void AudioManager::Translate(const AudioSource& audioSource, const vec3& position)
     {
         alSource3f(audioSource.GetHandler(), AL_POSITION,
             position.x, position.y, position.z);
     }
 
-    void AudioManager::SetVelocity(const AudioSource& audioSource, const glm::vec3& velocity)
+    void AudioManager::SetVelocity(const AudioSource& audioSource, const vec3& velocity)
     {
         alSource3f(audioSource.GetHandler(), AL_VELOCITY,
             velocity.x, velocity.y, velocity.z);
     }
 
-    void AudioManager::Rotate(const AudioSource& audioSource, const glm::vec3& orientation)
+    void AudioManager::Rotate(const AudioSource& audioSource, const vec3& orientation)
     {
         alSource3f(audioSource.GetHandler(), AL_ORIENTATION,
             orientation.x, orientation.y, orientation.z);
     }
 
-    void AudioManager::TranslateListener(const glm::vec3& position)
+    void AudioManager::TranslateListener(const vec3& position)
     {
         alListener3f(AL_POSITION, position.x, position.y, position.z);
     }
 
-    void AudioManager::RotateListener(const glm::vec3& orientation)
+    void AudioManager::RotateListener(const vec3& orientation)
     {
         alListener3f(AL_ORIENTATION, orientation.x, orientation.y, orientation.z);
     }
 
-    void AudioManager::SetListenerVelocity(const glm::vec3& velocity)
+    void AudioManager::SetListenerVelocity(const vec3& velocity)
     {
         alListener3f(AL_VELOCITY, velocity.x, velocity.y, velocity.z);
     }

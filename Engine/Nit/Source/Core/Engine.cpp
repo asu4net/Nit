@@ -3,6 +3,7 @@
 #include "Audio/AudioManager.h"
 #include "ImGui/ImGuiRenderer.h"
 #include "Rendering/Renderer2D.h"
+#include "Scene/World.h"
 #include "Window/Window.h"
 
 namespace Nit
@@ -20,6 +21,8 @@ namespace Nit
 
     void Engine::Start()
     {
+        m_LayerStack->Push<World>();
+        
         m_Window->Start();
         m_AudioManager.Start();
         m_AssetManager.Start();

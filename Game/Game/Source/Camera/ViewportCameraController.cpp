@@ -11,7 +11,7 @@ void ViewportCameraController::OnUpdate(const float deltaTime)
     using namespace Nit;
     
     const float displacement = MoveSpeed * deltaTime;
-    glm::vec3& position = GetOwner()->Position;
+    vec3& position = GetOwner()->Position;
     
     if (Input::IsKeyPressed(KEY_S))
         position.z -= displacement;

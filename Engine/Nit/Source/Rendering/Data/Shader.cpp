@@ -190,13 +190,13 @@ namespace Nit
         return true;
     }
 
-    void Shader::SetUniformMat4(const char* uniformName, const glm::mat4& mat) const
+    void Shader::SetUniformMat4(const char* uniformName, const mat4& mat) const
     {
         const uint32_t id = glGetUniformLocation(m_ShaderId, uniformName);
         glUniformMatrix4fv(id, 1, false, glm::value_ptr(mat));
     }
 
-    void Shader::SetUniformVec4(const char* uniformName, const glm::vec4& vec) const
+    void Shader::SetUniformVec4(const char* uniformName, const vec4& vec) const
     {
         const uint32_t id = glGetUniformLocation(m_ShaderId, uniformName);
         glUniform4fv(id, 1, glm::value_ptr(vec));

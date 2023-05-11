@@ -19,8 +19,8 @@ namespace Nit
         void Compile();
         void Compile(const std::string& vertexSource, const std::string& fragmentSource);
         
-        void SetUniformMat4(const char* uniformName, const glm::mat4& mat) const;
-        void SetUniformVec4(const char* uniformName, const glm::vec4& vec) const;
+        void SetUniformMat4(const char* uniformName, const mat4& mat) const;
+        void SetUniformVec4(const char* uniformName, const vec4& vec) const;
         void SetUniformInt(const char* uniformName, int num);
         void SetUniformIntArray(const char* uniformName, const int32_t* array, int32_t size);
         

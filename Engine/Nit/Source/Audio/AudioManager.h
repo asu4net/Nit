@@ -21,12 +21,12 @@ namespace Nit
         void SetPitch(const AudioSource& audioSource, uint32_t pitch);
         void SetGain(const AudioSource& audioSource, uint32_t gain);
         void SetLoop(const AudioSource& audioSource, bool loop);
-        void Translate(const AudioSource& audioSource, const glm::vec3& position);
-        void SetVelocity(const AudioSource& audioSource, const glm::vec3& velocity);
-        void Rotate(const AudioSource& audioSource, const glm::vec3& orientation);
-        void TranslateListener(const glm::vec3& position);
-        void RotateListener(const glm::vec3& orientation);
-        void SetListenerVelocity(const glm::vec3& velocity);
+        void Translate(const AudioSource& audioSource, const vec3& position);
+        void SetVelocity(const AudioSource& audioSource, const vec3& velocity);
+        void Rotate(const AudioSource& audioSource, const vec3& orientation);
+        void TranslateListener(const vec3& position);
+        void RotateListener(const vec3& orientation);
+        void SetListenerVelocity(const vec3& velocity);
         
     private:
         ALCcontext* m_Context;

@@ -28,11 +28,11 @@ void Game::OnStart()
     Grid.Texture = GridTexture.Lock();
     Grid.Size *= 30;
     Grid.UVScale *= 30;
-    Grid.Color = Math::DarkGreyColor;
+    Grid.Color = DarkGrey;
 
     HelloWorldMessage.Text = "hello world";
     HelloWorldMessage.Font = TheFont.Lock();
-    HelloWorldMessage.ModelMatrix = glm::translate(Math::IdentityMatrix, {0, 1.6, 0});
+    HelloWorldMessage.ModelMatrix = glm::translate(MatIdentity, {0, 1.6, 0});
     HelloWorldMessage.Spacing = 0.9f;
     HelloWorldMessage.Size = { 2, 2 };
 
@@ -50,20 +50,20 @@ void Game::OnUpdate(const TimeStep& timeStep)
     Camera->Update(timeStep.DeltaTime);
     Renderer2D& renderer = Renderer2D::GetInstance();
 
-    renderer.ClearScreen(Math::DarkGreyColor);
+    renderer.ClearScreen(DarkGrey);
     renderer.SetRenderData({Camera->GetRenderData()});
     renderer.SetBlendingMode(BlendingMode::Alpha);
     renderer.Begin();
     renderer.SubmitQuad(Grid);
-    renderer.SubmitQuad({translate(Math::IdentityMatrix, {0, 1, 0}), Math::YellowColor});
-    renderer.SubmitQuad({Math::IdentityMatrix, Math::LightBlueColor});
-    renderer.SubmitQuad({translate(Math::IdentityMatrix, {0, -1, 0}), Math::WhiteColor, CppTexture.Lock()});
-    renderer.SubmitQuad({translate(Math::IdentityMatrix, {1, 0, 0}), Math::LightRedColor});
+    renderer.SubmitQuad({translate(MatIdentity, {0, 1, 0}), Yellow});
+    renderer.SubmitQuad({MatIdentity, LightBlue});
+    renderer.SubmitQuad({translate(MatIdentity, {0, -1, 0}), White, CppTexture.Lock()});
+    renderer.SubmitQuad({translate(MatIdentity, {1, 0, 0}), LightRed});
     renderer.SubmitTextQuad(HelloWorldMessage);
     renderer.End();
     renderer.SetBlendingMode(BlendingMode::Add);
     renderer.Begin();
-    renderer.SubmitQuad({translate(Math::IdentityMatrix, BallPosition), Math::WhiteColor, CatTexture.Lock()});
+    renderer.SubmitQuad({translate(MatIdentity, BallPosition), White, CatTexture.Lock()});
     renderer.End();
 }
 

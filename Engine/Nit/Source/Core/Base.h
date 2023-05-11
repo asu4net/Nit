@@ -28,4 +28,10 @@ namespace Nit
 
     template<typename T>
     using Weak = std::weak_ptr<T>;
+
+    using vec3 = glm::vec3;
+    using vec4 = glm::vec4;
+    using vec2 = glm::vec2;
+    using mat4 = glm::mat4;
+    using quat = glm::quat;
 }

@@ -16,7 +16,7 @@ public:
     Nit::AssetLink<Nit::Font> TheFont;
     Nit::AudioSource LaserAudioSource;
     
-    glm::vec3 BallPosition = {.5f, .3f, 0.f};
+    Nit::vec3 BallPosition = {.5f, .3f, 0.f};
     Nit::Quad Grid;
     Nit::TextQuad HelloWorldMessage;
     

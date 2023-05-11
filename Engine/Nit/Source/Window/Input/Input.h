@@ -9,7 +9,7 @@ namespace Nit
 
         static void Initialize(void* window);
         static bool IsMouseButtonPressed(int button);
-        static glm::vec2 GetMousePosition();
+        static vec2 GetMousePosition();
         static float GetMouseX();
         static float GetMouseY();
         

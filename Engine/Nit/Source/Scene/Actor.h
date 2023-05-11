@@ -6,7 +6,7 @@ namespace Nit
     {
     public:
         Actor() = default;
-        Actor(const entt::entity entity, const std::weak_ptr<entt::registry>& registry)
+        Actor(const entt::entity entity, const Weak<entt::registry>& registry)
             : m_Entity(entity)
             , m_Registry(registry)
         {}
@@ -59,6 +59,6 @@ namespace Nit
         
     private:
         entt::entity m_Entity = entt::null;
-        std::weak_ptr<entt::registry> m_Registry;
+        Weak<entt::registry> m_Registry;
     };
 }
