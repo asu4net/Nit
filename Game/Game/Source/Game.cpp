@@ -4,7 +4,7 @@ using namespace Nit;
 
 void Game::OnStart()
 {
-    AssetManager& assetManager = AssetManager::GetInstance();
+    AssetManager& assets = AssetManager::GetInstance();
     const auto scene = World::GetActiveScene().lock();
 
     // Game camera
@@ -15,7 +15,7 @@ void Game::OnStart()
 
     // Laser audio
     const Actor laserAudioActor = scene->CreateActor("LaserAudio");
-    const auto& audioSourceLaser = laserAudioActor.Add<AudioSourceComponent>(assetManager.GetAssetByName<AudioClip>("laser"));
+    const auto& audioSourceLaser = laserAudioActor.Add<AudioSourceComponent>(assets.GetAssetByName<AudioClip>("laser"));
     
     Engine::GetInstance().GetWindow()->Events().KeyPressedEvent.Add([&](const int key, bool){
          if (key != KEY_SPACE) return;
@@ -34,22 +34,20 @@ void Game::OnStart()
 
     // Cat sprite
     const Actor catActor = scene->CreateActor("Cat", VecLeft);
-    catActor.Add<SpriteComponent>(assetManager.GetAssetByName<Texture2D>("Bola"));
+    catActor.Add<SpriteComponent>(assets.GetAssetByName<Texture2D>("Bola"));
 
     //C++ sprite
-    scene->CreateActor("CppTexture", VecDown).Add<SpriteComponent>
-        (assetManager.GetAssetByName<Texture2D>("Cpp"));
+    scene->CreateActor("CppTexture", VecDown).Add<SpriteComponent>(assets.GetAssetByName<Texture2D>("Cpp"));
 
     // Background Grid
     const Actor gridActor = scene->CreateActor();
-    auto& gridSprite = gridActor.Add<SpriteComponent>(assetManager.GetAssetByName<Texture2D>("Grid"));
+    auto& gridSprite = gridActor.Add<SpriteComponent>(assets.GetAssetByName<Texture2D>("Grid"));
     gridSprite.Size *= 30;
     gridSprite.UVScale *= 30;
     gridSprite.Color = DarkGrey;
 
     // Debug window
 #ifdef NIT_IMGUI
-    ImGuiRenderer::GetInstance().PushWidget<Vector3Widget>(catActor.Get<TransformComponent>().Position,
-        "Ball Pos");
+    ImGuiRenderer::GetInstance().PushWidget<Vector3Widget>(catActor.Get<TransformComponent>().Position, "Ball Pos");
 #endif
 }
