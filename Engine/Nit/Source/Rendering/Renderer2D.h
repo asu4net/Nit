@@ -1,39 +1,32 @@
 ﻿#pragma once
 #include "RenderCommandQueue.h"
 #include "Data/Texture2D.h"
-#include "Camera.h"
 #include "Text/Font.h"
 
 namespace Nit
 {
-    class Camera;
     class Window;
-
-    enum class Flip
-    {
-        None, X, Y, Both
-    };
     
     struct Quad
     {
-        mat4 ModelMatrix = MatIdentity;
-        vec4 Color = White;
+        Mat4 ModelMatrix = MatIdentity;
+        Vec4 Color = White;
         Shared<Texture2D> Texture = nullptr;
         bool bIsSubTexture = false;
-        vec2 SubTextureSize = VecOne;
-        vec2 LocationInAtlas = VecZero;
-        vec2 UVScale = VecOne;
-        vec2 Size = VecOne;
+        Vec2 SubTextureSize = VecOne;
+        Vec2 LocationInAtlas = VecZero;
+        Vec2 UVScale = VecOne;
+        Vec2 Size = VecOne;
         Flip Flip = Flip::None;
     };
 
     struct TextQuad
     {
         std::string Text;
-        mat4 ModelMatrix = MatIdentity;
-        vec4 Color = White;
+        Mat4 ModelMatrix = MatIdentity;
+        Vec4 Color = White;
         Shared<Font> Font = nullptr;
-        vec2 Size = VecOne;
+        Vec2 Size = VecOne;
         float Spacing = 1;
     };
 
@@ -45,7 +38,7 @@ namespace Nit
 
     struct RenderData
     {
-        Camera RenderCamera;
+        Mat4 ProjectionViewMat4 = MatIdentity;
     };
     
     class Renderer2D : public Singleton<Renderer2D>
@@ -66,7 +59,7 @@ namespace Nit
         
         const Unique<RenderCommandQueue>& CommandQueue() const { return m_CommandQueue; } 
         
-        void ClearScreen(const vec4 clearColor = DarkGrey);
+        void ClearScreen(const Vec4 clearColor = DarkGrey);
         void SetViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
         void SetBlendingMode(const BlendingMode blendingMode);
         void SetDepthTestEnabled(const bool bEnabled);

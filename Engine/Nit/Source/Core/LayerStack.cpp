@@ -18,6 +18,9 @@ namespace Nit
             for (const auto& gameLayer : m_GameLayers)
                 gameLayer->OnFixedUpdate(timeStep);
         }
+
+        for (const auto& gameLayer : m_GameLayers)
+            gameLayer->OnPostFixedUpdate(timeStep);
     }
 
     void LayerStack::Finish()

@@ -20,6 +20,11 @@ namespace Nit
         m_ActiveScene->FixedUpdate(timeStep);
     }
 
+    void World::OnPostFixedUpdate(const TimeStep& timeStep)
+    {
+        m_ActiveScene->Draw();
+    }
+
     void World::OnFinish()
     {
         m_ActiveScene->Finish();

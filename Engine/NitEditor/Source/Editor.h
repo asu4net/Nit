@@ -6,7 +6,7 @@ namespace Nit
     class Editor : public EngineLayer
     {
     public:
-        Editor();
+        Editor() = default;
 
         void OnStart() override;
         void OnUpdate(const TimeStep& timeStep) override;

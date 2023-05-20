@@ -1,14 +1,17 @@
 #include "Editor.h"
 #include "ImGui/ImGuiRenderer.h"
+#include "Scene/Components/EditorCameraComponent.h"
 
 namespace Nit
 {
-    Editor::Editor()
-    {
-    }
-
     void Editor::OnStart()
     {
+        World::GetActiveScene().lock()->SetRuntimeEnabled(false);
+        
+        const Actor editorCamera = World::GetActiveScene().lock()->CreateActor("EditorCamera");
+        editorCamera.Add<EditorCameraComponent>();
+        editorCamera.Get<TransformComponent>().Position = VecBack * 3.f;
+        
         const Shared<ImGuiWidget> widget = ImGuiRenderer::GetInstance().PushWidget<ImGuiWidget>();
         
         widget->ClearBeginEndDelegates();

@@ -1,30 +1,107 @@
 ﻿#include "Scene.h"
-#include "SceneSystem.h"
+
+#include "Components/DetailsComponent.h"
+#include "Components/TransformComponent.h"
+#include "Systems/CameraSystem.h"
+#include "Systems/SceneSystem.h"
 
 namespace Nit
 {
     void Scene::Start()
     {
-        auto derivedSystems = rttr::type::get<SceneSystem>().get_derived_classes();
+        m_Registry = CreateShared<entt::registry>();
+        
+        rttr::array_range<rttr::type> derivedSystems = rttr::type::get<SceneSystem>().get_derived_classes();
         m_Systems.reserve(derivedSystems.size());
         for (auto& systemType : derivedSystems)
         {
-            rttr::variant systemInstance = systemType.create({m_WeakPtr, m_Registry});
+            if (!systemType.is_valid())
+                continue;
+            
+            rttr::variant systemInstance = systemType.create({m_WeakPtr});
+
             if (!systemInstance.is_valid())
                 continue;
+
             m_Systems.push_back(systemInstance.get_value<Shared<SceneSystem>>());
+        }
+
+        std::ranges::sort(m_Systems,
+            [&](const Shared<SceneSystem>& a, const Shared<SceneSystem>& b){
+                return a->GetExecutionOrder() < b->GetExecutionOrder();
+            });
+        
+        //TODO: Sort by priority
+        for (const auto& system : m_Systems)
+        {
+            system->OnStart();
         }
     }
 
     void Scene::Update(const TimeStep& timeStep)
     {
+        for (const auto& system : m_Systems)
+        {
+            system->OnUpdate(timeStep);
+        }
     }
 
     void Scene::FixedUpdate(const TimeStep& timeStep)
     {
+        for (const auto& system : m_Systems)
+        {
+            system->OnFixedUpdate(timeStep);
+        }
+    }
+
+    void Scene::Draw()
+    {
+        m_SceneRenderer.DrawScene();
     }
 
     void Scene::Finish()
     {
+        for (const auto& system : m_Systems)
+        {
+            system->OnFinish();
+        }
+        m_Registry->clear();
+    }
+
+    void Scene::SetRuntimeEnabled(const bool bRuntimeEnabled)
+    {
+        m_bRuntimeEnabled = bRuntimeEnabled;
+        if (bRuntimeEnabled)
+        {
+            //SaveSceneData
+        }
+        else
+        {
+            //Finish
+            //Load saved scene
+        }
+    }
+
+    Actor Scene::CreateActorWithId(Id id, const std::string& name, const Vec3& position, const Quat& rotation, const Vec3& scale)
+    {
+        const entt::entity entity = m_Registry->create();
+        m_IdEntityMap[id] = entity;
+        Actor actor{entity, m_Registry };
+        const bool bIsSerializable = !m_bRuntimeEnabled;
+        actor.Add<DetailsComponent>(name, "Default", id, bIsSerializable);
+        actor.Add<TransformComponent>(position, rotation, scale);
+        return actor;
+    }
+    
+    Actor Scene::CreateActor(const std::string& name, const Vec3& position, const Quat& rotation, const Vec3& scale)
+    {
+        return CreateActorWithId(Id(), name, position, rotation, scale);
+    }
+
+    void Scene::DestroyActor(const Actor& actor)
+    {
+        if (!actor.IsValid()) return;
+        m_IdEntityMap.erase(actor.Get<DetailsComponent>().GetId());
+        m_Registry->destroy(actor.GetEntity());
     }
 }

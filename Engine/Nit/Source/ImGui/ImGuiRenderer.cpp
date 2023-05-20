@@ -127,6 +127,8 @@ namespace Nit
         //
         
         m_RootWidget->Update();
+        static bool show = true;
+        ImGui::ShowDemoWindow(&show);
         
         //
         // ImGui::End();

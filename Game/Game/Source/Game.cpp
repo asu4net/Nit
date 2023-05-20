@@ -1,74 +1,55 @@
 #include "Game.h"
-#include "Camera/LogicCamera.h"
-#include "Camera/ViewportCameraController.h"
 
 using namespace Nit;
 
 void Game::OnStart()
 {
-    Camera = std::make_shared<LogicCamera>(Engine::GetInstance().GetWindow());
-    Camera->AddController<ViewportCameraController>();
-
     AssetManager& assetManager = AssetManager::GetInstance();
-    GridTexture = assetManager.GetAssetByName<Texture2D>("Grid");
-    CatTexture = assetManager.GetAssetByName<Texture2D>("Bola");
-    CppTexture = assetManager.GetAssetByName<Texture2D>("Cpp");
-    LaserAudio = assetManager.GetAssetByName<AudioBuffer>("laser");
-    TheFont = assetManager.GetAssetByName<Font>("CascadiaMono");
-    
-    AudioManager& audioManager = AudioManager::GetInstance();
-    LaserAudioSource = audioManager.CreateSource(LaserAudio.Lock());
+    const auto scene = World::GetActiveScene().lock();
 
-    Engine::GetInstance().GetWindow()->Events().KeyPressedEvent.Add([&](int key, bool repeat)
-    {
-        if (key != KEY_SPACE) return;
-        audioManager.Play(LaserAudioSource);
+    // Game camera
+    const Actor cameraActor = scene->CreateActor("GameCamera");
+    cameraActor.Add<CameraComponent>();
+    auto& camTransform = cameraActor.Get<TransformComponent>();
+    camTransform.Position = VecForward * -2.f;
+
+    // Laser audio
+    const Actor laserAudioActor = scene->CreateActor("LaserAudio");
+    const auto& audioSourceLaser = laserAudioActor.Add<AudioSourceComponent>(assetManager.GetAssetByName<AudioClip>("laser"));
+    
+    Engine::GetInstance().GetWindow()->Events().KeyPressedEvent.Add([&](const int key, bool){
+         if (key != KEY_SPACE) return;
+         AudioStatics::Play(audioSourceLaser);
     });
-    
-    Grid.Texture = GridTexture.Lock();
-    Grid.Size *= 30;
-    Grid.UVScale *= 30;
-    Grid.Color = DarkGrey;
 
-    HelloWorldMessage.Text = "hello world";
-    HelloWorldMessage.Font = TheFont.Lock();
-    HelloWorldMessage.ModelMatrix = glm::translate(MatIdentity, {0, 1.6, 0});
-    HelloWorldMessage.Spacing = 0.9f;
-    HelloWorldMessage.Size = { 2, 2 };
+    // Hello World text
+    const Actor helloWorldText = scene->CreateActor("HelloWorld", {0, 1.6, 0});
+    auto& text = helloWorldText.Add<TextComponent>("hello world");
+    text.Size = { 2, 2 };
 
+    // Colored sprites
+    scene->CreateActor("BlueSprite").Add<SpriteComponent>(LightBlue);
+    scene->CreateActor("YellowSprite", VecUp).Add<SpriteComponent>(Yellow);
+    scene->CreateActor("RedSprite", VecRight).Add<SpriteComponent>(LightRed);
+
+    // Cat sprite
+    const Actor catActor = scene->CreateActor("Cat", VecLeft);
+    catActor.Add<SpriteComponent>(assetManager.GetAssetByName<Texture2D>("Bola"));
+
+    //C++ sprite
+    scene->CreateActor("CppTexture", VecDown).Add<SpriteComponent>
+        (assetManager.GetAssetByName<Texture2D>("Cpp"));
+
+    // Background Grid
+    const Actor gridActor = scene->CreateActor();
+    auto& gridSprite = gridActor.Add<SpriteComponent>(assetManager.GetAssetByName<Texture2D>("Grid"));
+    gridSprite.Size *= 30;
+    gridSprite.UVScale *= 30;
+    gridSprite.Color = DarkGrey;
+
+    // Debug window
 #ifdef NIT_IMGUI
-    ImGuiRenderer::GetInstance().PushWidget<Vector3Widget>(BallPosition, "Ball Pos");
+    ImGuiRenderer::GetInstance().PushWidget<Vector3Widget>(catActor.Get<TransformComponent>().Position,
+        "Ball Pos");
 #endif
-}
-
-void Game::OnUpdate(const TimeStep& timeStep)
-{
-    AssetManager& assetManager = AssetManager::GetInstance();
-    if (!CatTexture.IsValid())
-        CatTexture = assetManager.GetAssetByName<Texture2D>("Bola");
-    
-    Camera->Update(timeStep.DeltaTime);
-    Renderer2D& renderer = Renderer2D::GetInstance();
-
-    renderer.ClearScreen(DarkGrey);
-    renderer.SetRenderData({Camera->GetRenderData()});
-    renderer.SetBlendingMode(BlendingMode::Alpha);
-    renderer.Begin();
-    renderer.SubmitQuad(Grid);
-    renderer.SubmitQuad({translate(MatIdentity, {0, 1, 0}), Yellow});
-    renderer.SubmitQuad({MatIdentity, LightBlue});
-    renderer.SubmitQuad({translate(MatIdentity, {0, -1, 0}), White, CppTexture.Lock()});
-    renderer.SubmitQuad({translate(MatIdentity, {1, 0, 0}), LightRed});
-    renderer.SubmitTextQuad(HelloWorldMessage);
-    renderer.End();
-    renderer.SetBlendingMode(BlendingMode::Add);
-    renderer.Begin();
-    renderer.SubmitQuad({translate(MatIdentity, BallPosition), White, CatTexture.Lock()});
-    renderer.End();
-}
-
-void Game::OnFinish()
-{
-    AudioManager& audioManager = AudioManager::GetInstance();
-    audioManager.DestroySource(LaserAudioSource);
 }

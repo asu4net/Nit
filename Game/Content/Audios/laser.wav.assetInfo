@@ -4,5 +4,5 @@
     "Id": {
         "idHandler": 3167360085290557965
     },
-    "TypeName": "AudioBuffer"
+    "TypeName": "AudioClip"
 }

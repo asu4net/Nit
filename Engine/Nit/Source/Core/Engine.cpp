@@ -17,12 +17,12 @@ namespace Nit
         #ifdef NIT_IMGUI
         , m_ImGuiRenderer(ImGuiRenderer::CreateSingleton())
         #endif
-    {}
+    {
+        m_LayerStack->Push<World>();
+    }
 
     void Engine::Start()
     {
-        m_LayerStack->Push<World>();
-        
         m_Window->Start();
         m_AudioManager.Start();
         m_AssetManager.Start();

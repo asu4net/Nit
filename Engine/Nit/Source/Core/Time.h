@@ -31,7 +31,7 @@ namespace Nit
         }
 
     private:
-        double m_TargetFrameRate = 120;
+        double m_TargetFrameRate = 60;
         double m_GameTime = 0;
         double m_Elapsed = 0;
         double m_DeltaTime = 0;

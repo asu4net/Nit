@@ -14,7 +14,7 @@ namespace Nit
         glViewport(x, y, width, height);
     }
 
-    void RendererAPI::SetClearColor(const vec4& clearColor)
+    void RendererAPI::SetClearColor(const Vec4& clearColor)
     {
         glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
     }

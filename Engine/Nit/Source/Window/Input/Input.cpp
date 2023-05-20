@@ -28,7 +28,7 @@ namespace Nit
         return state == GLFW_PRESS;
     }
 
-    vec2 Input::GetMousePosition()
+    Vec2 Input::GetMousePosition()
     {
         if (!m_Initialized) return {};
         auto* window = static_cast<GLFWwindow*>(m_Window);

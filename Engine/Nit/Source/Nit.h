@@ -23,9 +23,9 @@
 #include "Rendering/Renderer2D.h"
 #include "Rendering/RendererAPI.h"
 #include "Rendering/RenderingContext.h"
-#include "Rendering/Camera.h"
 #include "Rendering/RawShaderStrings.h"
 #include "Rendering/Text/Font.h"
+#include "Rendering/Camera.h"
 
 // ImGui
 #ifdef NIT_IMGUI
@@ -35,7 +35,7 @@
 #endif
 
 // Audio
-#include "Audio/AudioBuffer.h"
+#include "Audio/AudioClip.h"
 #include "Audio/AudioManager.h"
 #include "Audio/AudioSource.h"
 
@@ -45,3 +45,21 @@
 #include "Window/Input/KeyCodes.h"
 #include "Window/Window.h"
 #include "Window/WindowEvents.h"
+
+// Scene
+
+#include "Scene/Actor.h"
+#include "Scene/Scene.h"
+#include "Scene/World.h"
+#include "Scene/Components/ActorComponent.h"
+#include "Scene/Components/TransformComponent.h"
+#include "Scene/Components/SpriteComponent.h"
+#include "Scene/Components/CameraComponent.h"
+#include "Scene/Components/TextComponent.h"
+#include "Scene/Components/AudioSourceComponent.h"
+
+#include "Scene/Systems/SceneSystem.h"
+#include "Scene/Systems/SpriteSystem.h"
+#include "Scene/Systems/CameraSystem.h"
+#include "Scene/Systems/TextSystem.h"
+#include "Scene/Systems/AudioSystem.h"

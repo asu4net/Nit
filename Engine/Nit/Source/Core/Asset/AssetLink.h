@@ -13,7 +13,7 @@ namespace Nit
         Id GetId() const { return m_Id; }
         bool IsValid() const { return !m_TargetAsset.expired(); }
 
-        Shared<T> Lock()
+        Shared<T> Lock() const
         {
             return m_TargetAsset.lock();
         }
@@ -29,5 +29,7 @@ namespace Nit
         std::string m_Name{"Uninitialized"};
         Id m_Id{0};
         Weak<T> m_TargetAsset;
+
+        RTTR_ENABLE()
     };
 }

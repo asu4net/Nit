@@ -1,57 +1,63 @@
 ﻿#include "Camera.h"
-#include "Window/Input/Input.h"
+
+RTTR_REGISTRATION
+{
+    using namespace Nit;
+    using namespace rttr;
+
+    registration::enumeration<CameraProjection>("CameraProjection")
+    (
+        value("None", CameraProjection::None),
+        value("Perspective", CameraProjection::Perspective),
+        value("Orthographic", CameraProjection::Orthographic)
+    );
+    
+    registration::class_<Camera>("Camera")
+        .constructor<>()
+        .property("Projection", &Camera::Projection)
+        .property("Size", &Camera::Size)
+        .property("Fov", &Camera::Fov)
+        .property("NearPlane", &Camera::NearPlane)
+        .property("FarPlane", &Camera::FarPlane)
+        .property("AspectRatio", &Camera::AspectRatio);
+}
 
 namespace Nit
 {
-    Camera::Camera(const Projection startProjection)
-        : CurrentProjection(startProjection)
-        , Size(3.f)
-        , Fov(85.f)
-        , NearPlane(0.1f)
-        , FarPlane(1000.f)
-        , Position(VecForward * -2.f)
-        , Rotation(MatIdentity)
-        , AspectRatio(1280.f / 720.f)
-        , m_ProjectionViewMatrix(MatIdentity)
+    void Camera::CalculateProjectionViewMat4(const Vec3& position, const Quat& rotation)
     {
-    }
-
-    void Camera::UpdateMatrix()
-    {
-        mat4 viewMatrix = MatIdentity;
-        CalculateView(viewMatrix);
-
-        mat4 projectionMatrix = MatIdentity;
-        switch (CurrentProjection)
+        using namespace glm;
+        
+        Vec3 tweakedPosition = position;
+        tweakedPosition.z *= -1;
+        Mat4 viewMatrix = translate(Mat4(1.0f), tweakedPosition) * toMat4(rotation);
+        viewMatrix = inverse(viewMatrix);
+            
+        Mat4 projectionMatrix = MatIdentity;
+            
+        switch (Projection)
         {
-        case Projection::Perspective: CalculatePerspectiveProjection(projectionMatrix); break;
-        case Projection::Orthographic: CalculateOrthographicProjection(projectionMatrix); break;
-        case Projection::None: projectionMatrix = MatIdentity; break;
+        case CameraProjection::Perspective:
+            {
+                if (isnan(AspectRatio)) break;
+                projectionMatrix = perspective(radians(Fov), AspectRatio,
+                    NearPlane, FarPlane);   
+            }
+            break;
+                    
+        case CameraProjection::Orthographic:
+            {
+                if (isnan(AspectRatio)) break;
+                const float right = AspectRatio * Size; //update aspect ratio
+                const float left = -right;
+                projectionMatrix = ortho(left, right, -Size, Size,
+                    NearPlane, FarPlane);
+            }
+            break;
+                    
+        case CameraProjection::None: projectionMatrix = MatIdentity; break;
         }
 
-        m_ProjectionViewMatrix = projectionMatrix * viewMatrix;
-    }
-
-    void Camera::CalculateView(mat4& viewMatrix)
-    {
-        vec3 tweakedPosition = Position;
-        tweakedPosition.z *= -1;
-        viewMatrix = glm::translate(mat4(1.0f), tweakedPosition) * glm::toMat4(Rotation);
-        viewMatrix = glm::inverse(viewMatrix);
-    }
-
-    void Camera::CalculatePerspectiveProjection(mat4& projectionMatrix)
-    {
-        if (isnan(AspectRatio)) return;
-        projectionMatrix = glm::perspective(glm::radians(Fov), AspectRatio,
-            NearPlane, FarPlane);
-    }
-
-    void Camera::CalculateOrthographicProjection(mat4& projectionMatrix)
-    {
-        if (isnan(AspectRatio)) return;
-        const float right = AspectRatio * Size; //update aspect ratio
-        const float left = -right;
-        projectionMatrix = glm::ortho(left, right, -Size, Size, NearPlane, FarPlane);
+        m_ProjectionViewMat4 = projectionMatrix * viewMatrix;
     }
 }

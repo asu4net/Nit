@@ -3,10 +3,10 @@
 
 namespace Nit
 {
-    class AudioBuffer : public Asset
+    class AudioClip : public Asset
     {
     public:
-        AudioBuffer(const std::string& name, const std::string& path, const Id& id);
+        AudioClip(const std::string& name, const std::string& path, const Id& id);
         
         uint32_t GetId() const { return m_BufferId; }
         uint32_t GetFormat() const { return m_Format; }

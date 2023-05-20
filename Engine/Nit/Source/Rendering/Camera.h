@@ -2,34 +2,26 @@
 
 namespace Nit
 {
-    class Window;
+    enum class CameraProjection { None, Perspective, Orthographic };
     
     class Camera
     {
     public:
-        enum class Projection { None, Perspective, Orthographic };
+        CameraProjection Projection = CameraProjection::Perspective;
+        float Size = 3.f;
+        float Fov = 85.f;
+        float NearPlane = 0.1f;
+        float FarPlane = 1000.f;
+        float AspectRatio = 1280.f / 720.f;
         
-        Projection CurrentProjection;
-        float Size;
-        float Fov;
-        float NearPlane;
-        float FarPlane;
-        vec3 Position;
-        glm::quat Rotation;
-        float AspectRatio;
+        Mat4 GetProjectionViewMat4() const { return m_ProjectionViewMat4; }
         
-        Camera(Projection startProjection = Projection::Perspective);
-        virtual ~Camera() = default;
-        
-        mat4 ProjectionViewMatrix() const { return m_ProjectionViewMatrix; }
+        Camera() = default;
 
-        void UpdateMatrix();
+        void CalculateProjectionViewMat4(const Vec3& position, const Quat& rotation);
 
-        void CalculateView(mat4& viewMatrix);
-        void CalculatePerspectiveProjection(mat4& projectionMatrix);
-        void CalculateOrthographicProjection(mat4& projectionMatrix);
-        
     private:
-        mat4 m_ProjectionViewMatrix;
+        Mat4 m_ProjectionViewMat4 = MatIdentity;
+        RTTR_ENABLE()
     };
 }

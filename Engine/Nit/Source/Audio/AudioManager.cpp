@@ -23,11 +23,11 @@ namespace Nit
         alcCloseDevice(m_Device);
     }
 
-    AudioSource AudioManager::CreateSource(const Shared<AudioBuffer>& audioBuffer)
+    AudioSource AudioManager::CreateSource(const Shared<AudioClip>& clip)
     {
         uint32_t audioSourceHandler{0};
         alGenSources(1, &audioSourceHandler);
-        alSourcei(audioSourceHandler, AL_BUFFER, audioBuffer->GetId());
+        alSourcei(audioSourceHandler, AL_BUFFER, clip->GetId());
         const AudioSource audioSource{audioSourceHandler};
         return audioSource;
     }
@@ -66,35 +66,36 @@ namespace Nit
         alSourcei(audioSource.GetHandler(), AL_LOOPING, loop);
     }
 
-    void AudioManager::Translate(const AudioSource& audioSource, const vec3& position)
+    void AudioManager::Translate(const AudioSource& audioSource, const Vec3& position)
     {
         alSource3f(audioSource.GetHandler(), AL_POSITION,
             position.x, position.y, position.z);
     }
 
-    void AudioManager::SetVelocity(const AudioSource& audioSource, const vec3& velocity)
+    void AudioManager::SetVelocity(const AudioSource& audioSource, const Vec3& velocity)
     {
         alSource3f(audioSource.GetHandler(), AL_VELOCITY,
             velocity.x, velocity.y, velocity.z);
     }
 
-    void AudioManager::Rotate(const AudioSource& audioSource, const vec3& orientation)
+    void AudioManager::Rotate(const AudioSource& audioSource, const Vec3& orientation)
     {
         alSource3f(audioSource.GetHandler(), AL_ORIENTATION,
             orientation.x, orientation.y, orientation.z);
     }
 
-    void AudioManager::TranslateListener(const vec3& position)
+    void AudioManager::TranslateListener(const Vec3& position)
     {
         alListener3f(AL_POSITION, position.x, position.y, position.z);
     }
-
-    void AudioManager::RotateListener(const vec3& orientation)
+    
+    void AudioManager::RotateListener(const Vec3& up, const Vec3& forward)
     {
-        alListener3f(AL_ORIENTATION, orientation.x, orientation.y, orientation.z);
+        const float values[] = {up.x, up.y, up.z, forward.x, forward.y, forward.z};
+        alListenerfv(AL_ORIENTATION, values);
     }
 
-    void AudioManager::SetListenerVelocity(const vec3& velocity)
+    void AudioManager::SetListenerVelocity(const Vec3& velocity)
     {
         alListener3f(AL_VELOCITY, velocity.x, velocity.y, velocity.z);
     }

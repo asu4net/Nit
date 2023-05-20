@@ -41,7 +41,7 @@ namespace Nit
     class SetClearColorCommand : public RenderCommand
     {
     public:
-        SetClearColorCommand(const vec4& clearColor)
+        SetClearColorCommand(const Vec4& clearColor)
             : RenderCommand()
             , m_ClearColor(clearColor)
         {}
@@ -54,7 +54,7 @@ namespace Nit
         }
 
     private:
-        vec4 m_ClearColor;
+        Vec4 m_ClearColor;
     };
 
     class ClearCommand : public RenderCommand
@@ -150,7 +150,7 @@ namespace Nit
     {
     public:
         
-        SetUniformMat4Command(const Shared<Shader>& shader, const char* uniformName, const mat4& mat)
+        SetUniformMat4Command(const Shared<Shader>& shader, const char* uniformName, const Mat4& mat)
             : SetUniformCommand(shader, uniformName)
             , m_Mat(mat)
         {}
@@ -164,14 +164,14 @@ namespace Nit
         }
 
     private:
-        const mat4 m_Mat;
+        const Mat4 m_Mat;
     };
     
     class SetUniformVec4Command : public SetUniformCommand
     {
     public:
         
-        SetUniformVec4Command(const Shared<Shader>& shader, const char* uniformName, const vec4& vec)
+        SetUniformVec4Command(const Shared<Shader>& shader, const char* uniformName, const Vec4& vec)
             : SetUniformCommand(shader, uniformName)
             , m_Vec4(vec)
         {}
@@ -185,7 +185,7 @@ namespace Nit
         }
 
     private:
-        const vec4 m_Vec4;
+        const Vec4 m_Vec4;
     };
     
     class SetUniformIntCommand : public SetUniformCommand

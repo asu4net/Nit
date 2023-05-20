@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "AudioBuffer.h"
+#include "AudioClip.h"
 #include "AudioSource.h"
 
 struct ALCdevice;
@@ -13,7 +13,7 @@ namespace Nit
         void Start();
         void Finish();
 
-        AudioSource CreateSource(const Shared<AudioBuffer>& audioBuffer);
+        AudioSource CreateSource(const Shared<AudioClip>& clip);
 
         void DestroySource(AudioSource& audioSource);
         void Play(const AudioSource& audioSource);
@@ -21,12 +21,12 @@ namespace Nit
         void SetPitch(const AudioSource& audioSource, uint32_t pitch);
         void SetGain(const AudioSource& audioSource, uint32_t gain);
         void SetLoop(const AudioSource& audioSource, bool loop);
-        void Translate(const AudioSource& audioSource, const vec3& position);
-        void SetVelocity(const AudioSource& audioSource, const vec3& velocity);
-        void Rotate(const AudioSource& audioSource, const vec3& orientation);
-        void TranslateListener(const vec3& position);
-        void RotateListener(const vec3& orientation);
-        void SetListenerVelocity(const vec3& velocity);
+        void Translate(const AudioSource& audioSource, const Vec3& position);
+        void SetVelocity(const AudioSource& audioSource, const Vec3& velocity);
+        void Rotate(const AudioSource& audioSource, const Vec3& orientation);
+        void TranslateListener(const Vec3& position);
+        void RotateListener(const Vec3& up, const Vec3& forward);
+        void SetListenerVelocity(const Vec3& velocity);
         
     private:
         ALCcontext* m_Context;

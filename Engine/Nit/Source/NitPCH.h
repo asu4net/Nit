@@ -27,6 +27,7 @@
 #include <glm/common.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "glm/gtx/matrix_decompose.hpp"
 
 #include <rttr/registration_friend.h>
 #include <rttr/registration>
@@ -44,9 +45,9 @@
 
 #include "Math/Math.h"
 
+#include "Core/Enums.h"
 #include "Core/Delegates/Delegate.h"
 #include "Core/Delegates/MulticastDelegate.h"
 #include "Core/Base.h"
 #include "Core/Singleton.h"
 #include "Core/Id.h"
-

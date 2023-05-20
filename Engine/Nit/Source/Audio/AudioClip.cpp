@@ -1,21 +1,21 @@
-﻿#include "AudioBuffer.h"
+﻿#include "AudioClip.h"
 #include <alc/alcmain.h>
 
 RTTR_REGISTRATION
 {
     using namespace Nit;
     using namespace rttr;
-    registration::class_<AudioBuffer>("AudioBuffer")
+    registration::class_<AudioClip>("AudioClip")
        .constructor<const std::string&, const std::string&, const Id&>();
 }
 
 namespace Nit
 {
-    AudioBuffer::AudioBuffer(const std::string& name, const std::string& path, const Id& id)
+    AudioClip::AudioClip(const std::string& name, const std::string& path, const Id& id)
         : Asset(name, path, id)
     {}
 
-    bool AudioBuffer::Load()
+    bool AudioClip::Load()
     {
         char buffer[4];
         std::ifstream in(GetAbsolutePath(), std::ios::binary);
@@ -101,7 +101,7 @@ namespace Nit
         return true;
     }
 
-    void AudioBuffer::Initialize()
+    void AudioClip::Initialize()
     {
         alGenBuffers(1, &m_BufferId);
         if (alGetError() != AL_NO_ERROR)
@@ -110,7 +110,7 @@ namespace Nit
         alBufferData(m_BufferId, m_Format, m_Data, m_Size, m_Frec);
     }
 
-    bool AudioBuffer::Unload()
+    bool AudioClip::Unload()
     {
         alDeleteBuffers(1, &m_BufferId);
         delete[] m_Data;
