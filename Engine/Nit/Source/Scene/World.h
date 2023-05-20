@@ -8,7 +8,12 @@ namespace Nit
     {
     public:
 
-        static Weak<Scene> GetActiveScene() { return m_ActiveScene; } 
+        static Weak<Scene> GetActiveScenePtr() { return m_ActiveScene; } 
+        static Scene& GetActiveScene()
+        {
+            assert(m_ActiveScene);
+            return *m_ActiveScene.get();
+        }
         
         void OnStart() override;
         void OnUpdate(const TimeStep& timeStep) override;

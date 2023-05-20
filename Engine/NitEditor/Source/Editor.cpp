@@ -6,9 +6,9 @@ namespace Nit
 {
     void Editor::OnStart()
     {
-        World::GetActiveScene().lock()->SetRuntimeEnabled(false);
+        World::GetActiveScenePtr().lock()->SetRuntimeEnabled(false);
         
-        const Actor editorCamera = World::GetActiveScene().lock()->CreateActor("EditorCamera");
+        const Actor editorCamera = World::GetActiveScenePtr().lock()->CreateActor("EditorCamera");
         editorCamera.Add<EditorCameraComponent>();
         editorCamera.Get<TransformComponent>().Position = VecBack * 3.f;
         
