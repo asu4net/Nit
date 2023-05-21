@@ -1,5 +1,7 @@
 ﻿#include "AudioSourceComponent.h"
 #include "Audio/AudioManager.h"
+#include "Scene/Actor.h"
+#include "Scene/Scene.h"
 
 namespace Nit { NIT_FORCE_LINK_IMPL(AudioSourceComponent) }
 
@@ -15,17 +17,19 @@ RTTR_REGISTRATION
         .property("Loop", &AudioSourceComponent::Loop)
         .property("AutoPlay", &AudioSourceComponent::AutoPlay)
         .property("Clip", &AudioSourceComponent::m_Clip);
+
+    NIT_REGISTRY_COMPONENT(AudioSourceComponent)
 }
 
 namespace Nit
 {
     void AudioStatics::RecreateSource(AudioSourceComponent& audioSource)
     {
-        const AssetLink<AudioClip> clip = audioSource.m_Clip;
+        const AssetLink clip = audioSource.m_Clip;
         AddClip(audioSource, clip);
     }
 
-    void AudioStatics::AddClip(AudioSourceComponent& audioSource, const AssetLink<AudioClip>& clip)
+    void AudioStatics::AddClip(AudioSourceComponent& audioSource, const AssetLink& clip)
     {
         RemoveClip(audioSource);
         
@@ -33,7 +37,7 @@ namespace Nit
         {
             AudioManager& audioManager = AudioManager::GetInstance();
             audioSource.m_Clip = clip;
-            audioSource.m_Source = audioManager.CreateSource(audioSource.m_Clip.Lock());
+            audioSource.m_Source = audioManager.CreateSource(audioSource.m_Clip.GetAs<AudioClip>());
         }
     }
 
@@ -45,7 +49,7 @@ namespace Nit
             audioManager.DestroySource(audioSource.m_Source);
             audioSource.m_Source.Reset();
         }
-        audioSource.m_Clip = AssetLink<AudioClip>();
+        audioSource.m_Clip = {};
     }
 
     void AudioStatics::Play(const AudioSourceComponent& audioSource)

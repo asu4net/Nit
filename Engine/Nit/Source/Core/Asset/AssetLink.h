@@ -1,35 +1,37 @@
 #pragma once
 #include "Asset.h"
 
-//TODO: Make parent class to serialize some data
-
 namespace Nit
 {
-    template<typename T>
     class AssetLink
     {
     public:
+        AssetLink() = default;
+        AssetLink(const std::string& name, const Id& id, const std::string& typeName);
+        
         const std::string& GetName() const { return m_Name; }
         Id GetId() const { return m_Id; }
-        bool IsValid() const { return !m_TargetAsset.expired(); }
-
-        Shared<T> Lock() const
-        {
-            return m_TargetAsset.lock();
-        }
+        const std::string& GetTypeName() const { return m_TypeName; }
         
-        void SetTarget(const Weak<T>& asset)
+        bool IsValid() const { return Get() != nullptr; }
+
+        Shared<Asset> Get() const;
+        
+        template<typename T>
+        Shared<T> GetAs() const
         {
-            m_TargetAsset = asset;
-            m_Name = Lock()->GetName();
-            m_Id = Lock()->GetId();
+            const rttr::type t = rttr::type::get<T>();
+            if (!t.is_valid() || !t.is_derived_from<Asset>())
+                return nullptr;
+            return std::static_pointer_cast<T>(Get());
         }
         
     private:
         std::string m_Name{"Uninitialized"};
         Id m_Id{0};
-        Weak<T> m_TargetAsset;
+        std::string m_TypeName{"Uninitialized"};
 
+        RTTR_REGISTRATION_FRIEND
         RTTR_ENABLE()
     };
 }

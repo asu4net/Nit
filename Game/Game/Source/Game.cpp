@@ -15,7 +15,7 @@ void Game::OnStart()
 
     // Laser audio
     const Actor laserAudioActor = scene.CreateActor("LaserAudio");
-    const auto& audioSourceLaser = laserAudioActor.Add<AudioSourceComponent>(assets.GetAssetByName<AudioClip>("laser"));
+    const auto& audioSourceLaser = laserAudioActor.Add<AudioSourceComponent>(assets.GetAssetByName("laser"));
     
     Engine::GetInstance().GetWindow()->Events().KeyPressedEvent.Add([&](const int key, bool){
          if (key != KEY_SPACE) return;
@@ -34,14 +34,14 @@ void Game::OnStart()
 
     // Cat sprite
     const Actor catActor = scene.CreateActor("Cat", VecLeft);
-    catActor.Add<SpriteComponent>(assets.GetAssetByName<Texture2D>("Bola"));
+    catActor.Add<SpriteComponent>(assets.GetAssetByName("Bola"));
 
     //C++ sprite
-    scene.CreateActor("CppTexture", VecDown).Add<SpriteComponent>(assets.GetAssetByName<Texture2D>("Cpp"));
+    scene.CreateActor("CppTexture", VecDown).Add<SpriteComponent>(assets.GetAssetByName("Cpp"));
 
     // Background Grid
     const Actor gridActor = scene.CreateActor();
-    auto& gridSprite = gridActor.Add<SpriteComponent>(assets.GetAssetByName<Texture2D>("Grid"));
+    auto& gridSprite = gridActor.Add<SpriteComponent>(assets.GetAssetByName("Grid"));
     gridSprite.Size *= 30;
     gridSprite.UVScale *= 30;
     gridSprite.Color = DarkGrey;
@@ -51,5 +51,5 @@ void Game::OnStart()
     ImGuiRenderer::GetInstance().PushWidget<Vector3Widget>(catActor.Get<TransformComponent>().Position, "Ball Pos");
 #endif
 
-    //World::GetActiveScene().SetRuntimeEnabled(true);
+    World::GetActiveScene().SetRuntimeEnabled(true);
 }

@@ -20,7 +20,7 @@ namespace Nit
                 if (!cmpMetaData.HasFunction(actor)) continue;
                 
                 rttr::instance instance = cmpMetaData.GetByCopyFunction(actor);
-                ss << Serialization::ToJson(instance);
+                ss << Serialization::ToJson(instance) << "\n";
             }
         });
         printf("%s", ss.str().c_str());

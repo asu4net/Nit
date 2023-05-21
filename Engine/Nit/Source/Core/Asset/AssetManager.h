@@ -7,47 +7,52 @@ namespace Nit
     class AssetManager : public Singleton<AssetManager>
     {
     public:
-        template<typename T>
-        AssetLink<T> CreateAsset(const std::string& name, const std::string& path, const Id& id = Id())
+        Weak<Asset> GetAssetById(const Id& id)
         {
-            AssetLink<T> link;
+            if (!m_IdAssetMap.contains(id))
+                return {};
+            return m_IdAssetMap[id];
+        }
+        
+        template<typename T>
+        AssetLink CreateAsset(const std::string& name, const std::string& path, const Id& id = Id())
+        {
             const rttr::type t = rttr::type::get<T>();
             
             if (!t.is_valid() || !t.is_derived_from<Asset>())
-                return link;
+                return {};
+
+            AssetLink link;
             
             if (m_IdAssetMap.contains(id) || m_NameIdMap.contains(name))
             {
                 const Shared<T> asset = std::static_pointer_cast<T>(m_IdAssetMap[m_NameIdMap[name]]);
-                link.SetTarget(asset);
+                link = {name, id, t.get_name().to_string()};
                 return link;
             }
-
+            
             Shared<T> asset = CreateShared<T>(name, path, id);
             if (!asset->Load())
                 return {};
-
+            
             asset->SetTypeName(std::string(asset->get_type().get_name()));
             m_IdAssetMap[id] = asset;
             m_NameIdMap[name] = id;
-            link.SetTarget(asset);
+            link = {name, id, t.get_name().to_string()};
             
             return link;
         }
 
         bool ImportAsset(const std::filesystem::path& path);
         
-        template<typename T>
-        AssetLink<T> GetAssetByName(const std::string& assetName)
+        AssetLink GetAssetByName(const std::string& assetName)
         {
-            AssetLink<T> link;
-            const rttr::type t = rttr::type::get<T>();
-            
-            if (!t.is_valid() || !t.is_derived_from<Asset>() || !m_NameIdMap.contains(assetName))
-                return link;
-            
-            const Shared<T> asset = std::static_pointer_cast<T>(m_IdAssetMap[m_NameIdMap[assetName]]);
-            link.SetTarget(asset);
+            if (!m_NameIdMap.contains(assetName))
+                return {};
+
+            const Shared<Asset> asset = m_IdAssetMap[m_NameIdMap[assetName]];
+            AssetLink link = {asset->GetName(), asset->GetId(),
+                asset->get_type().get_name().to_string()};
             return link;
         }
         

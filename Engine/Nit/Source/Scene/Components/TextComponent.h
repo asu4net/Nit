@@ -14,7 +14,7 @@ namespace Nit
         
         std::string Text = "Text";
         Vec4 Color = White;
-        AssetLink<Font> Font;
+        AssetLink Font;
         Vec2 Size = VecOne;
         float Spacing =  0.9f;
 

@@ -26,7 +26,7 @@ namespace Nit
     void TextSystem::OnStart()
     {
         AssetManager& assetManager = AssetManager::GetInstance();
-        m_DefaultFont = assetManager.GetAssetByName<Font>("CascadiaMono");
+        m_DefaultFont = assetManager.GetAssetByName("CascadiaMono");
     }
 
     void TextSystem::OnUpdate(const TimeStep& timeStep)
@@ -39,7 +39,7 @@ namespace Nit
                 text.Text,
                 TransformStatics::GetModelMat4(transform),
                 text.Color,
-                text.Font.IsValid() ? text.Font.Lock() : nullptr,
+                text.Font.IsValid() ? text.Font.GetAs<Font>() : nullptr,
                 text.Size,
                 text.Spacing
             });

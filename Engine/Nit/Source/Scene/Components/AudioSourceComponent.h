@@ -9,7 +9,7 @@ namespace Nit
     struct AudioSourceComponent : ActorComponent
     {
         AudioSourceComponent() = default;
-        AudioSourceComponent(const AssetLink<AudioClip>& clip)
+        AudioSourceComponent(const AssetLink& clip)
             : m_Clip(clip)
         {}
         
@@ -19,7 +19,7 @@ namespace Nit
         bool AutoPlay = false;
         
     private:
-        AssetLink<AudioClip> m_Clip;
+        AssetLink m_Clip;
         AudioSource m_Source;
         
         RTTR_ENABLE(ActorComponent)
@@ -33,7 +33,7 @@ namespace Nit
     struct AudioStatics
     {
         static void RecreateSource(AudioSourceComponent& audioSource);
-        static void AddClip(AudioSourceComponent& audioSource, const AssetLink<AudioClip>& clip);
+        static void AddClip(AudioSourceComponent& audioSource, const AssetLink& clip);
         static void RemoveClip(AudioSourceComponent& audioSource);
         static void Play(const AudioSourceComponent& audioSource);
         static void Stop(const AudioSourceComponent& audioSource);

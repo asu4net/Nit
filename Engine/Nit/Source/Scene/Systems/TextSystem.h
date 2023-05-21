@@ -17,7 +17,7 @@ namespace Nit
         void OnTextComponentAdded(entt::registry&, const entt::entity entity);
     
     private:
-        AssetLink<Font> m_DefaultFont;
+        AssetLink m_DefaultFont;
         RTTR_ENABLE(SceneSystem)
     };
     NIT_FORCE_LINK(TextSystem)

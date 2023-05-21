@@ -15,19 +15,5 @@ RTTR_REGISTRATION
         .property("IsSerializable", &DetailsComponent::bIsSerializable)
         .property("Id", &DetailsComponent::m_Id);
     
-    Scene::ComponentMetaData[type::get<DetailsComponent>()] = {
-        
-        Delegate<bool(Actor)>([](const Actor& actor) -> bool
-        {
-            return actor.Has<DetailsComponent>();
-        }),
-        Delegate<instance(Actor)>([](const Actor& actor) -> instance
-        {
-            return actor.Get<DetailsComponent>();
-        }),
-        Delegate<void(Actor)>([](const Actor& actor)
-        {
-            actor.Add<DetailsComponent>();
-        })
-    };
+    NIT_REGISTRY_COMPONENT(DetailsComponent)
 }

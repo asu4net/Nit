@@ -1,6 +1,5 @@
 #include "NitPCH.h"
 #include "AssetManager.h"
-
 #include "Audio/AudioClip.h"
 #include "Core/Serialization.h"
 #include "Rendering/Data/Shader.h"
@@ -87,8 +86,9 @@ namespace Nit
             const std::string folder = GetRelativeAssetPath(path.string());
             auto textureLink = CreateAsset<Texture2D>(path.stem().string(), folder);
             if (!textureLink.IsValid()) return false;
-            SerializeAsset(textureLink.Lock());
-            textureLink.Lock()->UploadToGPU();
+            auto texture = textureLink.GetAs<Texture2D>();
+            SerializeAsset(texture);
+            texture->UploadToGPU();
             return true;
         }
         if (path.extension() == ".glsl")
@@ -96,24 +96,27 @@ namespace Nit
             const std::string folder = GetRelativeAssetPath(path.string());
             auto shaderLink = CreateAsset<Shader>(path.stem().string(), folder);
             if (!shaderLink.IsValid()) return false;
-            SerializeAsset(shaderLink.Lock());
-            shaderLink.Lock()->Compile();
+            auto shader = shaderLink.GetAs<Shader>();
+            SerializeAsset(shader);
+            shader->Compile();
         }
         if (path.extension() == ".wav")
         {
             const std::string folder = GetRelativeAssetPath(path.string());
             auto audioLink = CreateAsset<AudioClip>(path.stem().string(), folder);
             if (!audioLink.IsValid()) return false;
-            SerializeAsset(audioLink.Lock());
-            audioLink.Lock()->Initialize();
+            auto audio = audioLink.GetAs<AudioClip>();
+            SerializeAsset(audio);
+            audio->Initialize();
         }
         if (path.extension() == ".ttf")
         {
             const std::string folder = GetRelativeAssetPath(path.string());
             auto fontLink = CreateAsset<Font>(path.stem().string(), folder);
             if (!fontLink.IsValid()) return false;
-            SerializeAsset(fontLink.Lock());
-            fontLink.Lock()->Initialize();
+            auto font = fontLink.GetAs<Font>();
+            SerializeAsset(font);
+            font->Initialize();
         }
         return false;
     }

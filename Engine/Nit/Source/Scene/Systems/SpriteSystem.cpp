@@ -39,7 +39,7 @@ namespace Nit
         quad = {
                 TransformStatics::GetModelMat4(transform),
                 sprite.Color,
-                sprite.TextureLink.IsValid() ? sprite.TextureLink.Lock() : nullptr,
+                sprite.TextureLink.IsValid() ? sprite.TextureLink.GetAs<Texture2D>() : nullptr,
                 sprite.bIsSubTexture,
                 sprite.SubTextureSize,
                 sprite.LocationInAtlas,

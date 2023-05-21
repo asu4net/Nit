@@ -1,4 +1,6 @@
 ﻿#include "TransformComponent.h"
+#include "Scene/Actor.h"
+#include "Scene/Scene.h"
 
 namespace Nit { NIT_FORCE_LINK_IMPL(TransformComponent) }
 
@@ -13,6 +15,8 @@ RTTR_REGISTRATION
         .property("Position", &TransformComponent::Position)
         .property("Rotation", &TransformComponent::Rotation)
         .property("Scale", &TransformComponent::Scale);
+
+    NIT_REGISTRY_COMPONENT(TransformComponent)
 }
 
 namespace Nit

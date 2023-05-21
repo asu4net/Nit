@@ -9,7 +9,7 @@ namespace Nit
     {
         SpriteComponent() = default;
         
-        SpriteComponent(const AssetLink<Texture2D>& textureLink)
+        SpriteComponent(const AssetLink& textureLink)
             : TextureLink(textureLink)
         {}
 
@@ -17,7 +17,7 @@ namespace Nit
             : Color(color)
         {}
         
-        AssetLink<Texture2D> TextureLink;
+        AssetLink TextureLink;
         Vec4 Color = White;
         bool bIsSubTexture = false;
         Vec2 SubTextureSize = VecOne;

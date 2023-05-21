@@ -111,10 +111,10 @@ namespace Nit
     {
         AssetManager& assetManager = AssetManager::GetInstance();
 
-        AssetLink<Shader> flatColorShaderLink = assetManager.GetAssetByName<Shader>("FlatColorShader");
+        const AssetLink flatColorShaderLink = assetManager.GetAssetByName("FlatColorShader");
         
         if (flatColorShaderLink.IsValid())
-            m_FlatColorShader = flatColorShaderLink.Lock();
+            m_FlatColorShader = flatColorShaderLink.GetAs<Shader>();
         
         else
         {
@@ -123,10 +123,10 @@ namespace Nit
             printf("FlatColorShader: Using raw string shader source.\n");
         }
 
-        AssetLink<Shader> textureShaderLink = assetManager.GetAssetByName<Shader>("TextureShader");
+        const AssetLink textureShaderLink = assetManager.GetAssetByName("TextureShader");
         
         if (textureShaderLink.IsValid())
-            m_TextureShader = textureShaderLink.Lock();
+            m_TextureShader = textureShaderLink.GetAs<Shader>();
         
         else
         {
@@ -146,8 +146,8 @@ namespace Nit
         
         g_QuadRenderData.VertexData = new QuadVertex[QuadRenderData::MaxVertices];
         g_QuadRenderData.LastVertex = g_QuadRenderData.VertexData;
-        auto whiteTexture = assetManager.CreateAsset<Texture2D>("WhiteTexture", "");
-        g_QuadRenderData.WhiteTexture = whiteTexture.Lock();
+        const auto whiteTexture = assetManager.CreateAsset<Texture2D>("WhiteTexture", "");
+        g_QuadRenderData.WhiteTexture = whiteTexture.GetAs<Texture2D>();
         
         Texture2DSettings settings;
         settings.CreateFromFile = false;

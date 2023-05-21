@@ -36,6 +36,22 @@ namespace Nit
     struct ForceLink##_TYPE##Class { ForceLink##_TYPE##Class(); }; \
     inline ForceLink##_TYPE##Class g_ForceLink##_TYPE##Variable;
 
+#define NIT_REGISTRY_COMPONENT(_TYPE) \
+    Scene::ComponentMetaData[type::get<_TYPE>()] = { \
+    Delegate<bool(Actor)>([](const Actor& actor) -> bool \
+    { \
+        return actor.Has<_TYPE>(); \
+    }), \
+    Delegate<instance(Actor)>([](const Actor& actor) -> instance \
+    { \
+        return actor.Get<_TYPE>(); \
+    }), \
+    Delegate<void(Actor)>([](const Actor& actor) \
+    { \
+        actor.Add<_TYPE>(); \
+    }) \
+};
+
 #define NIT_FORCE_LINK_IMPL(_TYPE) \
     ForceLink##_TYPE##Class::ForceLink##_TYPE##Class() { _TYPE _TYPE##ForceLink; };
     
