@@ -2,6 +2,8 @@
 #include "Scene/Components/CameraComponent.h"
 #include "Scene/Components/TransformComponent.h"
 
+namespace Nit { NIT_FORCE_LINK_IMPL(CameraSystem) }
+
 RTTR_REGISTRATION
 {
     using namespace rttr;

@@ -73,7 +73,8 @@ namespace Nit
         m_bRuntimeEnabled = bRuntimeEnabled;
         if (bRuntimeEnabled)
         {
-            //SaveSceneData
+            std::stringstream ss;
+            m_RegistrySerializer.Serialize(m_Registry, ss);
         }
         else
         {

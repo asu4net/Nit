@@ -50,4 +50,6 @@ void Game::OnStart()
 #ifdef NIT_IMGUI
     ImGuiRenderer::GetInstance().PushWidget<Vector3Widget>(catActor.Get<TransformComponent>().Position, "Ball Pos");
 #endif
+
+    //World::GetActiveScene().SetRuntimeEnabled(true);
 }

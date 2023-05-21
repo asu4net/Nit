@@ -1,14 +1,26 @@
 ﻿#pragma once
 #include "Actor.h"
 #include "SceneRenderer.h"
+#include "RegistrySerializer.h"
 #include "Core/Time.h"
+
+//TODO: Implement get actor by name
 
 namespace Nit
 {
+    struct ComponentMetaData
+    {
+        Delegate<bool(Actor)> HasFunction;
+        Delegate<rttr::instance(Actor)> GetByCopyFunction;
+        Delegate<void(Actor)> AddFunction;
+    };
+    
     class SceneSystem;
     class Scene
     {
     public:
+        inline static std::map<rttr::type, ComponentMetaData> ComponentMetaData;
+        
         void Start();
         void Update(const TimeStep& timeStep);
         void FixedUpdate(const TimeStep& timeStep);
@@ -35,10 +47,11 @@ namespace Nit
         
     private:
         SceneRenderer m_SceneRenderer;
+        RegistrySerializer m_RegistrySerializer;
         std::vector<Shared<SceneSystem>> m_Systems;
         Shared<entt::registry> m_Registry;
         Weak<Scene> m_WeakPtr;
         std::unordered_map<Id, entt::entity> m_IdEntityMap;
-        bool m_bRuntimeEnabled = true;
+        bool m_bRuntimeEnabled = false;
     };
 }

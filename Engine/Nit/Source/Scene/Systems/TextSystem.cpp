@@ -1,8 +1,9 @@
 ﻿#include "TextSystem.h"
-
 #include "Core/Asset/AssetManager.h"
 #include "Scene/Components/TextComponent.h"
 #include "Scene/Components/TransformComponent.h"
+
+namespace Nit { NIT_FORCE_LINK_IMPL(TextSystem) }
 
 RTTR_REGISTRATION
 {

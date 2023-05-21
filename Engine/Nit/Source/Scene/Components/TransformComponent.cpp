@@ -1,5 +1,7 @@
 ﻿#include "TransformComponent.h"
 
+namespace Nit { NIT_FORCE_LINK_IMPL(TransformComponent) }
+
 RTTR_REGISTRATION
 {
     using namespace Nit;

@@ -33,7 +33,11 @@ namespace Nit
     int GetExecutionOrder() const override { return _ORDER; }
     
 #define NIT_FORCE_LINK(_TYPE) \
-    inline _TYPE g_##_TYPE##ForceLink;
+    struct ForceLink##_TYPE##Class { ForceLink##_TYPE##Class(); }; \
+    inline ForceLink##_TYPE##Class g_ForceLink##_TYPE##Variable;
+
+#define NIT_FORCE_LINK_IMPL(_TYPE) \
+    ForceLink##_TYPE##Class::ForceLink##_TYPE##Class() { _TYPE _TYPE##ForceLink; };
     
     using Vec3 = glm::vec3;
     using Vec4 = glm::vec4;

@@ -1,6 +1,7 @@
 ﻿#include "AudioSourceComponent.h"
-
 #include "Audio/AudioManager.h"
+
+namespace Nit { NIT_FORCE_LINK_IMPL(AudioSourceComponent) }
 
 RTTR_REGISTRATION
 {

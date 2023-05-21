@@ -1,5 +1,7 @@
 ﻿#include "CameraComponent.h"
 
+namespace Nit { NIT_FORCE_LINK_IMPL(CameraComponent) }
+
 RTTR_REGISTRATION
 {
     using namespace Nit;

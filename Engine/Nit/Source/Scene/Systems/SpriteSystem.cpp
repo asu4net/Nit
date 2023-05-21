@@ -3,6 +3,8 @@
 #include "Scene/Components/SpriteComponent.h"
 #include "Scene/Components/TransformComponent.h"
 
+namespace Nit { NIT_FORCE_LINK_IMPL(SpriteSystem) }
+
 RTTR_REGISTRATION
 {
     using namespace Nit;

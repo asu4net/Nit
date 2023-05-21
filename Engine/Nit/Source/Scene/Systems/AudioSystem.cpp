@@ -4,6 +4,8 @@
 #include "Scene/Components/AudioSourceComponent.h"
 #include "Scene/Components/TransformComponent.h"
 
+namespace Nit { NIT_FORCE_LINK_IMPL(AudioSystem) }
+
 RTTR_REGISTRATION
 {
     using namespace Nit;

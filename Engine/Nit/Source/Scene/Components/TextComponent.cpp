@@ -1,5 +1,7 @@
 ﻿#include "TextComponent.h"
 
+namespace Nit { NIT_FORCE_LINK_IMPL(TextComponent) }
+
 RTTR_REGISTRATION
 {
     using namespace Nit;

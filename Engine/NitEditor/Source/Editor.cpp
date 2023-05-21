@@ -39,6 +39,8 @@ namespace Nit
             }
             ImGui::End();
         });
+
+        //World::GetActiveScene().SetRuntimeEnabled(true);
     }
 
     void Editor::OnUpdate(const TimeStep& timeStep)

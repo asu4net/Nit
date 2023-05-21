@@ -1,6 +1,8 @@
 ﻿#include "EditorCameraSystem.h"
 #include "Scene/Components/EditorCameraComponent.h"
 
+namespace Nit { NIT_FORCE_LINK_IMPL(EditorCameraSystem) }
+
 RTTR_REGISTRATION
 {
     using namespace rttr;

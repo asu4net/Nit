@@ -27,5 +27,6 @@ namespace Nit
         RTTR_ENABLE(ActorComponent)
         RTTR_REGISTRATION_FRIEND
     };
+    
     NIT_FORCE_LINK(DetailsComponent)
 }

@@ -1,5 +1,7 @@
 ﻿#include "SpriteComponent.h"
 
+namespace Nit { NIT_FORCE_LINK_IMPL(SpriteComponent) }
+
 RTTR_REGISTRATION
 {
     using namespace Nit;

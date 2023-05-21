@@ -57,6 +57,7 @@
 #include "Scene/Components/CameraComponent.h"
 #include "Scene/Components/TextComponent.h"
 #include "Scene/Components/AudioSourceComponent.h"
+#include "Scene/Components/DetailsComponent.h"
 
 #include "Scene/Systems/SceneSystem.h"
 #include "Scene/Systems/SpriteSystem.h"
