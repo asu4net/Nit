@@ -35,7 +35,8 @@ void Game::OnStart()
     // Cat sprite
     const Actor catActor = scene.CreateActor("Cat", VecLeft);
     catActor.Add<SpriteComponent>(assets.GetAssetByName("Bola"));
-
+    catActor.Get<SpriteComponent>().OrderInLayer = 1;
+    
     //C++ sprite
     scene.CreateActor("CppTexture", VecDown).Add<SpriteComponent>(assets.GetAssetByName("Cpp"));
 

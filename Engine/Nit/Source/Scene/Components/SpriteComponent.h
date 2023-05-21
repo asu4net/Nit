@@ -25,6 +25,7 @@ namespace Nit
         Vec2 UVScale = VecOne;
         Vec2 Size = VecOne;
         Flip Flip = Flip::None;
+        int OrderInLayer = 0;
         
         RTTR_ENABLE(ActorComponent)       
     };

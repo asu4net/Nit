@@ -24,8 +24,13 @@ namespace Nit
     void SpriteSystem::OnUpdate(const TimeStep& timeStep)
     {
         if (!CameraSystem::GetMainCameraActor().IsValid()) return;
-        
+
         const auto view = Registry().view<TransformComponent, SpriteComponent>();
+
+        Registry().sort<SpriteComponent>([](const SpriteComponent& a, const SpriteComponent& b)
+        {
+           return a.OrderInLayer < b.OrderInLayer;
+        });
         
         view.each([&](const TransformComponent& transform, const SpriteComponent& sprite){
             Quad spriteQuad;

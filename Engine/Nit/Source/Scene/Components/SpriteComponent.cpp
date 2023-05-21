@@ -18,7 +18,8 @@ RTTR_REGISTRATION
         .property("LocationInAtlas", &SpriteComponent::LocationInAtlas)
         .property("UVScale", &SpriteComponent::UVScale)
         .property("Size", &SpriteComponent::Size)
-        .property("Flip", &SpriteComponent::Flip);
+        .property("Flip", &SpriteComponent::Flip)
+        .property("OrderInLayer", &SpriteComponent::OrderInLayer);
 
     NIT_REGISTRY_COMPONENT(SpriteComponent)
 }
