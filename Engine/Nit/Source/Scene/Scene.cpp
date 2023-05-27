@@ -9,6 +9,7 @@ namespace Nit
 {
     void Scene::Start()
     {
+        m_SceneSerializer = this;
         m_Registry = CreateShared<entt::registry>();
         
         rttr::array_range<rttr::type> derivedSystems = rttr::type::get<SceneSystem>().get_derived_classes();
@@ -74,7 +75,7 @@ namespace Nit
         if (bRuntimeEnabled)
         {
             std::stringstream ss;
-            m_RegistrySerializer.Serialize(m_Registry, ss);
+            m_SceneSerializer.Serialize(ss);
         }
         else
         {

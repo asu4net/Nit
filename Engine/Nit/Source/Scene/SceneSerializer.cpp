@@ -1,0 +1,172 @@
+﻿#include "SceneSerializer.h"
+#include "Actor.h"
+#include "Scene.h"
+#include "Components/DetailsComponent.h"
+#include "Core/Serialization.h"
+
+RTTR_REGISTRATION
+{
+    using namespace Nit;
+    using namespace rttr;
+    registration::class_<ComponentInfo>("ComponentInfo")
+        .constructor<>()
+        .property("ComponentType", &ComponentInfo::ComponentType);
+}
+
+namespace Nit
+{
+    SceneSerializer::SceneSerializer(Scene* scene)
+        : m_Scene(scene)
+    {
+    }
+
+    void SceneSerializer::Serialize(std::stringstream& ss)
+    {
+        using namespace entt;
+        if (!m_Scene) return;
+
+        
+        const Shared<registry> registry = m_Scene->GetRegistry().lock();
+        
+        registry->each([&](const entity entity){
+
+            const Actor actor= { entity, registry };
+            
+            if (!actor.Get<DetailsComponent>().bIsSerializable)
+                return;
+			
+            ss << "#actor start\n";
+            
+            for(auto& [type, cmpMetaData] : Scene::ComponentMetaData)
+            {
+                if (!cmpMetaData.HasFunction(actor)) continue;
+
+                ComponentInfo info;
+                info.ComponentType = type.get_name().to_string();
+                
+                rttr::instance instance = cmpMetaData.GetByCopyFunction(actor);
+                
+                ss << "#component info start\n";
+                ss << Serialization::ToJson(info) << "\n";
+                ss << "#component info end\n";
+                
+                ss << "#component data start\n";
+                ss << Serialization::ToJson(instance) << "\n";
+                ss << "#component data end\n";
+            }
+
+            ss << "#actor end\n";
+        });
+        printf("%s", ss.str().c_str());
+    }
+
+    void SceneSerializer::Deserialize(const std::string& data)
+    {
+        using namespace entt;
+        if (!m_Scene) return;
+
+        const Shared<registry> registry = m_Scene->GetRegistry().lock();
+        
+        std::istringstream iss{data};
+        
+        Actor actor;
+        std::string componentInfoStr;
+        std::string componentDataStr;
+        ComponentInfo componentInfo;
+
+        enum class ReadMode
+        {
+            None,
+            ActorStart,
+            ActorEnd,
+            ComponentInfoStart,
+            ComponentInfoEnd,
+            ComponentDataStart,
+            ComponentDataEnd
+        };
+        
+        ReadMode readMode = ReadMode::None;
+        
+        for (std::string line; std::getline(iss, line); )
+        {
+            if (line.find("#actor start") != std::string::npos)
+            {
+                readMode = ReadMode::ActorStart;
+            }
+
+            if (line.find("#actor end") != std::string::npos)
+            {
+                readMode = ReadMode::ActorEnd;
+            }
+            
+            if (line.find("#component info start") != std::string::npos)
+            {
+                readMode = ReadMode::ComponentInfoStart;
+                continue;
+            }
+
+            if (line.find("#component info end") != std::string::npos)
+            {
+                readMode = ReadMode::ComponentInfoEnd;
+            }
+
+            if (line.find("#component data start") != std::string::npos)
+            {
+                readMode = ReadMode::ComponentDataStart;
+                continue;
+            }
+
+            if (line.find("#component data end") != std::string::npos)
+            {
+                readMode = ReadMode::ComponentDataEnd;
+            }
+
+            // Serialization
+
+            switch (readMode)
+            {
+            case ReadMode::ActorStart:
+                {
+                    actor = { registry->create(), registry };
+                }
+                continue;
+            case ReadMode::ComponentInfoStart:
+                {
+                    componentInfoStr.append(line + "\n");
+                }
+                continue;
+            case ReadMode::ComponentInfoEnd:
+                {
+                    Serialization::FromJson(componentInfoStr, componentInfo);
+                    componentInfoStr.clear();
+                }
+                continue;
+            case ReadMode::ComponentDataStart:
+                {
+                    componentDataStr.append(line + "\n");
+                }
+                continue;
+            case ReadMode::ComponentDataEnd:
+                {
+                    rttr::type componentType = rttr::type::get_by_name(componentInfo.ComponentType);
+                    if (!componentType.is_valid()) return;
+
+                    rttr::variant variant = componentType.create();
+                    if (!variant.is_valid()) return;
+                    
+                    rttr::instance componentInstance = variant;
+                    if (!componentInstance.is_valid()) return;
+                    
+                    Serialization::FromJson(componentDataStr, componentInstance);
+                    auto& componentMetaData = Scene::ComponentMetaData[componentType];
+                    componentMetaData.AddFunction(actor, componentInstance);
+                    componentDataStr.clear();
+                }
+                continue;
+            case ReadMode::ActorEnd:
+                m_Scene->m_IdEntityMap[actor.Get<DetailsComponent>().GetId()] = actor.GetEntity();
+                continue;
+            }
+        }
+    }
+}

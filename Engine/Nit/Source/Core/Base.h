@@ -46,9 +46,9 @@ namespace Nit
     { \
         return actor.Get<_TYPE>(); \
     }), \
-    Delegate<void(Actor)>([](const Actor& actor) \
+    Delegate<void(Actor, const rttr::instance&)>([](const Actor& actor, const rttr::instance& instance) \
     { \
-        actor.Add<_TYPE>(); \
+        actor.Add<_TYPE>(*instance.try_convert<_TYPE>()); \
     }) \
 };
 

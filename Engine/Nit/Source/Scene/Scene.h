@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Actor.h"
 #include "SceneRenderer.h"
-#include "RegistrySerializer.h"
+#include "SceneSerializer.h"
 #include "Core/Time.h"
 
 //TODO: Implement get actor by name
@@ -12,7 +12,7 @@ namespace Nit
     {
         Delegate<bool(Actor)> HasFunction;
         Delegate<rttr::instance(Actor)> GetByCopyFunction;
-        Delegate<void(Actor)> AddFunction;
+        Delegate<void(Actor, const rttr::instance&)> AddFunction;
     };
     
     class SceneSystem;
@@ -47,11 +47,13 @@ namespace Nit
         
     private:
         SceneRenderer m_SceneRenderer;
-        RegistrySerializer m_RegistrySerializer;
+        SceneSerializer m_SceneSerializer;
         std::vector<Shared<SceneSystem>> m_Systems;
         Shared<entt::registry> m_Registry;
         Weak<Scene> m_WeakPtr;
         std::unordered_map<Id, entt::entity> m_IdEntityMap;
         bool m_bRuntimeEnabled = false;
+
+        friend class SceneSerializer;
     };
 }

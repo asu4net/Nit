@@ -9,7 +9,11 @@ namespace Nit
         std::string Tag;
         bool bIsSerializable = true;
         
-        DetailsComponent() = default;
+        DetailsComponent()
+            : Name("None")
+            , Tag("None")
+        {
+        }
         
         DetailsComponent(const std::string& name, const std::string& tag, const Id& id,
             const bool bIsSerializable)
