@@ -1,0 +1,690 @@
+#actor start
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "TextureLink": {
+        "Name": "Grid",
+        "Id": {
+            "idHandler": 14919932891784766720
+        },
+        "Type": "Texture2D"
+    },
+    "Color": {
+        "x": 0.12999999523162842,
+        "y": 0.12999999523162842,
+        "z": 0.12999999523162842,
+        "w": 1.0
+    },
+    "bIsSubTexture": false,
+    "SubTextureSize": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "LocationInAtlas": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "UVScale": {
+        "x": 30.0,
+        "y": 30.0
+    },
+    "Size": {
+        "x": 30.0,
+        "y": 30.0
+    },
+    "Flip": 0,
+    "OrderInLayer": -1
+}
+#component data end
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "Actor",
+    "Tag": "Default",
+    "IsSerializable": true,
+    "Id": {
+        "idHandler": 12754561748775255566
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "TextureLink": {
+        "Name": "Cpp",
+        "Id": {
+            "idHandler": 13976696990043503687
+        },
+        "Type": "Texture2D"
+    },
+    "Color": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
+    },
+    "bIsSubTexture": false,
+    "SubTextureSize": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "LocationInAtlas": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "UVScale": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Flip": 0,
+    "OrderInLayer": 0
+}
+#component data end
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "CppTexture",
+    "Tag": "Default",
+    "IsSerializable": true,
+    "Id": {
+        "idHandler": 12110428619388951511
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": -1.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "TextureLink": {
+        "Name": "Bola",
+        "Id": {
+            "idHandler": 14943761206997954995
+        },
+        "Type": "Texture2D"
+    },
+    "Color": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
+    },
+    "bIsSubTexture": false,
+    "SubTextureSize": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "LocationInAtlas": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "UVScale": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Flip": 0,
+    "OrderInLayer": 0
+}
+#component data end
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "Cat",
+    "Tag": "Default",
+    "IsSerializable": true,
+    "Id": {
+        "idHandler": 11823840850252558544
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "TextureLink": {
+        "Name": "Uninitialized",
+        "Id": {
+            "idHandler": 0
+        },
+        "Type": "Uninitialized"
+    },
+    "Color": {
+        "x": 1.0,
+        "y": 0.30000001192092896,
+        "z": 0.30000001192092896,
+        "w": 1.0
+    },
+    "bIsSubTexture": false,
+    "SubTextureSize": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "LocationInAtlas": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "UVScale": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Flip": 0,
+    "OrderInLayer": 0
+}
+#component data end
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "RedSprite",
+    "Tag": "Default",
+    "IsSerializable": true,
+    "Id": {
+        "idHandler": 6232738016746312627
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "TextureLink": {
+        "Name": "Uninitialized",
+        "Id": {
+            "idHandler": 0
+        },
+        "Type": "Uninitialized"
+    },
+    "Color": {
+        "x": 1.0,
+        "y": 0.9200000166893005,
+        "z": 0.01600000075995922,
+        "w": 1.0
+    },
+    "bIsSubTexture": false,
+    "SubTextureSize": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "LocationInAtlas": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "UVScale": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Flip": 0,
+    "OrderInLayer": 0
+}
+#component data end
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "YellowSprite",
+    "Tag": "Default",
+    "IsSerializable": true,
+    "Id": {
+        "idHandler": 1198211212558632304
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "TextureLink": {
+        "Name": "Uninitialized",
+        "Id": {
+            "idHandler": 0
+        },
+        "Type": "Uninitialized"
+    },
+    "Color": {
+        "x": 0.30000001192092896,
+        "y": 0.30000001192092896,
+        "z": 1.0,
+        "w": 1.0
+    },
+    "bIsSubTexture": false,
+    "SubTextureSize": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "LocationInAtlas": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "UVScale": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Flip": 0,
+    "OrderInLayer": 0
+}
+#component data end
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "BlueSprite",
+    "Tag": "Default",
+    "IsSerializable": true,
+    "Id": {
+        "idHandler": 14582910749307576660
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 0.0,
+        "y": 1.600000023841858,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "HelloWorld",
+    "Tag": "Default",
+    "IsSerializable": true,
+    "Id": {
+        "idHandler": 15143316276592611259
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "TextComponent"
+}
+#component info end
+#component data start
+{
+    "Text": "hello world",
+    "Color": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
+    },
+    "Font": {
+        "Name": "CascadiaMono",
+        "Id": {
+            "idHandler": 14026014190215705590
+        },
+        "Type": "Font"
+    },
+    "Size": {
+        "x": 2.0,
+        "y": 2.0
+    },
+    "Spacing": 0.8999999761581421
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "LaserAudio",
+    "Tag": "Default",
+    "IsSerializable": true,
+    "Id": {
+        "idHandler": 17465308153146733802
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "AudioSourceComponent"
+}
+#component info end
+#component data start
+{
+    "Pitch": 1,
+    "Gain": 1,
+    "Loop": false,
+    "AutoPlay": false,
+    "Clip": {
+        "Name": "laser",
+        "Id": {
+            "idHandler": 3167360085290557965
+        },
+        "Type": "AudioClip"
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -2.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "CameraComponent"
+}
+#component info end
+#component data start
+{
+    "CameraData": {
+        "Projection": "Perspective",
+        "Size": 3.0,
+        "Fov": 85.0,
+        "NearPlane": 0.10000000149011612,
+        "FarPlane": 1000.0,
+        "AspectRatio": 1.7777777910232544
+    },
+    "Priority": 0
+}
+#component data end
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "GameCamera",
+    "Tag": "Default",
+    "IsSerializable": true,
+    "Id": {
+        "idHandler": 15302707930347836219
+    }
+}
+#component data end
+#actor end

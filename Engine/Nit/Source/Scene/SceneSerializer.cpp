@@ -24,7 +24,6 @@ namespace Nit
     {
         using namespace entt;
         if (!m_Scene) return;
-
         
         const Shared<registry> registry = m_Scene->GetRegistry().lock();
         
@@ -35,7 +34,7 @@ namespace Nit
             if (!actor.Get<DetailsComponent>().bIsSerializable)
                 return;
 			
-            ss << "#actor start\n";
+            ss << "#actor start" << std::endl;
             
             for(auto& [type, cmpMetaData] : Scene::ComponentMetaData)
             {
@@ -46,16 +45,16 @@ namespace Nit
                 
                 rttr::instance instance = cmpMetaData.GetByCopyFunction(actor);
                 
-                ss << "#component info start\n";
-                ss << Serialization::ToJson(info) << "\n";
-                ss << "#component info end\n";
+                ss << "#component info start" << std::endl;
+                ss << Serialization::ToJson(info) << std::endl;
+                ss << "#component info end" << std::endl;
                 
-                ss << "#component data start\n";
-                ss << Serialization::ToJson(instance) << "\n";
-                ss << "#component data end\n";
+                ss << "#component data start" << std::endl;
+                ss << Serialization::ToJson(instance) << std::endl;
+                ss << "#component data end" << std::endl;
             }
 
-            ss << "#actor end\n";
+            ss << "#actor end" << std::endl;
         });
         printf("%s", ss.str().c_str());
     }
@@ -63,7 +62,7 @@ namespace Nit
     void SceneSerializer::Deserialize(const std::string& data)
     {
         using namespace entt;
-        if (!m_Scene) return;
+        if (!m_Scene || data.empty()) return;
 
         const Shared<registry> registry = m_Scene->GetRegistry().lock();
         
@@ -149,13 +148,16 @@ namespace Nit
             case ReadMode::ComponentDataEnd:
                 {
                     rttr::type componentType = rttr::type::get_by_name(componentInfo.ComponentType);
-                    if (!componentType.is_valid()) return;
+                    if (!componentType.is_valid())
+                        continue;
 
                     rttr::variant variant = componentType.create();
-                    if (!variant.is_valid()) return;
+                    if (!variant.is_valid())
+                        continue; 
                     
                     rttr::instance componentInstance = variant;
-                    if (!componentInstance.is_valid()) return;
+                    if (!componentInstance.is_valid())
+                        continue;
                     
                     Serialization::FromJson(componentDataStr, componentInstance);
                     auto& componentMetaData = Scene::ComponentMetaData[componentType];

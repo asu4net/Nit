@@ -1,11 +1,14 @@
 ﻿#include "NitPCH.h"
 #include "World.h"
 
+#include "Core/Asset/AssetManager.h"
+
 namespace Nit
 {
     void World::OnStart()
     {
-        m_ActiveScene = CreateShared<Scene>();
+        AssetManager& assetManager = AssetManager::GetInstance();
+        m_ActiveScene = assetManager.GetAssetByName("DefaultScene").GetAs<Scene>();
         m_ActiveScene->SetWeakPtr(m_ActiveScene);
         m_ActiveScene->Start();
     }

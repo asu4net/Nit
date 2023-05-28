@@ -16,10 +16,18 @@ namespace Nit
     };
     
     class SceneSystem;
-    class Scene
+    
+    class Scene : public Asset
     {
     public:
         inline static std::map<rttr::type, ComponentMetaData> ComponentMetaData;
+
+        Scene() = default;
+        Scene(const std::string& name, const std::string& path, const Id& id);
+        
+        bool Load() override;
+        void Initialize() override;
+        bool Unload() override;
         
         void Start();
         void Update(const TimeStep& timeStep);
@@ -29,8 +37,10 @@ namespace Nit
 
         Weak<entt::registry> GetRegistry() const { return m_Registry; }
 
-        void SetRuntimeEnabled(bool bRuntimeEnabled);
+        void SetRuntimeEnabled(const bool bRuntimeEnabled) { m_bRuntimeEnabled = bRuntimeEnabled; }
         bool IsRuntimeEnabled() const { return m_bRuntimeEnabled; }
+
+        void Save();
         
         void SetWeakPtr(const Weak<Scene>& weakPtr) { m_WeakPtr = weakPtr; }
         const Weak<Scene>& GetWeakPtr() const { return m_WeakPtr; }
@@ -46,14 +56,18 @@ namespace Nit
         void DestroyActor(const Actor& actor);
         
     private:
+        std::string m_SceneData;
         SceneRenderer m_SceneRenderer;
         SceneSerializer m_SceneSerializer;
         std::vector<Shared<SceneSystem>> m_Systems;
         Shared<entt::registry> m_Registry;
         Weak<Scene> m_WeakPtr;
         std::unordered_map<Id, entt::entity> m_IdEntityMap;
-        bool m_bRuntimeEnabled = false;
+        bool m_bRuntimeEnabled = true;
 
+        RTTR_ENABLE(Asset)
+        RTTR_REGISTRATION_FRIEND
+        
         friend class SceneSerializer;
     };
 }

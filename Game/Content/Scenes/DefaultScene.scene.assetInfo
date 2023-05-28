@@ -1,0 +1,8 @@
+{
+    "Name": "DefaultScene",
+    "Path": "Content/Scenes/DefaultScene.scene",
+    "Id": {
+        "idHandler": 9551802902514743241
+    },
+    "TypeName": "Scene"
+}

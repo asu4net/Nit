@@ -10,6 +10,7 @@ RTTR_REGISTRATION
     using namespace rttr;
 
     registration::class_<TextComponent>("TextComponent")
+        .constructor<>()
         .property("Text", &TextComponent::Text)
         .property("Color", &TextComponent::Color)
         .property("Font", &TextComponent::Font)

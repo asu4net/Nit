@@ -5,11 +5,49 @@
 #include "Systems/CameraSystem.h"
 #include "Systems/SceneSystem.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Nit;
+    using namespace rttr;
+
+    registration::class_<Scene>("Scene")
+        .constructor<>()
+        .constructor<const std::string&, const std::string&, const Id&>();
+}
+
 namespace Nit
 {
+    Scene::Scene(const std::string& name, const std::string& path, const Id& id)
+        : Asset(name, path, id)
+        , m_SceneSerializer(this)
+    {
+    }
+
+    bool Scene::Load()
+    {
+        const std::ifstream stream(GetAbsolutePath());
+        
+        if (stream.fail())
+            return false;
+
+        std::stringstream ss;
+        ss << stream.rdbuf();
+        m_SceneData = ss.str();
+        
+        return true;
+    }
+    
+    void Scene::Initialize() {}
+    
+    bool Scene::Unload()
+    {
+        std::ofstream fileOut(GetAbsolutePath());
+        fileOut << m_SceneData;
+        return true;
+    }
+
     void Scene::Start()
     {
-        m_SceneSerializer = this;
         m_Registry = CreateShared<entt::registry>();
         
         rttr::array_range<rttr::type> derivedSystems = rttr::type::get<SceneSystem>().get_derived_classes();
@@ -32,11 +70,12 @@ namespace Nit
                 return a->GetExecutionOrder() < b->GetExecutionOrder();
             });
         
-        //TODO: Sort by priority
         for (const auto& system : m_Systems)
         {
             system->OnStart();
         }
+
+        m_SceneSerializer.Deserialize(m_SceneData);
     }
 
     void Scene::Update(const TimeStep& timeStep)
@@ -67,21 +106,14 @@ namespace Nit
             system->OnFinish();
         }
         m_Registry->clear();
+        m_Registry.reset();
     }
 
-    void Scene::SetRuntimeEnabled(const bool bRuntimeEnabled)
+    void Scene::Save()
     {
-        m_bRuntimeEnabled = bRuntimeEnabled;
-        if (bRuntimeEnabled)
-        {
-            std::stringstream ss;
-            m_SceneSerializer.Serialize(ss);
-        }
-        else
-        {
-            //Finish
-            //Load saved scene
-        }
+        std::stringstream ss;
+        m_SceneSerializer.Serialize(ss);
+        m_SceneData = ss.str();
     }
 
     Actor Scene::CreateActorWithId(Id id, const std::string& name, const Vec3& position, const Quat& rotation, const Vec3& scale)
