@@ -78,7 +78,14 @@ namespace Nit
             res += splitPath[i];
         return res;
     }
-    
+
+    Weak<Asset> AssetManager::GetAssetById(const Id& id)
+    {
+        if (!m_IdAssetMap.contains(id))
+            return {};
+        return m_IdAssetMap[id];
+    }
+
     bool AssetManager::ImportAsset(const std::filesystem::path& path)
     {
         if (path.extension() == ".png" || path.extension() == ".jpg")
@@ -119,6 +126,17 @@ namespace Nit
             font->Initialize();
         }
         return false;
+    }
+
+    AssetLink AssetManager::GetAssetByName(const std::string& assetName)
+    {
+        if (!m_NameIdMap.contains(assetName))
+            return {};
+
+        const Shared<Asset> asset = m_IdAssetMap[m_NameIdMap[assetName]];
+        AssetLink link = {asset->GetName(), asset->GetId(),
+            asset->get_type().get_name().to_string()};
+        return link;
     }
 
     void AssetManager::Start()

@@ -15,13 +15,23 @@ namespace Nit
             return *m_ActiveScene.get();
         }
         
+        static bool HasActiveScene()
+        {
+            return m_ActiveScene.get();
+        }
+        
+        void LoadScene(const std::string& name);
+        
         void OnStart() override;
         void OnUpdate(const TimeStep& timeStep) override;
         void OnFixedUpdate(const TimeStep& timeStep) override;
         void OnPostFixedUpdate(const TimeStep& timeStep) override;
         void OnFinish() override;
-    
+        
     private:
         inline static Shared<Scene> m_ActiveScene;
+        std::unordered_map<std::string, Shared<Scene>> m_Scenes;
+
+        void GetAllSceneAssets();
     }; 
 }

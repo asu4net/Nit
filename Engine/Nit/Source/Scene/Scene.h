@@ -36,10 +36,12 @@ namespace Nit
         void Finish();
 
         Weak<entt::registry> GetRegistry() const { return m_Registry; }
-
+        
         void SetRuntimeEnabled(const bool bRuntimeEnabled) { m_bRuntimeEnabled = bRuntimeEnabled; }
         bool IsRuntimeEnabled() const { return m_bRuntimeEnabled; }
-
+        
+        int IsStarterScene() const { return m_bIsStarterScene; }
+        
         void Save();
         
         void SetWeakPtr(const Weak<Scene>& weakPtr) { m_WeakPtr = weakPtr; }
@@ -56,6 +58,7 @@ namespace Nit
         void DestroyActor(const Actor& actor);
         
     private:
+        bool m_bIsStarterScene = false;
         std::string m_SceneData;
         SceneRenderer m_SceneRenderer;
         SceneSerializer m_SceneSerializer;

@@ -4,5 +4,6 @@
     "Id": {
         "idHandler": 9551802902514743241
     },
-    "TypeName": "Scene"
+    "TypeName": "Scene",
+    "IsStarterScene": true
 }

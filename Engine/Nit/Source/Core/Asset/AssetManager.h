@@ -7,11 +7,16 @@ namespace Nit
     class AssetManager : public Singleton<AssetManager>
     {
     public:
-        Weak<Asset> GetAssetById(const Id& id)
+        Weak<Asset> GetAssetById(const Id& id);
+        
+        template<typename T>
+        void GetAssetsOfType(std::vector<AssetLink>& assetLinks)
         {
-            if (!m_IdAssetMap.contains(id))
-                return {};
-            return m_IdAssetMap[id];
+            for (auto[id, asset] : m_IdAssetMap)
+            {
+                if (asset->GetTypeName() != rttr::type::get<T>().get_name()) continue;
+                assetLinks.push_back({asset->GetName(), asset->GetId(), asset->GetTypeName()});
+            }
         }
         
         template<typename T>
@@ -42,19 +47,9 @@ namespace Nit
             
             return link;
         }
-
-        bool ImportAsset(const std::filesystem::path& path);
         
-        AssetLink GetAssetByName(const std::string& assetName)
-        {
-            if (!m_NameIdMap.contains(assetName))
-                return {};
-
-            const Shared<Asset> asset = m_IdAssetMap[m_NameIdMap[assetName]];
-            AssetLink link = {asset->GetName(), asset->GetId(),
-                asset->get_type().get_name().to_string()};
-            return link;
-        }
+        bool ImportAsset(const std::filesystem::path& path);
+        AssetLink GetAssetByName(const std::string& assetName);
         
         void Start();
         void Finish();

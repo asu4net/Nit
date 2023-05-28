@@ -6,7 +6,8 @@ namespace Nit
 {
     void Editor::OnStart()
     {
-        World::GetActiveScenePtr().lock()->SetRuntimeEnabled(false);
+        if (!World::HasActiveScene()) return;
+        World::GetActiveScene().SetRuntimeEnabled(false);
         
         const Actor editorCamera = World::GetActiveScenePtr().lock()->CreateActor("EditorCamera");
         editorCamera.Add<EditorCameraComponent>();

@@ -12,7 +12,8 @@ RTTR_REGISTRATION
 
     registration::class_<Scene>("Scene")
         .constructor<>()
-        .constructor<const std::string&, const std::string&, const Id&>();
+        .constructor<const std::string&, const std::string&, const Id&>()
+        .property("IsStarterScene", &Scene::m_bIsStarterScene);
 }
 
 namespace Nit
