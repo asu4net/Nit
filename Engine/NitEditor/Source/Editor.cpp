@@ -15,7 +15,6 @@ namespace Nit
         
         const Shared<ImGuiWidget> widget = ImGuiRenderer::GetInstance().PushWidget<ImGuiWidget>();
         
-        widget->ClearBeginEndDelegates();
         widget->UpdateEvent().Add([]()
         {
             //Temporary code

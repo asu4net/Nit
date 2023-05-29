@@ -11,19 +11,14 @@ namespace Nit
         , m_ColumnWidth(columnWidth)
     {
     }
-
-    void Vector3Widget::OnCreate()
-    {
-        ClearBeginEndDelegates();
-    }
     
     void Vector3Widget::OnUpdate()
     {
-        ImGui::PushID(m_Name.c_str());
+        ImGui::PushID(GetName().c_str());
         
         ImGui::Columns(2);
         ImGui::SetColumnWidth(0, m_ColumnWidth);
-        ImGui::Text(m_Name.c_str());
+        ImGui::Text(GetName().c_str());
         ImGui::NextColumn();
         
         ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());

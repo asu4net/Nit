@@ -4,52 +4,57 @@
 namespace Nit
 {
     ImGuiWidget::ImGuiWidget(const std::string& name, bool* opened, const ImGuiWindowFlags flags)
-        : Flags(flags)
-        , Opened(opened)
-        , Enabled(true)
-        , m_Name(name)
+        : m_Name(name)
+        , m_bIsEnabled(true)
+        , m_Opened(opened)
+        , m_Flags(flags)
     {
-        m_BeginDelegate = {[](const ImGuiWidget* widget)
-        {
-            ImGui::Begin(widget->GetName().c_str(), widget->Opened, widget->Flags);
-        }};
-        m_EndDelegate = {[&](){ ImGui::End(); }};
     }
 
-    void ImGuiWidget::ClearBeginEndDelegates()
+    void ImGuiWidget::Start()
     {
-        m_BeginDelegate.Clear();
-        m_EndDelegate.Clear();
+        OnStart();
+        m_StartEvent.Broadcast();
+        for (const auto& child : m_ChildWidgets)
+            child->Start();
     }
 
-    void ImGuiWidget::Create()
+    void ImGuiWidget::BeginUpdate()
     {
-        OnCreate();
-        m_WidgetCreateEvent.Broadcast();
+        if (!IsEnabled()) return;
+        
+        OnBeginUpdate();
+        m_BeginUpdateEvent.Broadcast();
+        for (const auto& child : m_ChildWidgets)
+            child->BeginUpdate();
     }
 
     void ImGuiWidget::Update()
     {
-        if (!Enabled) return;
+        if (!IsEnabled()) return;
 
-        m_BeginDelegate(this);
         OnUpdate();
-        m_WidgetUpdateEvent.Broadcast();
+        m_UpdateEvent.Broadcast();
         for (const auto& child : m_ChildWidgets)
             child->Update();
-        m_EndDelegate();
     }
     
-    void ImGuiWidget::Destroy()
+    void ImGuiWidget::EndUpdate()
     {
-        OnDestroy();
-        ClearBeginEndDelegates();
-        m_WidgetDestroyEvent.Broadcast();
-        m_WidgetUpdateEvent.RemoveAll();
+        if (!IsEnabled()) return;
+
+        OnEndUpdate();
+        m_EndUpdateEvent.Broadcast();
+        for (const auto& child : m_ChildWidgets)
+            child->EndUpdate();
     }
 
-    void ImGuiWidget::OnCreate() {}
-    void ImGuiWidget::OnUpdate() {}
-    void ImGuiWidget::OnDestroy() {}
+    void ImGuiWidget::Finish()
+    {
+        OnFinish();
+        m_FinishEvent.Broadcast();
+        for (const auto& child : m_ChildWidgets)
+            child->Finish();
+    }
 }
 #endif

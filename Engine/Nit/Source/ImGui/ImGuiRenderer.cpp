@@ -11,8 +11,6 @@ namespace Nit
         : ConfigFlags(0)
         , m_RootWidget(std::make_shared<ImGuiWidget>())
     {
-        m_RootWidget->Create();
-        m_RootWidget->ClearBeginEndDelegates();
     }
 
     void ImGuiRenderer::ConfigureFlags()
@@ -63,6 +61,7 @@ namespace Nit
         GLFWwindow* windowHandler = static_cast<GLFWwindow*>(window->GetHandler());
         ImGui_ImplGlfw_InitForOpenGL(windowHandler, true);
         ImGui_ImplOpenGL3_Init("#version 410");
+        m_RootWidget->Start();
     }
 
     void ImGuiRenderer::Update()
@@ -125,10 +124,10 @@ namespace Nit
         //     printf("Docking disabled");
         // }
         //
-        
+
+        m_RootWidget->BeginUpdate();
         m_RootWidget->Update();
-        static bool show = true;
-        ImGui::ShowDemoWindow(&show);
+        m_RootWidget->EndUpdate();
         
         //
         // ImGui::End();
@@ -160,7 +159,7 @@ namespace Nit
 
     void ImGuiRenderer::Finish()
     {
-        m_RootWidget->Destroy();
+        m_RootWidget->Finish();
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();

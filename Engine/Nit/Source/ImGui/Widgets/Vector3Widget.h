@@ -13,7 +13,6 @@ namespace Nit
         Vector3Widget(Vec3& vector, const std::string& name = "ImGuiWidget", float columnWidth = 80.f, bool* opened = nullptr, ImGuiWindowFlags flags = 0);
 
     protected:
-        void OnCreate() override;
         void OnUpdate() override;
 
     private:
