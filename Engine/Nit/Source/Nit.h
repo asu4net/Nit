@@ -30,8 +30,7 @@
 // ImGui
 #ifdef NIT_IMGUI
 #include "ImGui/ImGuiRenderer.h"
-#include "ImGui/ImGuiWidget.h"
-#include "ImGui/Widgets/Vector3Widget.h"
+#include "ImGui/ImGuiHelpers.h"
 #endif
 
 // Audio

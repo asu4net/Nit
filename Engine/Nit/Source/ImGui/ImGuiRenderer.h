@@ -1,6 +1,5 @@
 ﻿#pragma once
 #ifdef NIT_IMGUI
-#include "ImGuiWidget.h"
 
 namespace Nit
 {
@@ -10,24 +9,17 @@ namespace Nit
     {
     public:
         ImGuiConfigFlags ConfigFlags;
-        
         ImGuiRenderer(ImGuiRenderer&& other) = delete;
         
-        template<typename T, typename ...TArgs>
-        Shared<T> PushWidget(TArgs&& ...args)
-        {
-            return m_RootWidget->PushWidget<T>(std::forward<TArgs>(args)...);
-        }
-        
         void Start(const Shared<Window>& window, bool bSetDefaultConfiguration = true, Delegate<void()> customConfiguration = {});
-        void Update();
+        void Begin();
+        void End();
         void Finish();
         
     private:
         ImGuiRenderer();
         
         Weak<Window> m_Window;
-        Shared<ImGuiWidget> m_RootWidget;
 
         void ConfigureFlags();
         void ConfigureStyle();

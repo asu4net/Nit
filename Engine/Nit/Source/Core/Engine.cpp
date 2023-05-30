@@ -31,14 +31,20 @@ namespace Nit
         m_ImGuiRenderer.Start(m_Window);
         #endif
         m_LayerStack->Start();
-
+        
         while (m_Window->IsOpened())
         {
+            #ifdef NIT_IMGUI
+            m_Renderer2D.Begin();
+            m_Renderer2D.ClearScreen();
+            m_ImGuiRenderer.Begin();
+            #endif
             m_LayerStack->Update(m_Time.CalculateTimeStep());
             #ifdef NIT_IMGUI
-            m_ImGuiRenderer.Update();
+            m_ImGuiRenderer.End();
             #endif
             m_Window->Update();
+            m_Renderer2D.End();
         }
 
         m_LayerStack->Finish();

@@ -1,24 +1,15 @@
-﻿#include "Vector3Widget.h"
+﻿#ifdef NIT_IMGUI
+#include "ImGuiHelpers.h"
 
-#ifdef NIT_IMGUI
-namespace Nit
+namespace Nit::ImGuiHelpers
 {
-    Vector3Widget::Vector3Widget(Vec3& vector, const std::string& name, const float columnWidth, bool* opened, ImGuiWindowFlags flags)
-        : ImGuiWidget(name, opened, flags)
-        , ResetValue(0.f)
-        , Speed(0.05f)
-        , m_Vector(vector)
-        , m_ColumnWidth(columnWidth)
+    bool Vec3Handler(const char* name, Vec3& vector, const float resetValue, const float speed, const float columnWidth)
     {
-    }
-    
-    void Vector3Widget::OnUpdate()
-    {
-        ImGui::PushID(GetName().c_str());
+        ImGui::PushID(name);
         
         ImGui::Columns(2);
-        ImGui::SetColumnWidth(0, m_ColumnWidth);
-        ImGui::Text(GetName().c_str());
+        ImGui::SetColumnWidth(0, columnWidth);
+        ImGui::Text(name);
         ImGui::NextColumn();
         
         ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
@@ -30,12 +21,12 @@ namespace Nit
         ImGui::PushStyleColor(ImGuiCol_Button, {1, 0.3f, 0.3f, 1});
 
         if (ImGui::Button("X", buttonSize))
-            m_Vector.x = ResetValue;
+            vector.x = resetValue;
 
         ImGui::PopStyleColor();
 
         ImGui::SameLine();
-        ImGui::DragFloat("##X", &m_Vector.x, Speed, 0, 0, "%.1f");
+        const bool bX = ImGui::DragFloat("##X", &vector.x, speed, 0, 0, "%.1f");
         ImGui::PopItemWidth();
 
         ImGui::SameLine();
@@ -43,12 +34,12 @@ namespace Nit
         ImGui::PushStyleColor(ImGuiCol_Button, {0.368f, 0.737f, 0.521f, 1});
 
         if (ImGui::Button("Y", buttonSize))
-            m_Vector.y = ResetValue;
+            vector.y = resetValue;
 
         ImGui::PopStyleColor();
 
         ImGui::SameLine();
-        ImGui::DragFloat("##Y", &m_Vector.y, Speed, 0, 0, "%.1f");
+        const bool bY = ImGui::DragFloat("##Y", &vector.y, speed, 0, 0, "%.1f");
         ImGui::PopItemWidth();
 
         ImGui::SameLine();
@@ -56,18 +47,20 @@ namespace Nit
         ImGui::PushStyleColor(ImGuiCol_Button, {0.3f, 0.3f, 1, 1});
 
         if (ImGui::Button("Z", buttonSize))
-            m_Vector.z = ResetValue;
+            vector.z = resetValue;
 
         ImGui::PopStyleColor();
 
         ImGui::SameLine();
-        ImGui::DragFloat("##Z", &m_Vector.z, Speed, 0, 0, "%.1f");
+        const bool bZ = ImGui::DragFloat("##Z", &vector.z, speed, 0, 0, "%.1f");
         ImGui::PopItemWidth();
 
         ImGui::PopStyleVar();
         ImGui::Columns(1);
 
         ImGui::PopID();
+
+        return bX || bY || bZ;
     }
 }
 #endif
