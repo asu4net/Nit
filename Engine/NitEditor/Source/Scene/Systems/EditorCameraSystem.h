@@ -12,12 +12,15 @@ namespace Nit
         EditorCameraSystem() = default;
         EditorCameraSystem(const Weak<Scene>& scene);
 
+        static Actor GetEditorCameraActor() { return m_EditorCameraActor; }
+        
         void OnUpdate(const TimeStep& timeStep) override;
 
         void MoveCamera(TransformComponent& transform,
             const EditorCameraComponent& editorCamera, float deltaTime);
         
     private:
+        inline static Actor m_EditorCameraActor;
         RTTR_ENABLE(SceneSystem)
     };
     NIT_FORCE_LINK(EditorCameraSystem);

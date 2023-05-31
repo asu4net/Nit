@@ -1,4 +1,6 @@
 #include "Editor.h"
+
+#include "Panels/ViewportPanel.h"
 #include "Scene/Components/EditorCameraComponent.h"
 
 namespace Nit
@@ -12,9 +14,12 @@ namespace Nit
         const Actor editorCamera = World::GetActiveScenePtr().lock()->CreateActor("EditorCamera");
         editorCamera.Add<EditorCameraComponent>();
         editorCamera.Get<TransformComponent>().Position = VecBack * 3.f;
+
+        m_ViewportPanel = CreateShared<ViewportPanel>();
     }
     
     void Editor::OnUpdate(const TimeStep& timeStep)
+    
     {
         static bool dockSpaceOpen = true;
         static bool fullscreen = true;
@@ -69,7 +74,8 @@ namespace Nit
             printf("Docking disabled");
         }
         
-
+        m_ViewportPanel->Draw();
+        
         //Temporary code
         ImGui::Begin("Menu", 0, ImGuiWindowFlags_MenuBar);
         if (ImGui::BeginMenuBar())

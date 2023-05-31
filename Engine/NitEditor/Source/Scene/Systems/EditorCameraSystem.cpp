@@ -25,7 +25,9 @@ namespace Nit
         if (GetScene().IsRuntimeEnabled()) return;
         
         const auto view = Registry().view<TransformComponent, EditorCameraComponent>();
-
+        
+        m_EditorCameraActor = { view.front(), RegistryPtr() };
+        
         view.each([&](TransformComponent& transform, EditorCameraComponent& camera)
         {
             camera.CameraData.CalculateProjectionViewMat4(transform.Position, transform.Rotation);

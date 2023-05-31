@@ -12,6 +12,8 @@ namespace Nit
         
         FrameBuffer(const Configuration& configuration);
         ~FrameBuffer();
+
+        uint32_t GetId() const { return m_FrameBufferId; }
         
         void Invalidate();
         void Bind();

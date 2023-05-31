@@ -17,6 +17,7 @@
 #include "Rendering/Data/Texture2D.h"
 #include "Rendering/Data/VertexArray.h"
 #include "Rendering/Data/VertexBuffer.h"
+#include "Rendering/Data/FrameBuffer.h"
 
 #include "Rendering/RenderCommand.h"
 #include "Rendering/RenderCommandQueue.h"

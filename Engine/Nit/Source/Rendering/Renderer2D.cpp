@@ -201,6 +201,11 @@ namespace Nit
         {
             GetInstance().SetViewPort(0, 0, width, height);
         });
+
+        FrameBuffer::Configuration frameBufferCfg;
+        frameBufferCfg.Height = window->GetHeight();
+        frameBufferCfg.Width = window->GetWidth();
+        m_FrameBuffer = CreateShared<FrameBuffer>(frameBufferCfg);
     }
 
     void Renderer2D::Finish()
@@ -328,8 +333,16 @@ namespace Nit
         
             m_CommandQueue->Submit<DrawElementsCommand>(g_QuadRenderData.VertexArray, g_QuadRenderData.IndexCount);
         }
+
+        if (m_RenderTarget == RenderTarget::FrameBuffer)
+            m_FrameBuffer->Bind();
+        
         // TODO: Move this to other thread
-        while (!m_CommandQueue->IsEmpty()) m_CommandQueue->ExecuteNext();
+        while (!m_CommandQueue->IsEmpty())
+            m_CommandQueue->ExecuteNext();
+
+        if (m_RenderTarget == RenderTarget::FrameBuffer)
+            m_FrameBuffer->Unbind();
     }
 
     void Renderer2D::NextBatch()

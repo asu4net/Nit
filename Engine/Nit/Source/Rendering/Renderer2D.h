@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "RenderCommandQueue.h"
+#include "Data/FrameBuffer.h"
 #include "Data/Texture2D.h"
 #include "Text/Font.h"
 
@@ -44,6 +45,11 @@ namespace Nit
     class Renderer2D : public Singleton<Renderer2D>
     {
     public:
+        enum class RenderTarget
+        {
+            Default, FrameBuffer
+        };
+        
         Shared<Shader> FlatColorShader() const { return m_FlatColorShader; }
         Shared<Shader> TextureShader() const { return m_TextureShader; }
         
@@ -66,16 +72,23 @@ namespace Nit
         void SetBlendingEnabled(const bool bEnabled);
         void SubmitQuad(const Quad& quad);
         void SubmitTextQuad(const TextQuad&  textQuad);
+        
+        RenderTarget GetRenderTarget() const { return m_RenderTarget; }
+        void SetRenderTarget(const RenderTarget renderTarget) { m_RenderTarget = renderTarget; }
 
+        Shared<FrameBuffer> GetFrameBuffer() { return m_FrameBuffer; }
+        
     private:
         Renderer2D() = default;
-        
+
+        RenderTarget m_RenderTarget = RenderTarget::Default;
         RenderData m_RenderData;
         Unique<RenderCommandQueue> m_CommandQueue;
         
+        Shared<FrameBuffer> m_FrameBuffer;
         Shared<Shader> m_FlatColorShader;
         Shared<Shader> m_TextureShader;
-
+        
         void StartBatch();
         void Flush();
         void NextBatch();
