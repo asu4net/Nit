@@ -1,6 +1,6 @@
 workspace "Nit"
     architecture "x86_64"
-    startproject "DemoEditor"
+    startproject "GameEditorApp"
 
     configurations
     {
