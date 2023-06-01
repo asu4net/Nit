@@ -21,8 +21,8 @@ namespace Nit
         
         auto& editorCameraComponent = editorCamera.Get<EditorCameraComponent>();
 
-        ImGui::Begin("Viewport");
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0, 0});
+        ImGui::Begin("Viewport");
         
         const ImVec2 panelSize = ImGui::GetContentRegionAvail();
         
@@ -32,9 +32,9 @@ namespace Nit
             editorCameraComponent.CameraData.AspectRatio = m_ViewportSize.x / m_ViewportSize.y;
         }
         
-        const ImTextureID fbId = reinterpret_cast<ImTextureID>(Renderer2D::GetInstance().GetFrameBuffer()->GetId());
+        const ImTextureID fbId = reinterpret_cast<ImTextureID>(Renderer2D::GetInstance().GetFrameBuffer()->GetColorAttachment());
         ImGui::Image(fbId, {m_ViewportSize.x, m_ViewportSize.y}, {0, 1}, {1, 0});
-        ImGui::PopStyleVar();
         ImGui::End();
+        ImGui::PopStyleVar();
     }
 }

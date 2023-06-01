@@ -337,7 +337,6 @@ namespace Nit
         if (m_RenderTarget == RenderTarget::FrameBuffer)
             m_FrameBuffer->Bind();
         
-        // TODO: Move this to other thread
         while (!m_CommandQueue->IsEmpty())
             m_CommandQueue->ExecuteNext();
 
