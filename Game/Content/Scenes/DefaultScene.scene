@@ -72,7 +72,7 @@
 #component info end
 #component data start
 {
-    "Name": "Actor",
+    "Name": "Grid",
     "Tag": "Default",
     "IsSerializable": true,
     "Id": {

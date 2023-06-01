@@ -7,10 +7,11 @@ namespace Nit
 {
     void Editor::OnStart()
     {
+        Engine::GetInstance().GetWindow()->SetTitle("Nit Editor");
+
         if (!World::HasActiveScene()) return;
         
         World::GetActiveScene().SetRuntimeEnabled(false);
-        
         const Actor editorCamera = World::GetActiveScenePtr().lock()->CreateActor("EditorCamera");
         editorCamera.Add<EditorCameraComponent>();
         editorCamera.Get<TransformComponent>().Position = VecBack * 3.f;
