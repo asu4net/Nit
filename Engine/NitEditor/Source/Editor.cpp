@@ -1,6 +1,7 @@
 #include "Editor.h"
 #include "Panels/ViewportPanel.h"
 #include "Panels/ActorPanel.h"
+#include "Panels/ComponentPanel.h"
 #include "Scene/Components/EditorCameraComponent.h"
 
 namespace Nit
@@ -18,6 +19,7 @@ namespace Nit
 
         m_ViewportPanel = CreateShared<ViewportPanel>();
         m_ActorPanel = CreateShared<ActorPanel>();
+        m_ComponentPanel = CreateShared<ComponentPanel>(this);
     }
     
     void Editor::OnUpdate(const TimeStep& timeStep)
@@ -100,6 +102,7 @@ namespace Nit
         
         m_ViewportPanel->Draw();
         m_ActorPanel->Draw();
+        m_ComponentPanel->Draw();
         
         // ---------------------------------------------------------
         //  ImGui Dock Space End

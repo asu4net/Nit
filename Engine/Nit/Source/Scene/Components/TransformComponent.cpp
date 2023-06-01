@@ -16,7 +16,21 @@ RTTR_REGISTRATION
         .property("Rotation", &TransformComponent::Rotation)
         .property("Scale", &TransformComponent::Scale);
 
-    NIT_REGISTRY_COMPONENT(TransformComponent)
+    Scene::ComponentMetaData[type::get<TransformComponent>()] = {
+        Delegate<bool(Actor)>([](const Actor& actor) -> bool { return actor.Has<TransformComponent>(); }),
+        Delegate<instance(Actor)>([](const Actor& actor) -> instance { return actor.Get<TransformComponent>(); }),
+        Delegate<void(Actor, const rttr::instance&)>([](const Actor& actor, const rttr::instance& instance)
+        {
+            actor.Add<TransformComponent>(*instance.try_convert<TransformComponent>());
+        }),
+        Delegate<void(Actor)>([](const Actor& actor) { actor.Remove<TransformComponent>(); }),
+        Delegate<void(Actor, const rttr::instance&)>([](const Actor& actor, const rttr::instance& instance)
+        {
+            const TransformComponent& inTransform = *instance.try_convert<TransformComponent>();
+            TransformComponent& transform = actor.Get<TransformComponent>();
+            transform = inTransform;
+        })
+    };
 }
 
 namespace Nit

@@ -13,6 +13,8 @@ namespace Nit
         Delegate<bool(Actor)> HasFunction;
         Delegate<rttr::instance(Actor)> GetByCopyFunction;
         Delegate<void(Actor, const rttr::instance&)> AddFunction;
+        Delegate<void(Actor)> RemoveFunction;
+        Delegate<void(Actor, const rttr::instance&)> SetFunction;
     };
     
     class SceneSystem;
