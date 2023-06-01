@@ -9,8 +9,9 @@ namespace Nit
     public:
         Engine(Engine&&) = delete;
         
-        const Shared<LayerStack>& GetLayerStack() const { return m_LayerStack; }
-        const Shared<class Window>& GetWindow() const { return m_Window; }
+        Shared<LayerStack> GetLayerStack() const { return m_LayerStack; }
+        Shared<class Window> GetWindow() const { return m_Window; }
+        Shared<class World> GetWorld() const { return m_World; }
         
         void Start();
         
@@ -23,6 +24,7 @@ namespace Nit
         class AudioManager& m_AudioManager;
         class AssetManager& m_AssetManager;
         Shared<LayerStack> m_LayerStack;
+        Shared<World> m_World;
         Time m_Time;
 
         #ifdef NIT_IMGUI

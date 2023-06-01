@@ -1,6 +1,6 @@
 #include "Editor.h"
-
 #include "Panels/ViewportPanel.h"
+#include "Panels/ActorPanel.h"
 #include "Scene/Components/EditorCameraComponent.h"
 
 namespace Nit
@@ -16,10 +16,10 @@ namespace Nit
         editorCamera.Get<TransformComponent>().Position = VecBack * 3.f;
 
         m_ViewportPanel = CreateShared<ViewportPanel>();
+        m_ActorPanel = CreateShared<ActorPanel>();
     }
     
     void Editor::OnUpdate(const TimeStep& timeStep)
-    
     {
         static bool dockSpaceOpen = true;
         static bool fullscreen = true;
@@ -50,6 +50,9 @@ namespace Nit
         if (!padding)
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
+        // windowFlags |= ImGuiWindowFlags_Modal;
+        // windowFlags |= ImGuiWindowFlags_Popup;
+        
         // ---------------------------------------------------------
         //  ImGui Dock Space Begin
         // ---------------------------------------------------------
@@ -74,10 +77,7 @@ namespace Nit
             printf("Docking disabled");
         }
         
-        m_ViewportPanel->Draw();
-        
-        //Temporary code
-        ImGui::Begin("Menu", 0, ImGuiWindowFlags_MenuBar);
+        //Menu bar
         if (ImGui::BeginMenuBar())
         {
             if (ImGui::BeginMenu("File"))
@@ -91,16 +91,19 @@ namespace Nit
                         AssetManager::GetInstance().ImportAsset(path);
                     }
                 }
+                
                 ImGui::EndMenu();
             }
-
             ImGui::EndMenuBar();
         }
-        ImGui::End();
+        
+        m_ViewportPanel->Draw();
+        m_ActorPanel->Draw();
         
         // ---------------------------------------------------------
         //  ImGui Dock Space End
         // ---------------------------------------------------------
+        
         ImGui::End();
     }
 }

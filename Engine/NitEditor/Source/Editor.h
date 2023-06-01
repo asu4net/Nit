@@ -3,8 +3,6 @@
 
 namespace Nit
 {
-    class ViewportPanel;
-
     class Editor : public EngineLayer
     {
     public:
@@ -14,6 +12,7 @@ namespace Nit
         void OnUpdate(const TimeStep& timeStep) override;
 
     private:
-        Shared<ViewportPanel> m_ViewportPanel;
+        Shared<class ViewportPanel> m_ViewportPanel;
+        Shared<class ActorPanel> m_ActorPanel;
     };
 }

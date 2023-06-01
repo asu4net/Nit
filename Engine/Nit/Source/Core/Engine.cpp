@@ -18,7 +18,7 @@ namespace Nit
         , m_ImGuiRenderer(ImGuiRenderer::CreateSingleton())
         #endif
     {
-        m_LayerStack->Push<World>();
+        m_World = m_LayerStack->Push<World>();
     }
 
     void Engine::Start()

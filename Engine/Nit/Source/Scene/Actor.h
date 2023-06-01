@@ -19,6 +19,12 @@ namespace Nit
         {
             return m_Entity == other.m_Entity;
         }
+
+        void Reset()
+        {
+            m_Entity = entt::null;
+            m_Registry.reset();
+        }
         
         bool IsValid() const
         {
