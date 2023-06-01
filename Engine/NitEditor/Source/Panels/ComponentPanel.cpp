@@ -30,6 +30,8 @@ namespace Nit
             {
                 if (!Scene::ComponentMetaData.contains(t) || !Scene::ComponentMetaData[t].HasFunction(selectedActor))
                     continue;
+                
+                ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
                 const bool isExpanded = ImGui::TreeNodeEx(t.get_name().to_string().c_str());
 
