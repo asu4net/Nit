@@ -2,6 +2,7 @@
 #include "Actor.h"
 #include "Scene.h"
 #include "Components/DetailsComponent.h"
+#include "Components/TransformComponent.h"
 #include "Core/Serialization.h"
 
 RTTR_REGISTRATION
@@ -20,43 +21,59 @@ namespace Nit
     {
     }
 
+    void SceneSerializer::SerializeComponent(const Actor& actor, std::stringstream& ss, const rttr::type& type,
+        ComponentMetaData cmpMetaData)
+    {
+        if (!cmpMetaData.HasFunction(actor)) return;
+
+        ComponentInfo info;
+        info.ComponentType = type.get_name().to_string();
+
+        const rttr::instance instance = cmpMetaData.GetByCopyFunction(actor);
+        
+        ss << "#component info start" << std::endl;
+        ss << Serialization::ToJson(info) << std::endl;
+        ss << "#component info end" << std::endl;
+                
+        ss << "#component data start" << std::endl;
+        ss << Serialization::ToJson(instance) << std::endl;
+        ss << "#component data end" << std::endl;
+    }
+    
     void SceneSerializer::Serialize(std::stringstream& ss)
     {
         using namespace entt;
         if (!m_Scene) return;
-        
+           
         const Shared<registry> registry = m_Scene->GetRegistry().lock();
         
         registry->each([&](const entity entity){
 
             const Actor actor= { entity, registry };
             
-            if (!actor.Get<DetailsComponent>().bIsSerializable)
-                return;
-			
+            if (!actor.Has<DetailsComponent>() ||
+                !actor.Has<TransformComponent>() ||
+                !actor.Get<DetailsComponent>().bIsSerializable)
+                    return;
+            
             ss << "#actor start" << std::endl;
+
+            const rttr::type detailsCmpType = rttr::type::get<DetailsComponent>();
+            SerializeComponent(actor, ss, detailsCmpType, Scene::ComponentMetaData[detailsCmpType]);
+
+            const rttr::type transformCmpType = rttr::type::get<TransformComponent>();
+            SerializeComponent(actor, ss, transformCmpType, Scene::ComponentMetaData[transformCmpType]);
             
             for(auto& [type, cmpMetaData] : Scene::ComponentMetaData)
             {
-                if (!cmpMetaData.HasFunction(actor)) continue;
-
-                ComponentInfo info;
-                info.ComponentType = type.get_name().to_string();
+                if (type == detailsCmpType || type == transformCmpType)
+                    continue;
                 
-                rttr::instance instance = cmpMetaData.GetByCopyFunction(actor);
-                
-                ss << "#component info start" << std::endl;
-                ss << Serialization::ToJson(info) << std::endl;
-                ss << "#component info end" << std::endl;
-                
-                ss << "#component data start" << std::endl;
-                ss << Serialization::ToJson(instance) << std::endl;
-                ss << "#component data end" << std::endl;
+                SerializeComponent(actor, ss, type, cmpMetaData);
             }
 
             ss << "#actor end" << std::endl;
         });
-        printf("%s", ss.str().c_str());
     }
 
     void SceneSerializer::Deserialize(const std::string& data)

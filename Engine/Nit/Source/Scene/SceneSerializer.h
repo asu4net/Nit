@@ -21,5 +21,10 @@ namespace Nit
 
     private:
         Scene* m_Scene = nullptr;
+
+        void SerializeComponent(const class Actor& actor,
+                                std::stringstream& ss,
+                                const rttr::type& type,
+                                struct ComponentMetaData cmpMetaData);
     };
 }

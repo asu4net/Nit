@@ -12,7 +12,6 @@ RTTR_REGISTRATION
         .constructor<>()
         .property("Name", &DetailsComponent::Name)
         .property("Tag", &DetailsComponent::Tag)
-        .property("IsSerializable", &DetailsComponent::bIsSerializable)
         .property("Id", &DetailsComponent::m_Id);
     
     NIT_REGISTRY_COMPONENT(DetailsComponent)

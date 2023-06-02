@@ -1,6 +1,21 @@
 #actor start
 #component info start
 {
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "Grid",
+    "Tag": "Default",
+    
+    "Id": {
+        "idHandler": 12754561748775255566
+    }
+}
+#component data end
+#component info start
+{
     "ComponentType": "TransformComponent"
 }
 #component info end
@@ -44,7 +59,7 @@
         "z": 0.12999999523162842,
         "w": 1.0
     },
-    "bIsSubTexture": false,
+    "IsSubTexture": false,
     "SubTextureSize": {
         "x": 1.0,
         "y": 1.0
@@ -65,6 +80,8 @@
     "OrderInLayer": -1
 }
 #component data end
+#actor end
+#actor start
 #component info start
 {
     "ComponentType": "DetailsComponent"
@@ -72,16 +89,13 @@
 #component info end
 #component data start
 {
-    "Name": "Grid",
+    "Name": "CppTexture",
     "Tag": "Default",
-    "IsSerializable": true,
     "Id": {
-        "idHandler": 12754561748775255566
+        "idHandler": 12110428619388951511
     }
 }
 #component data end
-#actor end
-#actor start
 #component info start
 {
     "ComponentType": "TransformComponent"
@@ -127,7 +141,7 @@
         "z": 1.0,
         "w": 1.0
     },
-    "bIsSubTexture": false,
+    "IsSubTexture": false,
     "SubTextureSize": {
         "x": 1.0,
         "y": 1.0
@@ -148,6 +162,8 @@
     "OrderInLayer": 0
 }
 #component data end
+#actor end
+#actor start
 #component info start
 {
     "ComponentType": "DetailsComponent"
@@ -155,16 +171,14 @@
 #component info end
 #component data start
 {
-    "Name": "CppTexture",
+    "Name": "Cat",
     "Tag": "Default",
-    "IsSerializable": true,
+    
     "Id": {
-        "idHandler": 12110428619388951511
+        "idHandler": 11823840850252558544
     }
 }
 #component data end
-#actor end
-#actor start
 #component info start
 {
     "ComponentType": "TransformComponent"
@@ -210,7 +224,7 @@
         "z": 1.0,
         "w": 1.0
     },
-    "bIsSubTexture": false,
+    "IsSubTexture": false,
     "SubTextureSize": {
         "x": 1.0,
         "y": 1.0
@@ -231,6 +245,8 @@
     "OrderInLayer": 0
 }
 #component data end
+#actor end
+#actor start
 #component info start
 {
     "ComponentType": "DetailsComponent"
@@ -238,16 +254,13 @@
 #component info end
 #component data start
 {
-    "Name": "Cat",
+    "Name": "RedSprite",
     "Tag": "Default",
-    "IsSerializable": true,
     "Id": {
-        "idHandler": 11823840850252558544
+        "idHandler": 6232738016746312627
     }
 }
 #component data end
-#actor end
-#actor start
 #component info start
 {
     "ComponentType": "TransformComponent"
@@ -293,7 +306,7 @@
         "z": 0.30000001192092896,
         "w": 1.0
     },
-    "bIsSubTexture": false,
+    "IsSubTexture": false,
     "SubTextureSize": {
         "x": 1.0,
         "y": 1.0
@@ -314,6 +327,8 @@
     "OrderInLayer": 0
 }
 #component data end
+#actor end
+#actor start
 #component info start
 {
     "ComponentType": "DetailsComponent"
@@ -321,16 +336,14 @@
 #component info end
 #component data start
 {
-    "Name": "RedSprite",
+    "Name": "YellowSprite",
     "Tag": "Default",
-    "IsSerializable": true,
+    
     "Id": {
-        "idHandler": 6232738016746312627
+        "idHandler": 1198211212558632304
     }
 }
 #component data end
-#actor end
-#actor start
 #component info start
 {
     "ComponentType": "TransformComponent"
@@ -376,7 +389,7 @@
         "z": 0.01600000075995922,
         "w": 1.0
     },
-    "bIsSubTexture": false,
+    "IsSubTexture": false,
     "SubTextureSize": {
         "x": 1.0,
         "y": 1.0
@@ -397,6 +410,8 @@
     "OrderInLayer": 0
 }
 #component data end
+#actor end
+#actor start
 #component info start
 {
     "ComponentType": "DetailsComponent"
@@ -404,16 +419,13 @@
 #component info end
 #component data start
 {
-    "Name": "YellowSprite",
+    "Name": "BlueSprite",
     "Tag": "Default",
-    "IsSerializable": true,
     "Id": {
-        "idHandler": 1198211212558632304
+        "idHandler": 14582910749307576660
     }
 }
 #component data end
-#actor end
-#actor start
 #component info start
 {
     "ComponentType": "TransformComponent"
@@ -459,7 +471,7 @@
         "z": 1.0,
         "w": 1.0
     },
-    "bIsSubTexture": false,
+    "IsSubTexture": false,
     "SubTextureSize": {
         "x": 1.0,
         "y": 1.0
@@ -480,6 +492,8 @@
     "OrderInLayer": 0
 }
 #component data end
+#actor end
+#actor start
 #component info start
 {
     "ComponentType": "DetailsComponent"
@@ -487,16 +501,14 @@
 #component info end
 #component data start
 {
-    "Name": "BlueSprite",
+    "Name": "HelloWorld",
     "Tag": "Default",
-    "IsSerializable": true,
+    
     "Id": {
-        "idHandler": 14582910749307576660
+        "idHandler": 15143316276592611259
     }
 }
 #component data end
-#actor end
-#actor start
 #component info start
 {
     "ComponentType": "TransformComponent"
@@ -519,21 +531,6 @@
         "x": 1.0,
         "y": 1.0,
         "z": 1.0
-    }
-}
-#component data end
-#component info start
-{
-    "ComponentType": "DetailsComponent"
-}
-#component info end
-#component data start
-{
-    "Name": "HelloWorld",
-    "Tag": "Default",
-    "IsSerializable": true,
-    "Id": {
-        "idHandler": 15143316276592611259
     }
 }
 #component data end
@@ -569,6 +566,21 @@
 #actor start
 #component info start
 {
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "LaserAudio",
+    "Tag": "Default",
+    
+    "Id": {
+        "idHandler": 17465308153146733802
+    }
+}
+#component data end
+#component info start
+{
     "ComponentType": "TransformComponent"
 }
 #component info end
@@ -594,21 +606,6 @@
 #component data end
 #component info start
 {
-    "ComponentType": "DetailsComponent"
-}
-#component info end
-#component data start
-{
-    "Name": "LaserAudio",
-    "Tag": "Default",
-    "IsSerializable": true,
-    "Id": {
-        "idHandler": 17465308153146733802
-    }
-}
-#component data end
-#component info start
-{
     "ComponentType": "AudioSourceComponent"
 }
 #component info end
@@ -629,6 +626,21 @@
 #component data end
 #actor end
 #actor start
+#component info start
+{
+    "ComponentType": "DetailsComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "GameCamera",
+    "Tag": "Default",
+    
+    "Id": {
+        "idHandler": 15302707930347836219
+    }
+}
+#component data end
 #component info start
 {
     "ComponentType": "TransformComponent"
@@ -670,21 +682,6 @@
         "AspectRatio": 1.7777777910232544
     },
     "Priority": 0
-}
-#component data end
-#component info start
-{
-    "ComponentType": "DetailsComponent"
-}
-#component info end
-#component data start
-{
-    "Name": "GameCamera",
-    "Tag": "Default",
-    "IsSerializable": true,
-    "Id": {
-        "idHandler": 15302707930347836219
-    }
 }
 #component data end
 #actor end

@@ -13,7 +13,7 @@ RTTR_REGISTRATION
         .constructor<>()
         .property("TextureLink", &SpriteComponent::TextureLink)
         .property("Color", &SpriteComponent::Color)
-        .property("bIsSubTexture", &SpriteComponent::bIsSubTexture)
+        .property("IsSubTexture", &SpriteComponent::bIsSubTexture)
         .property("SubTextureSize", &SpriteComponent::SubTextureSize)
         .property("LocationInAtlas", &SpriteComponent::LocationInAtlas)
         .property("UVScale", &SpriteComponent::UVScale)
