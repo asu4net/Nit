@@ -1,6 +1,7 @@
 ﻿#include "ActorPanel.h"
 #include "Scene/World.h"
 #include "Scene/Components/DetailsComponent.h"
+#include "Scene/Components/TransformComponent.h"
 
 namespace Nit
 {
@@ -22,9 +23,15 @@ namespace Nit
         const Weak<registry> weakRegistryPtr = activeScene.GetRegistry();
         if (weakRegistryPtr.expired())
             return;
-        
+                
         const registry& registry = *weakRegistryPtr.lock();
-
+        
+        if (m_bFirstExecution && !registry.empty())
+        {
+            m_bFirstExecution = false;
+            m_SelectedActor = {*registry.view<TransformComponent>().begin(), weakRegistryPtr};
+        }
+        
         registry.each([&](const entity entity)
         {
             const Actor actor = { entity, weakRegistryPtr };
@@ -64,7 +71,10 @@ namespace Nit
             if (ImGui::BeginPopupContextWindow())
             {
                 if (ImGui::MenuItem("Create Empty Actor"))
-                    activeScene.CreateActor("Empty Actor");
+                {
+                    const Actor actor = activeScene.CreateActor("Empty Actor");
+                    m_SelectedActor = actor; 
+                }
                 ImGui::EndPopup();
             }
         }

@@ -1,6 +1,8 @@
 ﻿#include "NitEditorPCH.h"
 #include "EditorCameraComponent.h"
 
+#include "Scene/Scene.h"
+
 namespace Nit { NIT_FORCE_LINK_IMPL(EditorCameraComponent) }
 
 RTTR_REGISTRATION
@@ -12,4 +14,6 @@ RTTR_REGISTRATION
         .property("CameraData", &EditorCameraComponent::CameraData)
         .property("MoveSpeed", &EditorCameraComponent::MoveSpeed)
         .property("CanMove", &EditorCameraComponent::bCanMove);
+
+    NIT_REGISTRY_COMPONENT(EditorCameraComponent)
 }

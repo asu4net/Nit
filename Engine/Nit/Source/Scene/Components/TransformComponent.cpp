@@ -15,7 +15,6 @@ RTTR_REGISTRATION
         .property("Position", &TransformComponent::Position)
         .property("Rotation", &TransformComponent::Rotation)
         .property("Scale", &TransformComponent::Scale);
-    
     NIT_REGISTRY_COMPONENT(TransformComponent)
 }
 

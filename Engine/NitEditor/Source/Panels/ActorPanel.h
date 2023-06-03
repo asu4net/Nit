@@ -14,5 +14,6 @@ namespace Nit
         
     private:
         Actor m_SelectedActor;
+        bool m_bFirstExecution = true;
     };
 }

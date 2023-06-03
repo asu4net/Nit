@@ -39,6 +39,9 @@ namespace Nit
     void EditorCameraSystem::MoveCamera(TransformComponent& transform,
         const EditorCameraComponent& editorCamera, const float deltaTime)
     {
+        if (!editorCamera.bCanMove)
+            return;
+        
         Vec3& position = transform.Position;
         const float displacement = editorCamera.MoveSpeed * deltaTime;
         

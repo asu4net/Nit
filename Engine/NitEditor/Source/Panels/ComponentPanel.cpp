@@ -14,21 +14,21 @@ namespace Nit
     void ComponentPanel::Draw()
     {
         using namespace rttr;
-        
+
         if (!m_Editor)
             return;
 
         ImGui::Begin("Components");
-        
+
         const Actor selectedActor = m_Editor->GetActorPanel()->GetSelectedActor();
-        
+
         if (selectedActor.IsValid())
         {
             auto componentTypes = type::get<ActorComponent>().get_derived_classes();
 
-            DrawComponent(selectedActor,type::get<DetailsComponent>());
-            DrawComponent(selectedActor,type::get<TransformComponent>());
-            
+            DrawComponent(selectedActor, type::get<DetailsComponent>());
+            DrawComponent(selectedActor, type::get<TransformComponent>());
+
             for (const type& t : componentTypes)
             {
                 if (t == type::get<DetailsComponent>() || t == type::get<TransformComponent>())
@@ -71,106 +71,8 @@ namespace Nit
             ImGui::Spacing();
 
             instance component = Scene::ComponentMetaData[t].GetByCopyFunction(selectedActor);
-
-            if (!component.is_valid())
-                return;
-
-            //draw properties
-            auto properties = t.get_properties();
-
-            for (auto& property : properties)
-            {
-                variant variant = property.get_value(component);
-
-                if (!variant.is_valid())
-                    continue;
-
-                const std::string propertyName = property.get_name().to_string();
-
-                if (property.get_type() == type::get<Vec3>())
-                {
-                    Vec3 propValue = variant.get_value<Vec3>();
-
-                    if (ImGuiHelpers::DrawVec3Property(propertyName.c_str(), propValue))
-                    {
-                        property.set_value(component, propValue);
-                        Scene::ComponentMetaData[t].SetFunction(selectedActor, component);
-                    }
-                    continue;
-                }
-
-                if (property.get_type() == type::get<Vec4>())
-                {
-                    Vec4 propValue = variant.get_value<Vec4>();
-
-                    if (ImGuiHelpers::DrawColorProperty(propertyName.c_str(), propValue))
-                    {
-                        property.set_value(component, propValue);
-                        Scene::ComponentMetaData[t].SetFunction(selectedActor, component);
-                    }
-                    continue;
-                }
-
-                if (property.get_type() == type::get<int>())
-                {
-                    int propValue = variant.get_value<int>();
-
-                    if (ImGuiHelpers::DrawIntProperty(propertyName.c_str(), propValue))
-                    {
-                        property.set_value(component, propValue);
-                        Scene::ComponentMetaData[t].SetFunction(selectedActor, component);
-                    }
-                    continue;
-                }
-
-                if (property.get_type() == type::get<float>())
-                {
-                    float propValue = variant.get_value<float>();
-
-                    if (ImGuiHelpers::DrawFloatProperty(propertyName.c_str(), propValue))
-                    {
-                        property.set_value(component, propValue);
-                        Scene::ComponentMetaData[t].SetFunction(selectedActor, component);
-                    }
-                    continue;
-                }
-
-                if (property.get_type() == type::get<bool>())
-                {
-                    bool propValue = variant.get_value<bool>();
-
-                    if (ImGuiHelpers::DrawBoolProperty(propertyName.c_str(), propValue))
-                    {
-                        property.set_value(component, propValue);
-                        Scene::ComponentMetaData[t].SetFunction(selectedActor, component);
-                    }
-                    continue;
-                }
-
-                if (property.get_type() == type::get<int32_t>())
-                {
-                    int32_t propValue = variant.get_value<int32_t>();
-
-                    if (ImGuiHelpers::DrawInt32Property(propertyName.c_str(), propValue))
-                    {
-                        property.set_value(component, propValue);
-                        Scene::ComponentMetaData[t].SetFunction(selectedActor, component);
-                    }
-                    continue;
-                }
-
-                if (property.get_type() == type::get<std::string>())
-                {
-                    std::string propValue = variant.get_value<std::string>();
-
-                    if (ImGuiHelpers::DrawTextProperty(propertyName.c_str(), propValue))
-                    {
-                        property.set_value(component, propValue);
-                        Scene::ComponentMetaData[t].SetFunction(selectedActor, component);
-                    }
-                    continue;
-                }
-            }
+            DrawClass(component, t, false);
+            Scene::ComponentMetaData[t].SetFunction(selectedActor, component);
 
             ImGui::Spacing();
             ImGui::Separator();
@@ -180,5 +82,177 @@ namespace Nit
 
         if (removeComponent)
             Scene::ComponentMetaData[t].RemoveFunction(selectedActor);
+    }
+
+    void ComponentPanel::DrawClass(const rttr::instance& instance, const rttr::type& type, bool drawAsTree)
+    {
+        if (!instance.is_valid())
+            return;
+
+        if (!drawAsTree)
+        {
+            DrawProperties(instance, type);
+            return;
+        }
+
+        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
+        if (ImGui::TreeNodeEx(type.get_name().to_string().c_str()))
+        {
+            ImGuiHelpers::DrawSpacing(3);
+            DrawProperties(instance, type);
+            ImGuiHelpers::DrawSpacing(4);
+            ImGui::TreePop();
+        }
+    }
+
+    void ComponentPanel::DrawProperties(const rttr::instance& instance, const rttr::type& type)
+    {
+        //draw properties
+        auto properties = type.get_properties();
+
+        for (auto& property : properties)
+        {
+            rttr::variant variant = property.get_value(instance);
+
+            if (!variant.is_valid())
+                continue;
+
+            const std::string propertyName = property.get_name().to_string();
+            const rttr::type propertyType = property.get_type();
+
+            if (propertyType == rttr::type::get<Vec2>())
+            {
+                Vec2 propValue = variant.get_value<Vec2>();
+
+                if (ImGuiHelpers::DrawVec2Property(propertyName.c_str(), propValue))
+                {
+                    property.set_value(instance, propValue);
+                }
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<Vec3>())
+            {
+                Vec3 propValue = variant.get_value<Vec3>();
+
+                if (ImGuiHelpers::DrawVec3Property(propertyName.c_str(), propValue))
+                {
+                    property.set_value(instance, propValue);
+                }
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<Vec4>())
+            {
+                Vec4 propValue = variant.get_value<Vec4>();
+
+                if (ImGuiHelpers::DrawColorProperty(propertyName.c_str(), propValue))
+                {
+                    property.set_value(instance, propValue);
+                }
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<int>())
+            {
+                int propValue = variant.get_value<int>();
+
+                if (ImGuiHelpers::DrawIntProperty(propertyName.c_str(), propValue))
+                {
+                    property.set_value(instance, propValue);
+                }
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<float>())
+            {
+                float propValue = variant.get_value<float>();
+
+                if (ImGuiHelpers::DrawFloatProperty(propertyName.c_str(), propValue))
+                {
+                    property.set_value(instance, propValue);
+                }
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<bool>())
+            {
+                bool propValue = variant.get_value<bool>();
+
+                if (ImGuiHelpers::DrawBoolProperty(propertyName.c_str(), propValue))
+                {
+                    property.set_value(instance, propValue);
+                }
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<int32_t>())
+            {
+                int32_t propValue = variant.get_value<int32_t>();
+
+                if (ImGuiHelpers::DrawInt32Property(propertyName.c_str(), propValue))
+                {
+                    property.set_value(instance, propValue);
+                }
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<std::string>())
+            {
+                std::string propValue = variant.get_value<std::string>();
+
+                if (ImGuiHelpers::DrawTextProperty(propertyName.c_str(), propValue))
+                {
+                    property.set_value(instance, propValue);
+                }
+                continue;
+            }
+
+            if (propertyType.is_valid() && propertyType.is_enumeration())
+            {
+                rttr::enumeration propEnum = propertyType.get_enumeration();
+                if (!propEnum.is_valid())
+                    continue;
+
+                auto enumNames = propEnum.get_names();
+                std::vector<std::string> enumNamesStr;
+
+                for (const auto& enumName : enumNames)
+                {
+                    enumNamesStr.push_back(enumName.to_string());
+                }
+
+                std::string selectedEnum = variant.to_string();
+                ImGuiHelpers::DrawEnumProperty(propertyName.c_str(), selectedEnum, enumNamesStr);
+                rttr::variant enumValue = propEnum.name_to_value(selectedEnum);
+                property.set_value(instance, enumValue);
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<Quat>())
+            {
+                //TODO
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<Id>())
+            {
+                //TODO
+                continue;
+            }
+
+            if (propertyType == rttr::type::get<AssetLink>())
+            {
+                //TODO
+                continue;
+            }
+
+            if (propertyType.is_class())
+            {
+                DrawClass(variant, propertyType);
+                property.set_value(instance, variant);
+            }
+        }
     }
 }

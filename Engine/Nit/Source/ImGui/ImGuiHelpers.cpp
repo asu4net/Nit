@@ -5,7 +5,7 @@ namespace Nit::ImGuiHelpers
 {
     PropertyConfiguration g_Config =
     {
-        /* ColumnWidth */ 100.f,
+        /* ColumnWidth */ 120.f,
         /* ItemSpacing */ {0, 6.f},
         /* ColorX */ {1, 0.3f, 0.3f, 1},
         /* ColorY */ {0.368f, 0.737f, 0.521f, 1},
@@ -90,7 +90,7 @@ namespace Nit::ImGuiHelpers
         return DrawProperty(name, 3, drawProperty);
     }
 
-    bool DrawVec2Property(const char* name, Vec3& vector, float resetValue, float speed)
+    bool DrawVec2Property(const char* name, Vec2& vector, float resetValue, float speed)
     {
         Delegate<bool()> drawProperty([&]() -> bool
         {
@@ -215,6 +215,40 @@ namespace Nit::ImGuiHelpers
             return true;
         }
         return false;
+    }
+
+    bool DrawEnumProperty(const char* name, std::string& selected, const std::vector<std::string>& options)
+    {
+        Delegate<bool()> drawProperty([&]() -> bool
+        {
+            if (selected.empty())
+                selected = options[0];
+            
+            if (ImGui::BeginCombo(" ", selected.c_str()))
+            {
+                for(const std::string& option : options)
+                {
+                    const bool isSelected = selected == option;
+                    if (ImGui::Selectable(option.c_str()))
+                    {
+                        selected = option;
+                    }
+                    if (isSelected)
+                        ImGui::SetItemDefaultFocus();
+                }
+            
+                ImGui::EndCombo();
+            }
+            ImGui::PopItemWidth();
+            return false;
+        });
+        return DrawProperty(name, 1, drawProperty);
+    }
+
+    void DrawSpacing(const uint32_t spacing)
+    {
+        for (int i = 0; i < spacing; i++)
+            ImGui::Spacing();
     }
 }
 #endif
