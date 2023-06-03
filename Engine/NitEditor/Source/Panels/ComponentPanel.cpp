@@ -18,6 +18,13 @@ namespace Nit
         if (!m_Editor)
             return;
 
+        ImGuiWindowClass windowClass;
+        windowClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoWindowMenuButton;
+        ImGui::SetNextWindowClass(&windowClass);
+
+        if (!m_bOpened)
+            return;
+        
         ImGui::Begin("Components");
 
         const Actor selectedActor = m_Editor->GetActorPanel()->GetSelectedActor();
@@ -58,11 +65,14 @@ namespace Nit
         }
 
         bool removeComponent = false;
-
+        
         if (ImGui::BeginPopup("ComponentSettings"))
         {
-            if (ImGui::MenuItem("Remove Component"))
+            const bool canRemove = t != type::get<TransformComponent>() && t != type::get<DetailsComponent>();
+
+            if (canRemove && ImGui::MenuItem("Remove Component"))
                 removeComponent = true;
+            
             ImGui::EndPopup();
         }
 
@@ -198,6 +208,17 @@ namespace Nit
                 continue;
             }
 
+            if (propertyType == rttr::type::get<uint32_t>())
+            {
+                uint32_t propValue = variant.get_value<uint32_t>();
+
+                if (ImGuiHelpers::DrawUInt32Property(propertyName.c_str(), propValue))
+                {
+                    property.set_value(instance, propValue);
+                }
+                continue;
+            }
+
             if (propertyType == rttr::type::get<std::string>())
             {
                 std::string propValue = variant.get_value<std::string>();
@@ -232,7 +253,12 @@ namespace Nit
 
             if (propertyType == rttr::type::get<Quat>())
             {
-                //TODO
+                Vec3 eulerAngles = Math::Degrees(Math::EulerAngles(variant.get_value<Quat>()));
+                if (ImGuiHelpers::DrawVec3Property(propertyName.c_str(), eulerAngles))
+                {
+                    Quat rotation = Quat(Math::Radians(eulerAngles));
+                    property.set_value(instance, rotation);
+                }
                 continue;
             }
 

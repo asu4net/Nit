@@ -169,6 +169,19 @@ namespace Nit::ImGuiHelpers
         return DrawProperty(name, 1, drawProperty);
     }
 
+    bool DrawUInt32Property(const char* name, uint32_t& num, float speed)
+    {
+        int i = static_cast<int>(num);
+        Delegate<bool()> drawProperty([&]() -> bool
+        {
+            const bool r = ImGui::DragInt("", &i, speed);
+            ImGui::PopItemWidth();
+            return r;
+        });
+        num = i;
+        return DrawProperty(name, 1, drawProperty);
+    }
+
     bool DrawBoolProperty(const char* name, bool& check)
     {
         Delegate<bool()> drawProperty([&]() -> bool

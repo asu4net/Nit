@@ -20,6 +20,7 @@ namespace Nit::ImGuiHelpers
     bool DrawColorProperty(const char* name, Vec4& color);
     bool DrawIntProperty(const char* name, int& num, float speed = 1.f);
     bool DrawInt32Property(const char* name, int32_t& num, float speed = 1.f);
+    bool DrawUInt32Property(const char* name, uint32_t& num, float speed = 1.f);
     bool DrawBoolProperty(const char* name, bool& check);
     bool DrawFloatProperty(const char* name, float& num, const float speed = 0.1f);
     bool DrawTextProperty(const char* name, std::string& text);

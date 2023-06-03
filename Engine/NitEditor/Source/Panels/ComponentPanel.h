@@ -13,6 +13,7 @@ namespace Nit
         void DrawProperties(const rttr::instance& instance, const rttr::type& type);
         
     private:
+        bool m_bOpened = true;
         Editor* m_Editor;
     }; 
 }

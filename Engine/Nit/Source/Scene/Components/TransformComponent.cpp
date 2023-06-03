@@ -47,4 +47,9 @@ namespace Nit
     {
         return Math::LookAt(transform.Rotation, VecForward);
     }
+
+    Vec3 TransformStatics::GetEulerAngles(const TransformComponent& transform)
+    {
+        return Math::Degrees(Math::EulerAngles(transform.Rotation));
+    }
 }

@@ -10,6 +10,10 @@ namespace Nit
     void ActorPanel::Draw()
     {
         using namespace entt;
+
+        ImGuiWindowClass windowClass;
+        windowClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoWindowMenuButton;
+        ImGui::SetNextWindowClass(&windowClass);
         
         ImGui::Begin("Actors");
         // ImGui::SetNextItemOpen(true, ImGuiCond_Once);

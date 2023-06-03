@@ -22,6 +22,11 @@ namespace Nit
         auto& editorCameraComponent = editorCamera.Get<EditorCameraComponent>();
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0, 0});
+
+        ImGuiWindowClass windowClass;
+        windowClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoWindowMenuButton;
+        ImGui::SetNextWindowClass(&windowClass);
+        
         ImGui::Begin("Viewport");
         
         const ImVec2 panelSize = ImGui::GetContentRegionAvail();

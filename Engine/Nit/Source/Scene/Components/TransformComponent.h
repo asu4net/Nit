@@ -28,5 +28,6 @@ namespace Nit
         static Vec3 GetUpVec3(const TransformComponent& transform);
         static Vec3 GetRightVec3(const TransformComponent& transform);
         static Vec3 GetForwardVec3(const TransformComponent& transform);
+        static Vec3 GetEulerAngles(const TransformComponent& transform);
     };
 }

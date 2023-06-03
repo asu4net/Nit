@@ -101,5 +101,20 @@ namespace Nit
             Vec4 persp;
             decompose(mat, scale, rot, pos, skew, persp);
         }
+
+        inline Vec3 Degrees(const Vec3& vec)
+        {
+            return degrees(vec);
+        }
+
+        inline Vec3 EulerAngles(const Quat& rot)
+        {
+            return eulerAngles(rot);
+        }
+
+        inline Vec3 Radians(const Vec3& rot)
+        {
+            return radians(rot);
+        }
     }
 }
