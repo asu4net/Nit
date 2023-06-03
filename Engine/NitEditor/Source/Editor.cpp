@@ -17,7 +17,7 @@ namespace Nit
         editorCamera.Add<EditorCameraComponent>();
         editorCamera.Get<TransformComponent>().Position = VecBack * 3.f;
 
-        m_ViewportPanel = CreateShared<ViewportPanel>();
+        m_ViewportPanel = CreateShared<ViewportPanel>(this);
         m_ActorPanel = CreateShared<ActorPanel>();
         m_ComponentPanel = CreateShared<ComponentPanel>(this);
     }

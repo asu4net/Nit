@@ -20,6 +20,9 @@ namespace Nit
 
         void CalculateProjectionViewMat4(const Vec3& position, const Quat& rotation);
 
+        void CalculateProjection(Mat4& projectionMatrix) const;
+        void CalculateView(Mat4& viewMatrix, const Vec3& position, const Quat& rotation) const;
+        
     private:
         Mat4 m_ProjectionViewMat4 = MatIdentity;
         RTTR_ENABLE()

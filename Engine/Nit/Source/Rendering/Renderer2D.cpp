@@ -352,6 +352,7 @@ namespace Nit
 
     void Renderer2D::Begin()
     {
+        // m_CommandQueue->Submit<SetDepthTestEnabledCommand>(true);
         m_TextureShader->Bind();
         m_TextureShader->SetUniformMat4("u_ProjectionViewMatrix", m_RenderData.ProjectionViewMat4);
         m_TextureShader->SetUniformIntArray("u_TextureSlots", g_TextureSlots, QuadRenderData::MaxQuads);

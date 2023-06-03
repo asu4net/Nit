@@ -26,15 +26,20 @@ namespace Nit
 {
     void Camera::CalculateProjectionViewMat4(const Vec3& position, const Quat& rotation)
     {
-        using namespace glm;
-        
-        Vec3 tweakedPosition = position;
-        tweakedPosition.z *= -1;
-        Mat4 viewMatrix = translate(Mat4(1.0f), tweakedPosition) * toMat4(rotation);
-        viewMatrix = inverse(viewMatrix);
-            
+        Mat4 viewMatrix = MatIdentity;
+        CalculateView(viewMatrix, position, rotation);
         Mat4 projectionMatrix = MatIdentity;
-            
+        CalculateProjection(projectionMatrix);
+        m_ProjectionViewMat4 = projectionMatrix * viewMatrix;
+    }
+
+    void Camera::CalculateProjection(Mat4& projectionMatrix) const
+    {
+        using namespace glm;
+
+        if (isnan(AspectRatio))
+            return;  
+
         switch (Projection)
         {
         case CameraProjection::Perspective:
@@ -44,7 +49,7 @@ namespace Nit
                     NearPlane, FarPlane);   
             }
             break;
-                    
+        
         case CameraProjection::Orthographic:
             {
                 if (isnan(AspectRatio)) break;
@@ -57,7 +62,15 @@ namespace Nit
                     
         case CameraProjection::None: projectionMatrix = MatIdentity; break;
         }
+    }
 
-        m_ProjectionViewMat4 = projectionMatrix * viewMatrix;
+    void Camera::CalculateView(Mat4& viewMatrix, const Vec3& position, const Quat& rotation) const
+    {
+        using namespace glm;
+        
+        Vec3 tweakedPosition = position;
+        tweakedPosition.z *= -1;
+        viewMatrix = translate(Mat4(1.0f), tweakedPosition) * toMat4(rotation);
+        viewMatrix = inverse(viewMatrix);
     }
 }
