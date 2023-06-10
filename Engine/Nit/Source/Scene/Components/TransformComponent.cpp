@@ -11,7 +11,7 @@ RTTR_REGISTRATION
 
     registration::class_<TransformComponent>("TransformComponent")
         .constructor<>()
-        .constructor<const Vec3&, const Quat&, const Vec3&>()
+        .constructor<const Vec3&, const Vec3&, const Vec3&>()
         .property("Position", &TransformComponent::Position)
         .property("Rotation", &TransformComponent::Rotation)
         .property("Scale", &TransformComponent::Scale);
@@ -29,27 +29,22 @@ namespace Nit
     Mat4 TransformStatics::GetModelMat4(const TransformComponent& transform)
     {
         return Math::Translate(MatIdentity, transform.Position)
-                * Math::ToMat4(transform.Rotation)
+                * Math::ToMat4(Quat(transform.Rotation))
                 * Math::Scale(MatIdentity, transform.Scale);
     }
 
     Vec3 TransformStatics::GetUpVec3(const TransformComponent& transform)
     {
-        return Math::LookAt(transform.Rotation, VecUp);
+        return Math::LookAt(Quat(transform.Rotation), VecUp);
     }
 
     Vec3 TransformStatics::GetRightVec3(const TransformComponent& transform)
     {
-        return Math::LookAt(transform.Rotation, VecRight);
+        return Math::LookAt(Quat(transform.Rotation), VecRight);
     }
 
     Vec3 TransformStatics::GetForwardVec3(const TransformComponent& transform)
     {
-        return Math::LookAt(transform.Rotation, VecForward);
-    }
-
-    Vec3 TransformStatics::GetEulerAngles(const TransformComponent& transform)
-    {
-        return Math::Degrees(Math::EulerAngles(transform.Rotation));
+        return Math::LookAt(Quat(transform.Rotation), VecForward);
     }
 }

@@ -3,26 +3,37 @@
 
 namespace Nit 
 {
-    bool Input::m_Initialized = false;
+    bool Input::m_bInitialized = false;
     void* Input::m_Window = nullptr;
+    bool Input::m_bConsumedByEditor = false;
     
     bool Input::IsKeyPressed(const int key)
     {
-        if (!m_Initialized) return false;
+        if (!m_bInitialized || m_bConsumedByEditor) return false;
         auto* window = static_cast<GLFWwindow*>(m_Window);
         const auto state = glfwGetKey(window, key);
         return state == GLFW_PRESS;
     }
 
+    void Input::SetConsumedByEditor(const bool bConsumedByEditor)
+    {
+        m_bConsumedByEditor = bConsumedByEditor;
+    }
+
+    bool Input::IsConsumedByEditor()
+    {
+        return m_bConsumedByEditor;
+    }
+
     void Input::Initialize(void* window)
     {
         m_Window = window;
-        m_Initialized = true;
+        m_bInitialized = true;
     }
 
     bool Input::IsMouseButtonPressed(const int button)
     {
-        if (!m_Initialized) return false;
+        if (!m_bInitialized || m_bConsumedByEditor) return false;
         auto* window = static_cast<GLFWwindow*>(m_Window);
         const auto state = glfwGetMouseButton(window, button);
         return state == GLFW_PRESS;
@@ -30,7 +41,7 @@ namespace Nit
 
     Vec2 Input::GetMousePosition()
     {
-        if (!m_Initialized) return {};
+        if (!m_bInitialized) return {};
         auto* window = static_cast<GLFWwindow*>(m_Window);
         double xPos, yPos;
         glfwGetCursorPos(window, &xPos, &yPos);

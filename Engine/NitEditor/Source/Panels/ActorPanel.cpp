@@ -2,6 +2,7 @@
 #include "Scene/World.h"
 #include "Scene/Components/DetailsComponent.h"
 #include "Scene/Components/TransformComponent.h"
+#include "Window/Input/Input.h"
 
 namespace Nit
 {
@@ -10,7 +11,7 @@ namespace Nit
     void ActorPanel::Draw()
     {
         using namespace entt;
-
+        
         ImGuiWindowClass windowClass;
         windowClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoWindowMenuButton;
         ImGui::SetNextWindowClass(&windowClass);
@@ -18,6 +19,9 @@ namespace Nit
         ImGui::Begin("Actors");
         // ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
+        if (!Input::IsConsumedByEditor() && ImGui::IsWindowFocused())
+            Input::SetConsumedByEditor(true);
+        
         const Weak<Scene> weakActiveScenePtr = World::GetActiveScenePtr();
         if (weakActiveScenePtr.expired())
             return;
@@ -33,7 +37,7 @@ namespace Nit
         if (m_bFirstExecution && !registry.empty())
         {
             m_bFirstExecution = false;
-            m_SelectedActor = {*registry.view<TransformComponent>().begin(), weakRegistryPtr};
+            m_SelectedActor = {*(registry.view<TransformComponent>().begin() + 1), weakRegistryPtr};
         }
         
         registry.each([&](const entity entity)

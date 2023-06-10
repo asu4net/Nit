@@ -18,8 +18,8 @@ RTTR_REGISTRATION
         .property("Size", &Camera::Size)
         .property("Fov", &Camera::Fov)
         .property("NearPlane", &Camera::NearPlane)
-        .property("FarPlane", &Camera::FarPlane)
-        .property("AspectRatio", &Camera::AspectRatio);
+        .property("ScreenWidth", &Camera::ScreenWidth)
+        .property("ScreenHeight", &Camera::ScreenHeight);
 }
 
 namespace Nit
@@ -27,7 +27,7 @@ namespace Nit
     void Camera::CalculateProjectionViewMat4(const Vec3& position, const Quat& rotation)
     {
         Mat4 viewMatrix = MatIdentity;
-        CalculateView(viewMatrix, position, rotation);
+        CalculateView(viewMatrix, position, Quat(rotation));
         Mat4 projectionMatrix = MatIdentity;
         CalculateProjection(projectionMatrix);
         m_ProjectionViewMat4 = projectionMatrix * viewMatrix;
@@ -37,23 +37,25 @@ namespace Nit
     {
         using namespace glm;
 
-        if (isnan(AspectRatio))
+        const float aspect = static_cast<float>(ScreenWidth) / static_cast<float>(ScreenHeight);
+        
+        if (isnan(aspect))
             return;  
 
         switch (Projection)
         {
         case CameraProjection::Perspective:
             {
-                if (isnan(AspectRatio)) break;
-                projectionMatrix = perspective(radians(Fov), AspectRatio,
+                if (isnan(aspect)) break;
+                projectionMatrix = perspective(radians(Fov), aspect,
                     NearPlane, FarPlane);   
             }
             break;
         
         case CameraProjection::Orthographic:
             {
-                if (isnan(AspectRatio)) break;
-                const float right = AspectRatio * Size; //update aspect ratio
+                if (isnan(aspect)) break;
+                const float right = aspect * Size; //update aspect ratio
                 const float left = -right;
                 projectionMatrix = ortho(left, right, -Size, Size,
                     NearPlane, FarPlane);

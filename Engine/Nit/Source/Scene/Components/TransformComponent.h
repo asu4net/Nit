@@ -7,14 +7,14 @@ namespace Nit
     {
         TransformComponent() = default;
 
-        TransformComponent(const Vec3& position, const Quat& rotation = QuatIdentity, const Vec3& scale = VecOne)
+        TransformComponent(const Vec3& position, const Vec3& rotation = VecZero, const Vec3& scale = VecOne)
             : Position(position)
             , Rotation(rotation)
             , Scale(scale)
         {}
         
         Vec3 Position = VecZero;
-        Quat Rotation = QuatIdentity;
+        Vec3 Rotation = VecZero;
         Vec3 Scale = VecOne;
         
         RTTR_ENABLE(ActorComponent)
@@ -28,6 +28,5 @@ namespace Nit
         static Vec3 GetUpVec3(const TransformComponent& transform);
         static Vec3 GetRightVec3(const TransformComponent& transform);
         static Vec3 GetForwardVec3(const TransformComponent& transform);
-        static Vec3 GetEulerAngles(const TransformComponent& transform);
     };
 }

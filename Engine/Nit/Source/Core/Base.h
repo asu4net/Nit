@@ -94,14 +94,7 @@ namespace Nit
             const Vec4 dir = Vec4(axis, 1);
             return {matRot * dir};
         }
-
-        inline void Decompose(const Mat4& mat, Vec3& pos, Quat& rot, Vec3& scale)
-        {
-            Vec3 skew;
-            Vec4 persp;
-            decompose(mat, scale, rot, pos, skew, persp);
-        }
-
+        
         inline Vec3 Degrees(const Vec3& vec)
         {
             return degrees(vec);
@@ -115,6 +108,15 @@ namespace Nit
         inline Vec3 Radians(const Vec3& rot)
         {
             return radians(rot);
+        }
+
+        inline void Decompose(const Mat4& mat, Vec3& pos, Vec3& rot, Vec3& scale)
+        {
+            Vec3 skew;
+            Vec4 persp;
+            Quat rotQuad = Quat(rot);
+            decompose(mat, scale, rotQuad, pos, skew, persp);
+            rot = EulerAngles(rotQuad);
         }
     }
 }

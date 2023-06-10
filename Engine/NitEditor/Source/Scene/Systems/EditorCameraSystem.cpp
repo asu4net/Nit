@@ -18,6 +18,23 @@ namespace Nit
     EditorCameraSystem::EditorCameraSystem(const Weak<Scene>& scene)
         : SceneSystem(scene)
     {
+        Engine::GetInstance().GetWindow()->Events().ScrollEvent.Add([&](const Vec2& offset)
+        {
+            if (Input::IsConsumedByEditor() || !m_EditorCameraActor.IsValid())
+                return;
+
+            auto& editorCamera = m_EditorCameraActor.Get<EditorCameraComponent>();
+
+            if (editorCamera.CameraData.Projection != CameraProjection::Orthographic)
+                return;
+
+            const bool bShiftPressed = Input::IsKeyPressed(KEY_LEFT_SHIFT);
+            
+            editorCamera.CameraData.Size -= offset.y * editorCamera.ZoomStep *
+                (bShiftPressed ? 2 : 1);
+            editorCamera.CameraData.Size = glm::clamp(editorCamera.CameraData.Size,
+                editorCamera.CameraData.NearPlane,  std::numeric_limits<float>::max());
+        });
     }
 
     void EditorCameraSystem::OnUpdate(const TimeStep& timeStep)
@@ -30,14 +47,58 @@ namespace Nit
         
         view.each([&](TransformComponent& transform, EditorCameraComponent& camera)
         {
+            camera.CameraData.ScreenWidth = Engine::GetInstance().GetScreenWidth();
+            camera.CameraData.ScreenHeight = Engine::GetInstance().GetScreenHeight();
+
+            m_AuxCamera = camera.CameraData;
+            
             camera.CameraData.CalculateProjectionViewMat4(transform.Position, transform.Rotation);
             GetScene().GetSceneRenderer().PushCamera(camera.CameraData);
-            MoveCamera(transform, camera, timeStep.DeltaTime);
+
+            if (camera.CameraData.Projection == CameraProjection::Orthographic)
+                MoveOrthographicCamera(transform, camera, timeStep.DeltaTime);
+            else if (camera.CameraData.Projection == CameraProjection::Perspective)
+                MovePerspectiveCamera(transform, camera, timeStep.DeltaTime);
         });
     }
 
-    void EditorCameraSystem::MoveCamera(TransformComponent& transform,
-        const EditorCameraComponent& editorCamera, const float deltaTime)
+    void EditorCameraSystem::MoveOrthographicCamera(TransformComponent& transform,
+        EditorCameraComponent& editorCamera, const float deltaTime)
+    {
+        if (!editorCamera.bCanMove)
+            return;
+
+        const bool bRightMousePressed = Input::IsMouseButtonPressed(MOUSE_BUTTON_RIGHT); 
+        
+        // Mouse pressed
+        if (!m_bMouseDown && bRightMousePressed)
+        {
+            m_bMouseDown = true;
+            m_Offset = CameraStatics::ScreenToWorldPoint(editorCamera.CameraData,
+                Input::GetMousePosition()) + m_AuxPosition;
+        }
+
+        // Mouse released
+        if (m_bMouseDown && !bRightMousePressed)
+        {
+            m_bMouseDown = false;
+            m_AuxPosition = transform.Position;
+        }
+
+        // Mouse hold
+        if (bRightMousePressed)
+        {
+            m_AuxCamera.CalculateProjectionViewMat4(m_AuxPosition, VecZero);
+        
+            const Vec2 mouseWorld = CameraStatics::ScreenToWorldPoint(m_AuxCamera,
+                Input::GetMousePosition());
+        
+            transform.Position = Vec3(-mouseWorld, transform.Position.z) + Vec3(m_Offset.x, m_Offset.y, 0);
+        }
+    }
+
+    void EditorCameraSystem::MovePerspectiveCamera(TransformComponent& transform,
+        EditorCameraComponent& editorCamera, float deltaTime)
     {
         if (!editorCamera.bCanMove)
             return;

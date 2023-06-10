@@ -8,6 +8,15 @@ namespace Nit
     {
     public:
         Engine(Engine&&) = delete;
+
+        void SetScreenWidth(const uint32_t width) { m_ScreenWidth = width; }
+        uint32_t GetScreenWidth() const { return m_ScreenWidth; }
+
+        void SetScreenHeight(const uint32_t height) { m_ScreenHeight = height; }
+        uint32_t GetScreenHeight() const { return m_ScreenHeight; }
+        
+        void SetUseWindowScreenSize(const bool bUseWindowScreenSize) { m_bUseWindowScreenSize = bUseWindowScreenSize; }
+        bool UseWindowScreenSize() const { return m_bUseWindowScreenSize; }
         
         Shared<LayerStack> GetLayerStack() const { return m_LayerStack; }
         Shared<class Window> GetWindow() const { return m_Window; }
@@ -18,6 +27,10 @@ namespace Nit
     private:
         Engine();
         ~Engine();
+
+        uint32_t m_ScreenWidth = 1280;
+        uint32_t m_ScreenHeight = 720;
+        bool m_bUseWindowScreenSize = true;
         
         Shared<Window> m_Window;
         class Renderer2D& m_Renderer2D;
@@ -31,6 +44,8 @@ namespace Nit
         class ImGuiRenderer& m_ImGuiRenderer;
         #endif
 
+        void TrySetScreenSize();
+        
         friend class Singleton<Engine>;
     };
 }

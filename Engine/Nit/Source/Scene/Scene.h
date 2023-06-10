@@ -52,10 +52,10 @@ namespace Nit
         SceneRenderer& GetSceneRenderer() { return m_SceneRenderer; }
         
         Actor CreateActorWithId(Id id, const std::string& name = "Actor",
-            const Vec3& position = VecZero, const Quat& rotation = QuatIdentity, const Vec3& scale = VecOne);
+            const Vec3& position = VecZero, const Vec3& rotation = VecZero, const Vec3& scale = VecOne);
         
         Actor CreateActor(const std::string& name = "Actor",
-            const Vec3& position = VecZero, const Quat& rotation = QuatIdentity, const Vec3& scale = VecOne);
+            const Vec3& position = VecZero, const Vec3& rotation = VecZero, const Vec3& scale = VecOne);
         
         void DestroyActor(const Actor& actor);
         

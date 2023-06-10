@@ -17,7 +17,7 @@ namespace Nit
 
         if (!m_Editor)
             return;
-
+        
         ImGuiWindowClass windowClass;
         windowClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoWindowMenuButton;
         ImGui::SetNextWindowClass(&windowClass);
@@ -27,6 +27,9 @@ namespace Nit
         
         ImGui::Begin("Components");
 
+        if (!Input::IsConsumedByEditor() && ImGui::IsWindowFocused())
+            Input::SetConsumedByEditor(true);
+        
         const Actor selectedActor = m_Editor->GetActorPanel()->GetSelectedActor();
 
         if (selectedActor.IsValid())
@@ -146,6 +149,18 @@ namespace Nit
             {
                 Vec3 propValue = variant.get_value<Vec3>();
 
+                //TODO: Add property specifiers
+                if (propertyName.contains("Rotation"))
+                {
+                    Vec3 rotation = VecZero;
+                    rotation = Math::Degrees(propValue);
+                    if (ImGuiHelpers::DrawVec3Property(propertyName.c_str(), rotation))
+                    {
+                        property.set_value(instance, Math::Radians(rotation));
+                    }
+                    continue;
+                }
+                
                 if (ImGuiHelpers::DrawVec3Property(propertyName.c_str(), propValue))
                 {
                     property.set_value(instance, propValue);

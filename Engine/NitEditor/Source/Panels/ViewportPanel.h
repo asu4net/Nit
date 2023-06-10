@@ -14,8 +14,10 @@ namespace Nit
 
     private:
         GizmoMode m_GizmoMode = GizmoMode::Translate;
+        bool m_3D = false;
         bool m_GizmosLocal = true;
-        float m_Snap = 0;
+        bool m_bGizmosSnapEnabled = false; 
+        float m_GizmosSnap = 0.f;
         Vec2 m_ViewportSize;
         Editor* m_Editor;
 

@@ -260,7 +260,7 @@ namespace Nit::ImGuiHelpers
 
     void DrawSpacing(const uint32_t spacing)
     {
-        for (int i = 0; i < spacing; i++)
+        for (uint32_t i = 0; i < spacing; i++)
             ImGui::Spacing();
     }
 }

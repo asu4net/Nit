@@ -12,4 +12,10 @@ namespace Nit
         RTTR_ENABLE(ActorComponent)
     };
     NIT_FORCE_LINK(CameraComponent)
+
+    class CameraStatics
+    {
+    public:
+        static Vec3 ScreenToWorldPoint(const Camera& camera, const Vec2& screenPoint);
+    };
 }

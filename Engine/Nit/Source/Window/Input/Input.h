@@ -7,6 +7,9 @@ namespace Nit
     public:
         static bool IsKeyPressed(int key);
 
+        static void SetConsumedByEditor(bool bConsumedByEditor);
+        static bool IsConsumedByEditor();
+        
         static void Initialize(void* window);
         static bool IsMouseButtonPressed(int button);
         static Vec2 GetMousePosition();
@@ -14,7 +17,8 @@ namespace Nit
         static float GetMouseY();
         
     private:
-        static bool m_Initialized;
+        static bool m_bConsumedByEditor;
+        static bool m_bInitialized;
         static void* m_Window;
     };
 }

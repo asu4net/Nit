@@ -13,6 +13,7 @@ RTTR_REGISTRATION
     registration::class_<EditorCameraComponent>("EditorCameraComponent")
         .property("CameraData", &EditorCameraComponent::CameraData)
         .property("MoveSpeed", &EditorCameraComponent::MoveSpeed)
+        .property("ZoomStep", &EditorCameraComponent::ZoomStep)
         .property("CanMove", &EditorCameraComponent::bCanMove);
 
     NIT_REGISTRY_COMPONENT(EditorCameraComponent)

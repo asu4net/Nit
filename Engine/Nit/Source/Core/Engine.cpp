@@ -31,6 +31,8 @@ namespace Nit
         m_ImGuiRenderer.Start(m_Window);
         #endif
         m_LayerStack->Start();
+
+        TrySetScreenSize();
         
         while (m_Window->IsOpened())
         {
@@ -42,6 +44,7 @@ namespace Nit
             m_ImGuiRenderer.End();
             #endif
             m_Window->Update();
+            TrySetScreenSize();
         }
 
         m_LayerStack->Finish();
@@ -61,5 +64,14 @@ namespace Nit
         ImGuiRenderer::DestroySingleton();
         #endif
         Renderer2D::DestroySingleton();
+    }
+
+    void Engine::TrySetScreenSize()
+    {
+        if (m_bUseWindowScreenSize)
+        {
+            m_ScreenWidth = m_Window->GetWidth();
+            m_ScreenHeight = m_Window->GetHeight();
+        }
     }
 }

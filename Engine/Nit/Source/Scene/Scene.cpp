@@ -117,7 +117,7 @@ namespace Nit
         m_SceneData = ss.str();
     }
 
-    Actor Scene::CreateActorWithId(Id id, const std::string& name, const Vec3& position, const Quat& rotation, const Vec3& scale)
+    Actor Scene::CreateActorWithId(Id id, const std::string& name, const Vec3& position, const Vec3& rotation, const Vec3& scale)
     {
         const entt::entity entity = m_Registry->create();
         m_IdEntityMap[id] = entity;
@@ -128,7 +128,7 @@ namespace Nit
         return actor;
     }
     
-    Actor Scene::CreateActor(const std::string& name, const Vec3& position, const Quat& rotation, const Vec3& scale)
+    Actor Scene::CreateActor(const std::string& name, const Vec3& position, const Vec3& rotation, const Vec3& scale)
     {
         return CreateActorWithId(Id(), name, position, rotation, scale);
     }

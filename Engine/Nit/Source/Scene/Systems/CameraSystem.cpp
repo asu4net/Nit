@@ -1,4 +1,6 @@
 ﻿#include "CameraSystem.h"
+
+#include "Core/Engine.h"
 #include "Scene/Components/CameraComponent.h"
 #include "Scene/Components/TransformComponent.h"
 
@@ -33,6 +35,8 @@ namespace Nit
         
         view.each([&](const TransformComponent& transform, CameraComponent& camera)
         {
+            camera.CameraData.ScreenWidth = Engine::GetInstance().GetScreenWidth();
+            camera.CameraData.ScreenHeight = Engine::GetInstance().GetScreenHeight();
             camera.CameraData.CalculateProjectionViewMat4(transform.Position, transform.Rotation);
             GetScene().GetSceneRenderer().PushCamera(camera.CameraData);
         });
