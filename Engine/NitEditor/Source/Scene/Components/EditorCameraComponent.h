@@ -8,6 +8,7 @@ namespace Nit
     {
         Camera CameraData;
         float MoveSpeed = 2.f;
+        float RotationSpeed = 15.f;
         float ZoomStep = 0.25f;
         bool bCanMove = true;
         

@@ -26,8 +26,12 @@ namespace Nit
         //TODO: Add multiple camera support
         //TODO: Add magenta error draw call if missing cameras
         
+        const Camera& renderCamera = m_Cameras[m_Cameras.size() - 1];
+
+        renderer2D.SetDepthTestEnabled(renderCamera.Projection == CameraProjection::Perspective);
+        
         renderer2D.SetRenderData({
-            m_Cameras[m_Cameras.size() - 1].GetProjectionViewMat4()
+            renderCamera.GetProjectionViewMat4()
         });
         
         renderer2D.Begin();

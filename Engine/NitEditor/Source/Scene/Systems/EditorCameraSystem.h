@@ -27,6 +27,7 @@ namespace Nit
         Vec3 m_AuxPosition = VecZero;
         Vec3 m_Offset = VecZero;
         Camera m_AuxCamera;
+        Vec2 m_LastMousePos = VecZero;
         
         inline static Actor m_EditorCameraActor;
         RTTR_ENABLE(SceneSystem)

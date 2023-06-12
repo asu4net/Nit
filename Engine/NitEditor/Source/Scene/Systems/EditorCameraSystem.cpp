@@ -102,23 +102,46 @@ namespace Nit
     {
         if (!editorCamera.bCanMove)
             return;
-        
-        Vec3& position = transform.Position;
-        const float displacement = editorCamera.MoveSpeed * deltaTime;
-        
-        if (Input::IsKeyPressed(KEY_S))
-            position.z -= displacement;
-        if (Input::IsKeyPressed(KEY_W))
-            position.z += displacement;
-            
-        if (Input::IsKeyPressed(KEY_A))
-            position.x -= displacement;
-        if (Input::IsKeyPressed(KEY_D))
-            position.x += displacement;
 
-        if (Input::IsKeyPressed(KEY_LEFT_SHIFT))
-            position.y -= displacement;
-        if (Input::IsKeyPressed(KEY_SPACE))
-            position.y += displacement;
+        const bool bRightMousePressed = Input::IsMouseButtonPressed(MOUSE_BUTTON_RIGHT); 
+        
+        // Mouse pressed
+        if (!m_bMouseDown && bRightMousePressed)
+        {
+            m_bMouseDown = true;
+            Engine::GetInstance().GetWindow()->SetCursorMode(Window::CursorMode::Disabled);
+        }
+
+        // Mouse released
+        if (m_bMouseDown && !bRightMousePressed)
+        {
+            m_bMouseDown = false;
+            m_AuxPosition = transform.Position;
+            Engine::GetInstance().GetWindow()->SetCursorMode(Window::CursorMode::Normal);
+        }
+
+        const Vec2 delta = (Input::GetMousePosition() - m_LastMousePos) * 0.003f;
+        m_LastMousePos = Input::GetMousePosition();
+        
+        if (bRightMousePressed)
+        {
+            const float displacement = editorCamera.MoveSpeed * deltaTime;
+        
+            if (Input::IsKeyPressed(KEY_W))
+                transform.Position += glm::rotate
+                    (glm::quat(glm::vec3(-transform.Rotation.x, -transform.Rotation.y, 0.0f)), VecForward) * displacement;
+            if (Input::IsKeyPressed(KEY_S))
+                transform.Position -= glm::rotate
+                    (glm::quat(glm::vec3(-transform.Rotation.x, -transform.Rotation.y, 0.0f)), VecForward) * displacement;
+            if (Input::IsKeyPressed(KEY_A))
+                transform.Position -= glm::rotate
+                    (glm::quat(glm::vec3(-transform.Rotation.x, -transform.Rotation.y, 0.0f)), VecRight) * displacement;
+            if (Input::IsKeyPressed(KEY_D))
+                transform.Position += glm::rotate
+                 (glm::quat(glm::vec3(-transform.Rotation.x, -transform.Rotation.y, 0.0f)), VecRight) * displacement;
+        
+            transform.Rotation -= Vec3(delta.y, delta.x, 0) *
+                editorCamera.RotationSpeed * deltaTime;
+        }
     }
 }

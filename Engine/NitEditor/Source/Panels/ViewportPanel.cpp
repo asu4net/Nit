@@ -106,7 +106,8 @@ namespace Nit
             if (selectedActor.Has<EditorCameraComponent>())
                 return;
             
-            if (!Input::IsKeyPressed(MOUSE_BUTTON_RIGHT))
+            if (!Input::IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) &&
+                !Input::IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
                 if (Input::IsKeyPressed(KEY_W))
                     m_GizmoMode = GizmoMode::Translate;
