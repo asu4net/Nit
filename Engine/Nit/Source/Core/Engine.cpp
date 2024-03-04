@@ -231,6 +231,7 @@ namespace Nit::Engine
         if (bIsStopped)
         {
             bIsStopped = false;
+            World::SerializeOpenedScenes();
             InvokeIterableSystemsCallback(SystemStage::Start);
         }
     }

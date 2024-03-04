@@ -286,4 +286,12 @@ namespace Nit::World
     {
         return AllScenes.count(sceneName);
     }
+
+    void SerializeOpenedScenes()
+    {
+        for (auto& [name, scene] : OpenedScenes)
+        {
+            scene->Serialize();
+        }
+    }
 }

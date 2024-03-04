@@ -47,7 +47,8 @@ namespace Nit::World
     void ReloadScene(const String& sceneName);
     void CloseScene(const String& sceneName);
     void SaveScene(const String& sceneName);
-
+    
     void OpenDefaultScene();
+    void SerializeOpenedScenes();
     void ResetOpenedScenes();
 }
