@@ -1,0 +1,10 @@
+{
+    "AssetData": {
+        "Name": "EmptyScene",
+        "Path": "Assets/Scenes",
+        "AssetId": {
+            "IdHandler": 5400368519545319229
+        },
+        "AssetType": "Scene"
+    }
+}

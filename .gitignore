@@ -1,0 +1,17 @@
+# Binaries
+/Binaries/
+/Binaries-Intermediate/
+
+# Visual Studio files and folder 
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.code-workspace
+
+# Rider files and folder
+.idea/
+
+# vscode files and folder
+.vscode/
