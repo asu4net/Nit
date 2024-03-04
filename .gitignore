@@ -9,6 +9,7 @@
 **.vcxproj.filters
 **.vcxproj.user
 **.code-workspace
+**.sln.DotSettings.user
 
 # Rider files and folder
 .idea/
