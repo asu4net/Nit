@@ -1,17 +1,18 @@
 #include "EditorSystem.h"
+#include <imgui.h>
+#include "ImGuizmo.h"
 #include "Core\Engine.h"
 #include "ImGui\ImGuiRenderer.h"
-#include <imgui.h>
-
-#include "GridSystem.h"
-#include "ImGuizmo.h"
 #include "ImGui\ImGuiUtils.h"
+#include "GridSystem.h"
+#include "EditorCameraSystem.h"
 #include "Windows\ViewportWindow.h"
 #include "Windows\StatsWindow.h"
 #include "Render\Framebuffer.h"
 #include "Windows\SceneWindow.h"
 #include "Windows\HierarchyWindow.h"
 #include "Windows\PropertiesWindow.h"
+
 
 namespace Nit::EditorSystem
 {
@@ -127,6 +128,8 @@ namespace Nit::EditorSystem
         Engine::SetSystemCallback(SystemStage::PreDrawPrimitives, OnPreDrawPrimitives);
         Engine::SetSystemCallback(SystemStage::PostDrawPrimitives, OnPostDrawPrimitives);
         Engine::SetSystemCallback(SystemStage::Destroy, OnDestroy);
+        
         GridSystem::Register();
+        EditorCameraSystem::Register();
     }
 }
