@@ -20,6 +20,8 @@ namespace Nit
     struct CameraStatics 
     {
         static void UpdateCameraMatrices(Entity actor);
+        static void UpdateCameraMatrices(CameraComponent& camera, const Vector3& position, const Vector3& rotation);
+        static Vector3 ScreenToWorldPoint(CameraComponent& camera, const Vector2& screenPoint);
         static Vector3 ScreenToWorldPoint(Entity actor, const Vector2& screenPoint);
     };
 }

@@ -17,6 +17,19 @@
         "z": 1.0
     }
 }
+#component AnimationComponent
+{
+    "CurrentAnimation": {
+        "AssetId": {
+            "IdHandler": 6710390242952465144
+        }
+    },
+    "PlayOnStart": true,
+    "CurrentIndex": 1,
+    "CurrentTime": 0.09728650748729706,
+    "LoopEnabled": true,
+    "IsPlaying": true
+}
 #component SpriteComponent
 {
     "IsVisible": true,
@@ -43,19 +56,6 @@
         "x": 1.0,
         "y": 1.0
     }
-}
-#component AnimationComponent
-{
-    "CurrentAnimation": {
-        "AssetId": {
-            "IdHandler": 6710390242952465144
-        }
-    },
-    "PlayOnStart": true,
-    "CurrentIndex": 1,
-    "CurrentTime": 0.09728650748729706,
-    "LoopEnabled": true,
-    "IsPlaying": true
 }
 #entity Cpp 11816024332466923836
 #component TransformComponent
@@ -204,4 +204,31 @@
         "x": 1.0,
         "y": 1.0
     }
+}
+#entity SceneCamera 16228540880595064672
+#component TransformComponent
+{
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component CameraComponent
+{
+    "Size": 1.0,
+    "NearPlane": 0.0,
+    "FarPlane": 1000.0,
+    "ProjectionMatrix": "",
+    "ViewMatrix": ""
 }

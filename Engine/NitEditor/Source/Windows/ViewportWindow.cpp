@@ -16,7 +16,13 @@ namespace Nit::ViewportWindow
     Vector2 ViewportSize;
     Vector2 ViewportMinBound;
     Vector2 ViewportMaxBound;
-    
+    Vector2 MousePosition;
+
+    Vector2 GetMousePosition()
+    {
+        return MousePosition;
+    }
+
     void Show(bool* bShow, Framebuffer* targetFramebuffer)
     {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
@@ -59,6 +65,8 @@ namespace Nit::ViewportWindow
 
         const int mouseX = (int)mx;
         const int mouseY = (int)my;
+
+        MousePosition = { (float)mouseX, (float)mouseY };
 
         static bool wasPressed = false;
 

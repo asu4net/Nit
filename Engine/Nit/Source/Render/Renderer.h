@@ -19,6 +19,7 @@ namespace Nit::Renderer
     void SetBlendingModeEnabled(bool enabled);
     void SetBlendingMode(BlendingMode blendingMode);
     void SetDepthTestEnabled(bool enabled);
+    void SetErrorScreenEnabled(bool bEnabled);
     void SetClearColor(const Color& clearColor);
     void Clear();
     void SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height);

@@ -8,5 +8,6 @@ namespace Nit
 
 namespace Nit::ViewportWindow
 {
+    Vector2 GetMousePosition();
     void Show(bool* bShow, Framebuffer* TargetFramebuffer);
 }

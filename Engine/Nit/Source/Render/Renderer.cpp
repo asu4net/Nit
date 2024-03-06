@@ -18,6 +18,7 @@ namespace Nit::Renderer
     // Sprite Render
     SharedPtr<RendererShader> SpriteShader;
     DynamicArray<SpritePrimitive> SpritePrimitivesDrawList;
+    bool bErrorScreenEnabled = false;
 
     void Init(GraphicsAPI api)
     {
@@ -49,6 +50,11 @@ namespace Nit::Renderer
     void SetDepthTestEnabled(bool enabled)
     {
         RenderCommandQueue::Submit<SetDepthTestEnabledCommand>(API, enabled);
+    }
+
+    void SetErrorScreenEnabled(bool bEnabled)
+    {
+        bErrorScreenEnabled = bEnabled;
     }
 
     void SetClearColor(const Color& clearColor)
@@ -161,13 +167,22 @@ namespace Nit::Renderer
 
     void DrawPrimitives()
     {
-        // Sprite Render
-        Clear();
-
         SpriteBatchRenderer::RenderData spriteRenderData{
             ProjectionViewMatrix,
             SpriteShader,
         };
+
+        SetClearColor(bErrorScreenEnabled ? Color::Black : Color::DarkGrey);
+        Clear();
+
+        if (bErrorScreenEnabled)
+        {
+            while (!RenderCommandQueue::IsEmpty())
+            {
+                RenderCommandQueue::ExecuteNext();
+            }
+            return;
+        }
 
         SpriteBatchRenderer::Begin(spriteRenderData);
 

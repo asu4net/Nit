@@ -60,31 +60,6 @@ namespace Nit
 
         CameraComponent& camera = Get<CameraComponent>();
 
-        const bool IsRightMousePressed = Input::IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
         
-        // Mouse pressed
-        if (!m_bMouseDown && IsRightMousePressed)
-        {
-            m_bMouseDown = true;
-            m_Offset = Math::ScreenToWorldPoint(camera.ProjectionMatrix * camera.ViewMatrix, Input::GetMousePosition(), Engine::GetScreenSize()) + m_AuxPosition;
-        }
-        
-        // Mouse released
-        if (m_bMouseDown && !IsRightMousePressed)
-        {
-            m_bMouseDown = false;
-            m_AuxPosition = GetTransform().Position;
-        }
-                
-        // Mouse hold
-        if (IsRightMousePressed)
-        {
-            m_AuxCameraMatrix = Matrix4::OrthoProjection(Engine::GetWindow().GetAspect(), camera.Size, camera.NearPlane, camera.FarPlane)
-                * Matrix4::ViewProjection(m_AuxPosition, Vector3::Zero);
-
-            const Vector2 mouseWorld = Math::ScreenToWorldPoint(m_AuxCameraMatrix, Input::GetMousePosition(), Engine::GetScreenSize());
-
-            GetTransform().Position = Vector3(mouseWorld * -1, GetTransform().Position.z) + Vector3(m_Offset.x, m_Offset.y, 0);
-        }
     }
 }

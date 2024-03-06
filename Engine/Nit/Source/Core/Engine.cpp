@@ -243,10 +243,10 @@ namespace Nit::Engine
 
     void Stop()
     {
-        InvokeIterableSystemsCallback(SystemStage::Finish);
-        World::ResetOpenedScenes();
         bIsStopped = true;
         bIsPaused = true;
+        InvokeIterableSystemsCallback(SystemStage::Finish);
+        World::ResetOpenedScenes();
     }
 
     bool IsPaused()
@@ -384,17 +384,6 @@ namespace Nit::Engine
         Content::LoadAssets();
 
         World::OpenDefaultScene();
-        
-        // Create free look camera entity
-        {
-            EntityCreationParams creationParams;
-            creationParams.Name = "Free Look Camera Entity";
-            creationParams.IsSerializable = false;
-            FreeLookCameraEntity = World::CreateEntity(creationParams);
-            FreeLookCameraEntity.Add<CameraComponent>();
-            ScriptComponent& scriptComponent = FreeLookCameraEntity.Add<ScriptComponent>(Type::get<FreeLookCameraScript>());
-            CameraSystem::SetMainCameraEntity(FreeLookCameraEntity);
-        }
 
         Input::RegisterInputAction(KeyCode::P).lock()->OnPerformed().AddRaw(&OnStateInputPressed);
 

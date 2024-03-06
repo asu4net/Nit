@@ -17,7 +17,6 @@ namespace Nit::CameraSystem
 
     void SetMainCameraEntity(Entity entity)
     {
-        NIT_CHECK(entity.Has<CameraComponent>(), "Main camera actor should use have a CameraComponent");
         MainCameraEntity = entity;
     }
 
@@ -34,8 +33,16 @@ namespace Nit::CameraSystem
             CameraStatics::UpdateCameraMatrices({entity});
         });
         
-        NIT_CHECK(MainCameraEntity.IsValid(), "MainCameraActor entity not assigned!");
-        MainCameraEntity = view.front();
+        Renderer::SetErrorScreenEnabled(!MainCameraEntity.IsValid());
+
+        if (!MainCameraEntity.IsValid())
+            MainCameraEntity = view.front();
+
+        if (!MainCameraEntity.IsValid() || (MainCameraEntity.IsValid() && !MainCameraEntity.Has<CameraComponent>()))
+        {
+            return;
+        }
+
         const CameraComponent& mainCamera = MainCameraEntity.Get<CameraComponent>();
         Renderer::SetProjectionViewMatrix(mainCamera.ProjectionMatrix * mainCamera.ViewMatrix);
     }

@@ -1,4 +1,4 @@
-#entity Dummy 13724031510999767810
+#entity GreenCube 13724031510999767810
 #component TransformComponent
 {
     "Position": {
@@ -44,7 +44,7 @@
         "y": 1.0
     }
 }
-#entity Entity[1] 12973132627335342115
+#entity RedCube 12973132627335342115
 #component TransformComponent
 {
     "Position": {
@@ -90,7 +90,7 @@
         "y": 1.0
     }
 }
-#entity Entity[1] 1819262598510842738
+#entity WhiteCube 1819262598510842738
 #component TransformComponent
 {
     "Position": {
@@ -135,4 +135,31 @@
         "x": 1.0,
         "y": 1.0
     }
+}
+#entity SceneCamera 8933903483666175410
+#component TransformComponent
+{
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component CameraComponent
+{
+    "Size": 1.0,
+    "NearPlane": 0.0,
+    "FarPlane": 1000.0,
+    "ProjectionMatrix": "",
+    "ViewMatrix": ""
 }
