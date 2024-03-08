@@ -39,6 +39,3 @@
 #include "Component/SceneComponent.h"
 #include "Component/NameComponent.h"
 #include "Component/IDComponent.h"
-
-// Scripting
-#include "Script/FreeLookCameraScript.h"

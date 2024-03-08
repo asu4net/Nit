@@ -8,7 +8,6 @@
 #include "System/ScriptSystem.h"
 #include "Component/CameraComponent.h"
 #include "Component/ScriptComponent.h"
-#include "Script/FreeLookCameraScript.h"
 
 namespace Nit::Engine
 {
