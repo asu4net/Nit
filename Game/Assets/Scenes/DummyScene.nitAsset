@@ -1,7 +1,7 @@
 {
     "AssetData": {
         "Name": "DummyScene",
-        "Path": "Assets/Scenes",
+        "Path": "Scenes/DummyScene.nit",
         "AssetId": {
             "IdHandler": 17607545293832115480
         },

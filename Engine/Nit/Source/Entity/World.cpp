@@ -277,9 +277,17 @@ namespace Nit::World
             NIT_CHECK(IsSceneCreated(sceneName), "Scene already exists!");
             return;
         }
-        AssetRef sceneRef = Content::CreateAsset<Scene>(sceneName);
+
+        AssetData data;
+        data.Name = sceneName;
+        data.Path = Scene::DefaultFolder() + "/" + sceneName + Scene::GetSceneExstension();
+        AssetRef sceneRef = Content::CreateAsset<Scene>(data);
         SharedPtr<Scene> scene = sceneRef.GetPtrAs<Scene>().lock();
-        Content::SerializeAsset(scene, "Assets/Scenes");
+        scene->Serialize();
+        scene->SaveData();
+        Content::TryLoadAsset(sceneRef);
+        Content::SerializeAsset(scene, Scene::DefaultFolder());
+        OpenScene(sceneName);
     }
 
     bool IsSceneCreated(const String& sceneName)

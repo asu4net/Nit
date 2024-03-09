@@ -27,6 +27,8 @@ namespace Nit
     class Sprite : public Asset
     {
     public:
+        static String DefaultFolder();
+        
         Sprite();
 
         void Init(const SpriteInitSettings& initSettings = {});

@@ -53,7 +53,17 @@ namespace Nit
 
     NIT_FORCE_LINK_IMPL(Scene)
 
-    static const String s_SceneExtension = ".nit";
+    String Scene::GetSceneExstension()
+    {
+        static const String s_SceneExtension = ".nit";
+        return s_SceneExtension;
+    }
+
+    String Scene::DefaultFolder()
+    {
+        static const String s_SceneFolder = "Scenes";
+        return s_SceneFolder;
+    }
 
     Scene::Scene() = default;
     Scene::~Scene() = default;
@@ -66,7 +76,7 @@ namespace Nit
 
     void Scene::LoadData()
     {
-        std::ifstream sceneFile(GetAssetData().AbsolutePath + "/" + GetAssetData().Name + s_SceneExtension);
+        std::ifstream sceneFile(GetAssetData().Path);
         StringStream sceneStream;
         sceneStream << sceneFile.rdbuf();
         m_Data = sceneStream.str();
@@ -74,10 +84,8 @@ namespace Nit
 
     void Scene::SaveData()
     {
-        std::ofstream sceneFileProject("../" + GetAssetData().Path + "/" + GetAssetData().Name + s_SceneExtension);
-        std::ofstream sceneFileBinaries(GetAssetData().AbsolutePath + "/" + GetAssetData().Name + s_SceneExtension);
+        std::ofstream sceneFileProject(GetAssetData().Path);
         sceneFileProject << m_Data;
-        sceneFileBinaries << m_Data;
     }
 
     void Scene::Serialize()

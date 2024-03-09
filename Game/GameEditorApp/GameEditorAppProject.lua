@@ -4,6 +4,7 @@ project "GameEditorApp"
     cppdialect "C++20"
     targetdir (binariesdir)
     objdir (intermediatesdir)
+    debugdir (workingdir)
     defines { "NIT_GAME_EDITOR" }
     pchheader "GameEditorAppPCH.h"
     pchsource "Source/GameEditorAppPCH.cpp"
@@ -22,11 +23,6 @@ project "GameEditorApp"
     links { "NitEditor", "Game" }
     
     files { "**.h", "**.cpp" }
-
-    postbuildcommands
-	{
-	    ("{COPY} %{wks.location}/Game/Assets " .. binariesdir .. "/Assets")
-	}
 
     filter "configurations:Debug"
         defines { "NIT_DEBUG" }

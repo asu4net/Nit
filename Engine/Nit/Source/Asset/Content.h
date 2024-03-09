@@ -16,7 +16,7 @@ namespace Nit::Content
     AssetCreatedEvent& OnAssetCreated();
     AssetDestroyedEvent& OnAssetDestroyed();
 
-    void SerializeAsset(const SharedPtr<Asset>& asset, const String& path);
+    void SerializeAsset(const SharedPtr<Asset>& asset, const String& path = "");
     SharedPtr<Asset> DeserializeAsset(const std::filesystem::path& assetPath);
 
     void GetAssetsOfType(const Type& type, DynamicArray<AssetRef>& assets);

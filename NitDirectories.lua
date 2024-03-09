@@ -1,6 +1,7 @@
 outputdir                      = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 binariesdir                    = "%{wks.location}/Binaries/"              .. outputdir .. "/%{prj.name}"
 intermediatesdir               = "%{wks.location}/Binaries-Intermediate/" .. outputdir .. "/%{prj.name}"
+workingdir                     = "..\\Assets"
 
 IncludeDirs                    = {}
 

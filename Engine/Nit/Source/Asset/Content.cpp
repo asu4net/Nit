@@ -17,10 +17,9 @@ namespace Nit::Content
         asset->SetAssetData(assetData);
         const String jsonNitAsset = Serialization::ToJson(asset);
 
-        std::ofstream fileNitAssetProject("../" + path + "/" + assetData.Name + AssetExtension);
-        std::ofstream fileNitAssetBinaries(GetWorkingDirectory() + "/" + path + "/" + assetData.Name + AssetExtension);
+        const String assetStr = assetData.Name + AssetExtension;
+        std::ofstream fileNitAssetBinaries(path.empty() ? assetStr : path + "\\" + assetStr);
         
-        fileNitAssetProject << jsonNitAsset;
         fileNitAssetBinaries << jsonNitAsset;
     }
 
@@ -102,7 +101,7 @@ namespace Nit::Content
         UnloadAssets();
 
         NIT_LOG_TRACE("Loading assets...\n");
-        for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(GetAssetsDirectory()))
+        for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(GetWorkingDirectory()))
         {
             const std::filesystem::path& dirPath = dirEntry.path();
             
@@ -160,15 +159,7 @@ namespace Nit::Content
             NIT_CHECK(!m_IdAssetMap.count(assetData.AssetId), "An asset with the same AssetId already exists!");
         }
         
-        if (assetData.Path.empty())
-        {
-            assetData.Path = AssetData::s_EmptyPathString;
-            assetData.AbsolutePath = AssetData::s_EmptyPathString;
-        }
-        else
-        {
-            assetData.AbsolutePath = GetWorkingDirectory() + "\\" + assetData.Path;
-        }
+        assetData.AbsolutePath = GetWorkingDirectory().string() + "\\" + assetData.Path;
     }
 
     AssetRef RegistryAsset(const SharedPtr<Asset>& asset, const AssetData& assetData)

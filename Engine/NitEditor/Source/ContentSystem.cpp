@@ -21,7 +21,11 @@ namespace Nit::ContentSystem
         bool bProceed{ false };
         while (std::getline(ss, subString, '\\'))
         {
-            if (subString.find(Nit::GetAssetsFolderName()) != String::npos) bProceed = true;
+            if (subString.find(Nit::GetAssetsFolderName()) != String::npos)
+            {
+                bProceed = true;
+                continue;
+            }
             if (bProceed) splitPath.push_back(subString + "/");
         }
         String res;
@@ -33,6 +37,11 @@ namespace Nit::ContentSystem
 
     bool TryImportAsset(const std::filesystem::path& path)
     {
+        if (path.extension() != ".png" && path.extension() != ".jpg")
+        {
+            return false;
+        }
+
         const String assetName = path.stem().string();
 
         if (Content::GetAssetByName(assetName).IsValid())
@@ -59,14 +68,14 @@ namespace Nit::ContentSystem
         else
         {
             SharedPtr<Asset> asset = ref.GetPtr().lock();
-            Content::SerializeAsset(asset, "Assets/Sprites");
+            Content::SerializeAsset(asset, Sprite::DefaultFolder());
             return true;
         }
     }
 
     void OnCreate()
     {
-        std::filesystem::path currentDirectory = Nit::GetAssetsDirectory();
+        std::filesystem::path currentDirectory = Nit::GetWorkingDirectory();
 
         for (auto& directoryEntry : std::filesystem::recursive_directory_iterator(currentDirectory))
         {

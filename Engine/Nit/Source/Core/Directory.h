@@ -3,9 +3,8 @@
 
 namespace Nit
 {
-    String GetWorkingDirectory();
-    String GetAssetsFolderName();
-    String GetAssetsDirectory();
+    using Path = std::filesystem::path;
 
-    void GetAssetDirectoryLocalPath(const String& filePath, String& localPath);
+    String GetAssetsFolderName();
+    Path GetWorkingDirectory();
 }

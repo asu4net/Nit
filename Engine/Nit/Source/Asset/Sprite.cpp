@@ -35,7 +35,13 @@ namespace Nit
 {
     NIT_FORCE_LINK_IMPL(Sprite)
 
-    Sprite::Sprite() 
+    String Sprite::DefaultFolder()
+    {
+        static const String s_SpritesFolder = "Sprites";
+        return s_SpritesFolder;
+    }
+
+    Sprite::Sprite()
     {
         Init();
     };
@@ -51,7 +57,6 @@ namespace Nit
     bool Sprite::Load()
     {
         const String absolutePath = GetAssetData().AbsolutePath;
-        if (absolutePath == AssetData::s_EmptyPathString) return true;
 
         int width, height, channels;
         stbi_set_flip_vertically_on_load(1);

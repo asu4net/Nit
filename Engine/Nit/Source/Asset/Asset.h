@@ -4,8 +4,6 @@ namespace Nit
 {
     struct AssetData
     {
-        inline static const char* s_EmptyPathString = "NO_PATH";
-
         String Name;
         String Path;
         String AbsolutePath;

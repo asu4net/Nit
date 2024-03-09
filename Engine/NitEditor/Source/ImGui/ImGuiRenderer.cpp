@@ -11,7 +11,7 @@
 namespace Nit::ImGuiRenderer
 {
     static const char* OpenGLVersion = "#version 410";
-    static String FontLocation = GetWorkingDirectory() + "\\" + "Assets\\Fonts\\AlbertSans-VariableFont_wght.ttf";
+    static String FontLocation = "Fonts\\AlbertSans-VariableFont_wght.ttf";
     static uint8_t FontSize = 17;
 
 #ifdef NIT_EDITOR_DOCKSPACE

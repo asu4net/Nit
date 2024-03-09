@@ -1,7 +1,7 @@
 {
     "AssetData": {
         "Name": "Cpp",
-        "Path": "Assets/Sprites/cpp.png",
+        "Path": "Sprites/cpp.png",
         "AssetId": {
             "IdHandler": 1174579054536346502
         },

@@ -9,6 +9,9 @@ namespace Nit
     class Scene : public Asset
     {
     public:
+        static String GetSceneExstension();
+        static String DefaultFolder();
+
         Scene();
         ~Scene();
 
