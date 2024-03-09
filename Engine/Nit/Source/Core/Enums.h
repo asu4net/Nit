@@ -45,7 +45,7 @@ namespace Nit
 
     enum EngineSystemsExecutionOrder : uint32_t
     {
-        ScriptExecutionOrder    = 1000,
+        InputExecutionOrder     = 1000,
         AnimationExecutionOrder = 2000,
         CameraExecutionOrder    = 3000,
         SpriteExecutionOrder    = 4000

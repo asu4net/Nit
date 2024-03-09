@@ -32,7 +32,6 @@
 
 #include "Component/CameraComponent.h"
 #include "Component/TransformComponent.h"
-#include "Component/ScriptComponent.h"
 #include "Component/SpriteComponent.h"
 #include "Component/AnimationComponent.h"
 #include "Component/ComponentReflection.h"

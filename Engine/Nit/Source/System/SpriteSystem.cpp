@@ -12,7 +12,7 @@ namespace Nit::SpriteSystem
 
     void Register()
     {
-        Engine::CreateSystem(SystemID, ScriptExecutionOrder, ExecutionContext::Always);
+        Engine::CreateSystem(SystemID, SpriteExecutionOrder, ExecutionContext::Always);
         Engine::SetSystemCallback(SystemStage::Create, &OnCreate);
         Engine::SetSystemCallback(SystemStage::PreDrawPrimitives, &OnPreDrawPrimitives);
     }

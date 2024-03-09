@@ -70,28 +70,28 @@
       /* The unknown key */
 #define KEY_UNKNOWN            -1
 
-enum class KeyCode : uint32_t
+enum KeyCode : uint32_t
 {
-    Invalid = 0,
-    Space = 32,
-    Apostrophe = 39,
-    Coma = 44,
-    Minus = 45,
-    Period = 46,
-    Slash = 47,
-    Num0 = 48,
-    Num1 = 49,
-    W = 87,
-    A = 65,
-    S = 83,
-    D = 68,
-    E = 69,
-    P = 80,
-    R = 82,
-    Delete = 261,
-    LeftShift = 340,
-    LeftCtrl = 341,
-    LeftAlt = 342,
+    Key_Invalid = 0,
+    Key_Space = 32,
+    Key_Apostrophe = 39,
+    Key_Coma = 44,
+    Key_Minus = 45,
+    Key_Period = 46,
+    Key_Slash = 47,
+    Key_Num0 = 48,
+    Key_Num1 = 49,
+    Key_W = 87,
+    Key_A = 65,
+    Key_S = 83,
+    Key_D = 68,
+    Key_E = 69,
+    Key_P = 80,
+    Key_R = 82,
+    Key_Delete = 261,
+    Key_LeftShift = 340,
+    Key_LeftCtrl = 341,
+    Key_LeftAlt = 342,
 };
 
 /* Printable keys */

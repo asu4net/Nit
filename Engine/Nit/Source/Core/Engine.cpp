@@ -5,9 +5,8 @@
 #include "System/SpriteSystem.h"
 #include "System/AnimationSystem.h"
 #include "System/CameraSystem.h"
-#include "System/ScriptSystem.h"
 #include "Component/CameraComponent.h"
-#include "Component/ScriptComponent.h"
+#include "System/InputSystem.h"
 
 namespace Nit::Engine
 {
@@ -329,12 +328,12 @@ namespace Nit::Engine
     {
         if (!context.IsPressed) return;
 
-        if (Input::IsKeyPressed(KeyCode::LeftCtrl)) // play / stop
+        if (Input::IsKeyPressed(Key_LeftCtrl)) // play / stop
         {
             if (bIsStopped) Play();
             else Stop();
         }
-        else if (Input::IsKeyPressed(KeyCode::LeftAlt)) // play / pause
+        else if (Input::IsKeyPressed(Key_LeftAlt)) // play / pause
         {
             if (bIsPaused)  Play();
             else Pause();
@@ -374,16 +373,16 @@ namespace Nit::Engine
         
         World::Init();
 
+        InputSystem::Register();
         SpriteSystem::Register();
         AnimationSystem::Register();
         CameraSystem::Register();
-        ScriptSystem::Register();
         
         Content::LoadAssets();
 
         World::OpenDefaultScene();
 
-        Input::RegisterInputAction(KeyCode::P).lock()->OnPerformed().AddRaw(&OnStateInputPressed);
+        InputSystem::RegisterInputAction(Key_P)->OnPerformed().AddRaw(&OnStateInputPressed);
 
         bIsInitialized = true;
 
@@ -412,7 +411,6 @@ namespace Nit::Engine
         while (MainWindow->IsOpened())
         {
             Time::CalculateTimeStep();
-            Input::UpdateInputActions();
 
             InvokeIterableSystemsCallback(SystemStage::Update, true);
             InvokeIterableSystemsCallback(SystemStage::LateUpdate, true);

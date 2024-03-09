@@ -18,9 +18,7 @@ RTTR_REGISTRATION
         .constructor<>()(rttr::policy::ctor::as_object)
         .property("Size", &CameraComponent::Size)
         .property("NearPlane", &CameraComponent::NearPlane)
-        .property("FarPlane", &CameraComponent::FarPlane)
-        .property("ProjectionMatrix", &CameraComponent::ProjectionMatrix)
-        .property("ViewMatrix", &CameraComponent::ViewMatrix);
+        .property("FarPlane", &CameraComponent::FarPlane);
 
     ComponentReflection::RegisterComponentType<CameraComponent>();
 }

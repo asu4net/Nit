@@ -109,9 +109,9 @@ namespace Nit::ViewportWindow
             static bool bSnapEnabled = false;
             static float snap = 0;
 
-            if (Input::IsKeyPressed(KeyCode::W)) operation = ImGuizmo::TRANSLATE;
-            if (Input::IsKeyPressed(KeyCode::E)) operation = ImGuizmo::ROTATE;
-            if (Input::IsKeyPressed(KeyCode::R)) operation = ImGuizmo::SCALE;
+            if (Input::IsKeyPressed(KeyCode::Key_W)) operation = ImGuizmo::TRANSLATE;
+            if (Input::IsKeyPressed(KeyCode::Key_E)) operation = ImGuizmo::ROTATE;
+            if (Input::IsKeyPressed(KeyCode::Key_R)) operation = ImGuizmo::SCALE;
 
             auto& cameraComponent = mainCamera.Get<CameraComponent>();
             const float* view = &cameraComponent.ViewMatrix.m[0][0];

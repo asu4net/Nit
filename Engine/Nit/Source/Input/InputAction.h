@@ -28,7 +28,7 @@ namespace Nit
 
     private:
         InputPerformedEvent m_InputPerformedEvent;
-        KeyCode m_KeyCode = KeyCode::Invalid;
+        KeyCode m_KeyCode = Key_Invalid;
         bool m_IsKeyPressed = false;
     };
 }

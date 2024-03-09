@@ -76,11 +76,6 @@
         "z": 1.0
     }
 }
-#component ScriptComponent
-{
-    "ScriptType": "MoveScript",
-    "ExecutionOrder": 0
-}
 #component SpriteComponent
 {
     "IsVisible": true,
@@ -173,11 +168,6 @@
         "z": 1.0
     }
 }
-#component ScriptComponent
-{
-    "ScriptType": "ColorScript",
-    "ExecutionOrder": 0
-}
 #component SpriteComponent
 {
     "IsVisible": true,
@@ -228,7 +218,5 @@
 {
     "Size": 1.0,
     "NearPlane": 0.0,
-    "FarPlane": 1000.0,
-    "ProjectionMatrix": "",
-    "ViewMatrix": ""
+    "FarPlane": 1000.0
 }

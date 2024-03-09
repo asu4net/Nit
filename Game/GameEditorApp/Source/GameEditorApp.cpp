@@ -1,7 +1,7 @@
 #pragma once
 #include "Nit.h"
 #include "NitEditor.h"
-#include "GameScripts.h"
+#include "Game.h"
 
 using namespace Nit;
 
