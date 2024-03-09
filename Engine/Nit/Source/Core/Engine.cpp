@@ -372,7 +372,6 @@ namespace Nit::Engine
             SetRawScreenSize(width, height);
         });
         
-        Content::Init(GetWorkingDirectory());
         World::Init();
 
         SpriteSystem::Register();
@@ -455,7 +454,7 @@ namespace Nit::Engine
         
         World::Finish();
         ClearAllSystems();
-        Content::Finish();
+        Content::UnloadAssets();
         MainWindow.reset();
 
         bIsRunning     = false;

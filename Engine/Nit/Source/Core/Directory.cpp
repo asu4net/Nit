@@ -21,6 +21,12 @@ namespace Nit
         return s_AssetFolderName;
     }
 
+    String GetAssetsDirectory()
+    {
+        static const String s_AssetsDirectory = GetWorkingDirectory() + "\\" + GetAssetsFolderName();
+        return s_AssetsDirectory;
+    }
+
     void GetAssetDirectoryLocalPath(const String& filePath, String& localPath)
     {
         DynamicArray<String> splitPath;

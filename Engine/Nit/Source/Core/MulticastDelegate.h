@@ -1,6 +1,15 @@
 ﻿#pragma once
 #include "Delegate.h"
 
+#define NIT_DECLARE_GLOBAL_EVENT_ONE_PARAM(EventName, TypeOne, ParamOne) \
+struct EventName : public Nit::MulticastDelegate<void(TypeOne)> \
+{ \
+    void Broadcast(TypeOne ParamOne) \
+    { \
+        operator()(ParamOne); \
+    } \
+};
+
 #define NIT_DECLARE_EVENT(OwningType, EventName) \
 class EventName : public Nit::MulticastDelegate<void()> \
 { \

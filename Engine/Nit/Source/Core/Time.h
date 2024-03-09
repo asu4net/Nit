@@ -28,8 +28,4 @@ namespace Nit
         inline static double   m_FixedUpdateTimer;
         inline static double   m_LastTime;
     };
-
-    
-    
-    
 }

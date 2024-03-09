@@ -12,6 +12,7 @@
 #include "Windows\SceneWindow.h"
 #include "Windows\HierarchyWindow.h"
 #include "Windows\PropertiesWindow.h"
+#include "ContentSystem.h"
 
 
 namespace Nit::EditorSystem
@@ -129,6 +130,7 @@ namespace Nit::EditorSystem
         Engine::SetSystemCallback(SystemStage::PostDrawPrimitives, OnPostDrawPrimitives);
         Engine::SetSystemCallback(SystemStage::Destroy, OnDestroy);
         
+        ContentSystem::Register();
         GridSystem::Register();
         EditorCameraSystem::Register();
     }

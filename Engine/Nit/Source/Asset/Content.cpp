@@ -1,31 +1,18 @@
 #include "Content.h"
 #include "Shader.h"
 
-namespace Nit
+namespace Nit::Content
 {
-    static const String AssetExtension = ".nitAsset";
+    const String AssetExtension = ".nitAsset";
+    
+    AssetCreatedEvent m_AssetCreatedEvent;
+    AssetDestroyedEvent m_AssetDestroyedEvent;
+    Map<Id, SharedPtr<Asset>> m_IdAssetMap;
+    Map<String, Id> m_AssetNameIdMap;
 
-    //TODO: Separar la deserialización de la llamada al load
-    //TODO: Al deserializar un AssetRef siempre tienen que estar cargados todos los assets porque
-    // se ha de resolver el retarget para el id del asset
-
-    void Content::Init(const String& workingDirectory)
-    {
-        m_WorkingDirectory = workingDirectory;
-        m_AssetDirectory = m_WorkingDirectory + "\\" + GetAssetsFolderName();
-        NIT_LOG_TRACE("Content initialized!\n");
-    }
-
-    void Content::Finish()
-    {
-        UnloadAssets();
-        NIT_LOG_TRACE("Content finished!\n");
-    }
-
-    void Content::SerializeAsset(const SharedPtr<Asset>& asset, const String& path)
+    void SerializeAsset(const SharedPtr<Asset>& asset, const String& path)
     {
         AssetData assetData = asset->GetAssetData();
-        assetData.Path = path;
         EnsureAssetDataConsistency(assetData, true);
         asset->SetAssetData(assetData);
         const String jsonNitAsset = Serialization::ToJson(asset);
@@ -37,7 +24,7 @@ namespace Nit
         fileNitAssetBinaries << jsonNitAsset;
     }
 
-    SharedPtr<Asset> Content::DeserializeAsset(const std::filesystem::path& assetPath)
+    SharedPtr<Asset> DeserializeAsset(const std::filesystem::path& assetPath)
     {
         if (assetPath.extension() != AssetExtension)
         {
@@ -73,7 +60,18 @@ namespace Nit
         return asset;
     }
 
-    void Content::EachAsset(Delegate<void(const AssetRef&)> iterateFunc)
+    void GetAssetsOfType(const Type& type, DynamicArray<AssetRef>& assets)
+    {
+        for (auto& [id, asset] : m_IdAssetMap)
+        {
+            if (asset->GetAssetData().AssetType != type.get_name())
+                continue;
+
+            assets.emplace_back(AssetRef(asset->GetAssetData().AssetId));
+        }
+    }
+
+    void EachAsset(Delegate<void(const AssetRef&)> iterateFunc)
     {
         for (auto& [id, asset] : m_IdAssetMap)
         {
@@ -81,7 +79,7 @@ namespace Nit
         }
     }
 
-    WeakPtr<Asset> Content::GetAssetById(Id id)
+    WeakPtr<Asset> GetAssetById(Id id)
     {
         if (!m_IdAssetMap.count(id))
             return WeakPtr<Asset>();
@@ -89,7 +87,7 @@ namespace Nit
         return m_IdAssetMap[id];
     }
 
-    AssetRef Content::GetAssetByName(const String& name)
+    AssetRef GetAssetByName(const String& name)
     {
         if (!m_AssetNameIdMap.count(name))
             return {};
@@ -99,12 +97,12 @@ namespace Nit
         return AssetRef(assetId);
     }
 
-    void Content::LoadAssets()
+    void LoadAssets()
     {
         UnloadAssets();
 
         NIT_LOG_TRACE("Loading assets...\n");
-        for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(m_AssetDirectory))
+        for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(GetAssetsDirectory()))
         {
             const std::filesystem::path& dirPath = dirEntry.path();
             
@@ -126,7 +124,7 @@ namespace Nit
         }
     }
 
-    void Content::UnloadAssets()
+    void UnloadAssets()
     {
         if (m_IdAssetMap.empty())
             return;
@@ -142,7 +140,17 @@ namespace Nit
         NIT_LOG_TRACE("Assets unloaded!\n");
     }
 
-    void Content::EnsureAssetDataConsistency(AssetData& assetData, bool bIgnoreChecks)
+    AssetCreatedEvent& OnAssetCreated()
+    {
+        return m_AssetCreatedEvent;
+    }
+
+    AssetDestroyedEvent& OnAssetDestroyed()
+    {
+        return m_AssetDestroyedEvent;
+    }
+
+    void EnsureAssetDataConsistency(AssetData& assetData, bool bIgnoreChecks)
     {
         NIT_CHECK(!assetData.Name.empty(), "Asset must have a name!");
 
@@ -159,11 +167,11 @@ namespace Nit
         }
         else
         {
-            assetData.AbsolutePath = m_WorkingDirectory + "\\" + assetData.Path;
+            assetData.AbsolutePath = GetWorkingDirectory() + "\\" + assetData.Path;
         }
     }
 
-    AssetRef Content::RegistryAsset(const SharedPtr<Asset>& asset, const AssetData& assetData)
+    AssetRef RegistryAsset(const SharedPtr<Asset>& asset, const AssetData& assetData)
     {
         AssetData finalAssetData = assetData;
         EnsureAssetDataConsistency(finalAssetData);
@@ -174,7 +182,7 @@ namespace Nit
         return AssetRef(finalAssetData.AssetId);
     }
 
-    void Content::TryLoadAsset(AssetRef assetRef)
+    bool TryLoadAsset(AssetRef assetRef)
     {
         SharedPtr<Asset> asset = assetRef.GetPtr().lock();
 
@@ -185,11 +193,13 @@ namespace Nit
         {
             NIT_LOG_TRACE("loaded: %s\n", fileName);
             m_AssetCreatedEvent.Broadcast(assetRef);
+            return true;
         }
         else
         {
             NIT_LOG_WARN("Failed to load: %s", fileName);
             m_IdAssetMap.erase(assetData.AssetId);
+            return false;
         }
     }
 }
