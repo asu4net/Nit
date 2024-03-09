@@ -23,6 +23,8 @@ namespace Nit
         void Serialize();
         void Deserialize();
 
+        bool IsStartScene() const { return m_bIsStartScene; }
+
         String GetData() const { return m_Data; }
 
         void AddEntity(Entity entity);
@@ -33,9 +35,11 @@ namespace Nit
 
     private:
         String m_Data;
+        bool m_bIsStartScene = false;
         DynamicArray<Entity> m_Entities;
         
         RTTR_ENABLE(Asset)
+        RTTR_REGISTRATION_FRIEND
     };
 
     NIT_FORCE_LINK(Scene)

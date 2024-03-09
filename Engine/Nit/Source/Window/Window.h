@@ -16,6 +16,7 @@ namespace Nit
             float Aspect = (float) Width / (float) Height;
             GraphicsAPI API = GraphicsAPI::OpenGL;
             bool VSync{ true };
+            bool bStartMaximized = false;
             CursorMode CursorMode{ CursorMode::Normal };
         };
 

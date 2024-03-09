@@ -246,14 +246,17 @@ namespace Nit::World
 
     void OpenDefaultScene()
     {
-        /*if (AllScenes.empty())
+        if (AllScenes.empty())
             return;
-        OpenScene(AllScenes.begin()->first);*/
-
-        // for (auto& [name, scene] : AllScenes)
-        // {
-        //     OpenScene(name);
-        // }
+     
+        for (auto& [name, scene] : AllScenes)
+        {
+            if (scene->IsStartScene())
+            {
+                OpenScene(name);
+                break;
+            }
+        }
     }
 
     void ResetOpenedScenes()

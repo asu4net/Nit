@@ -28,6 +28,8 @@ project "GameApp"
         symbols "On"
 
     filter "configurations:Release"
+        kind "WindowedApp"
+        entrypoint "mainCRTStartup"
         defines { "NIT_RELEASE" }
         optimize "On"
 

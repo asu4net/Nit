@@ -14,7 +14,10 @@ namespace Nit
         , m_IsOpened(false)
     {
         NIT_LOG_TRACE("Windows window begin create...\n");
-        NIT_CHECK(glfwInit(), "GLFW Window initialisation failed!");
+        bool bInited = glfwInit();
+        NIT_CHECK(bInited, "GLFW Window initialisation failed!");
+
+        if (!bInited) return;
 
         m_WindowHandler = glfwCreateWindow(m_Config.Width, m_Config.Height, m_Config.Title.c_str(), nullptr, nullptr);
         
@@ -32,6 +35,12 @@ namespace Nit
         SetCursorMode(config.CursorMode);
         SetWindowCallbacks();
 
+        if (m_Config.bStartMaximized)
+        {
+            glfwSetWindowAttrib(m_WindowHandler, GLFW_MAXIMIZED, GLFW_TRUE);
+            glfwMaximizeWindow(m_WindowHandler);
+        }
+        
         Events().ResizeEvent.Add([&](int width, int height) {
             m_Config.Width = width;
             m_Config.Height = height;

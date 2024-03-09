@@ -12,6 +12,7 @@ RTTR_REGISTRATION
     using namespace Nit;
 
     rttr::registration::class_<Scene>("Scene")
+        .property("IsStartScene", &Scene::m_bIsStartScene)
         .constructor<>();
 }
 

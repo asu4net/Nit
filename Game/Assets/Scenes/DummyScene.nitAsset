@@ -1,4 +1,5 @@
 {
+    "IsStartScene": "false",
     "AssetData": {
         "Name": "DummyScene",
         "Path": "Scenes/DummyScene.nit",

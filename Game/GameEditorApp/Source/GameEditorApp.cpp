@@ -9,6 +9,7 @@ int main(int argc, char* argv[])
 {
     InitConfig config;
     config.WindowConfiguration.Title = "Nit Editor";
+    config.WindowConfiguration.bStartMaximized = true;
     Engine::Init(config);
     
     EditorSystem::Register();
