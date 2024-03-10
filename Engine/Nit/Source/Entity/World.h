@@ -27,6 +27,9 @@ namespace Nit::World
     void PopGlobalEntity(Entity entity);
     DynamicArray<Entity>& GetGlobalEntities();
 
+    Entity FindEntityByName(const String& entityName);
+    Entity CloneEntity(Entity sourceEntity, const String& name = "");
+
     //TODO: Destroy entity
     //TODO: Find entity
 

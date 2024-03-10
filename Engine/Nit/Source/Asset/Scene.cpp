@@ -103,8 +103,10 @@ namespace Nit
                 !entity.Has<TransformComponent>() ||
                 !entity.Has<SceneComponent>() && entity.Get<SceneComponent>().IsSerializable)
                 return;
-
-            jsonSceneStream << "#entity " << entity.GetName().Name << " " << std::to_string((uint64_t)entity.GetID().ID) << std::endl;
+            
+            String name = entity.GetName().Name;
+            name.erase(std::remove_if(name.begin(), name.end(), isspace), name.end());
+            jsonSceneStream << "#entity " << name << " " << std::to_string((uint64_t)entity.GetID().ID) << std::endl;
 
             ComponentType& transformCmpType = *ComponentReflection::GetComponentOfType(Type::get<TransformComponent>());
             SerializeComponent(transformCmpType, entity, jsonSceneStream);

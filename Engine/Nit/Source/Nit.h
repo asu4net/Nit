@@ -38,3 +38,8 @@
 #include "Component/SceneComponent.h"
 #include "Component/NameComponent.h"
 #include "Component/IDComponent.h"
+
+// Input
+#include "Input/Input.h"
+#include "Input/InputAction.h"
+#include "System/InputSystem.h"

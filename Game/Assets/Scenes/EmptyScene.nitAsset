@@ -1,5 +1,5 @@
 {
-    "IsStartScene": "true",
+    "IsStartScene": "false",
     "AssetData": {
         "Name": "EmptyScene",
         "Path": "Scenes/EmptyScene.nit",

@@ -12,6 +12,7 @@ namespace Nit::CameraSystem
     void Register()
     {
         Engine::CreateSystem(SystemID, CameraExecutionOrder, ExecutionContext::Always);
+        Engine::SetSystemCallback(SystemStage::Start, &OnStart);
         Engine::SetSystemCallback(SystemStage::Update, &OnUpdate);
     }
 
@@ -25,18 +26,25 @@ namespace Nit::CameraSystem
         return MainCameraEntity;
     }
 
+    void OnStart()
+    {
+        const auto view = World::GetRegistry().view<TransformComponent, CameraComponent>();
+
+        view.each([&](RawEntity entity, TransformComponent&, CameraComponent& cameraComponent) {
+            if (cameraComponent.IsStartCamera)
+                MainCameraEntity = entity;
+        });
+    }
+
     void OnUpdate()
     {
         const auto view = World::GetRegistry().view<TransformComponent, CameraComponent>();
-                
+
         view.each([&](RawEntity entity, TransformComponent&, CameraComponent& cameraComponent) {
             CameraStatics::UpdateCameraMatrices({entity});
         });
         
         Renderer::SetErrorScreenEnabled(!MainCameraEntity.IsValid());
-
-        if (!MainCameraEntity.IsValid())
-            MainCameraEntity = view.front();
 
         if (!MainCameraEntity.IsValid() || (MainCameraEntity.IsValid() && !MainCameraEntity.Has<CameraComponent>()))
         {

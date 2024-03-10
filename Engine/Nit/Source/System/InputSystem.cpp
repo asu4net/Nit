@@ -17,14 +17,14 @@ namespace Nit::InputSystem
         Engine::SetSystemCallback(SystemStage::Destroy, &OnDestroy);
     }
 
-    InputAction* RegisterInputAction(KeyCode keyCode)
+    InputAction* CreateInputAction(KeyCode keyCode)
     {
         InputAction* inputAction = new InputAction(keyCode);
         m_InputActions.push_back(inputAction);
         return inputAction;
     }
 
-    bool UnregisterInputAction(InputAction* inputAction)
+    bool DestroyInputAction(InputAction* inputAction)
     {
         if (!inputAction)
         {

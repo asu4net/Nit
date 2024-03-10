@@ -7,4 +7,5 @@ namespace Nit::CameraSystem
     void SetMainCameraEntity(Entity entity);
     Entity GetMainCameraEntity();
     void OnUpdate();
+    void OnStart();
 }

@@ -1,0 +1,11 @@
+{
+    "AssetData": {
+        "Name": "SpaceInvaders",
+        "Path": "Scenes/SpaceInvaders.nit",
+        "AssetId": {
+            "IdHandler": 3234607864181857117
+        },
+        "AssetType": "Scene"
+    },
+    "IsStartScene": true
+}

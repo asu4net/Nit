@@ -241,9 +241,9 @@ namespace Nit::Engine
 
     void Stop()
     {
-        bIsStopped = true;
-        bIsPaused = true;
         InvokeIterableSystemsCallback(SystemStage::Finish);
+        bIsPaused = true;
+        bIsStopped = true;
         World::ResetOpenedScenes();
     }
 
@@ -382,7 +382,7 @@ namespace Nit::Engine
 
         World::OpenDefaultScene();
 
-        InputSystem::RegisterInputAction(Key_P)->OnPerformed().AddRaw(&OnStateInputPressed);
+        InputSystem::CreateInputAction(Key_P)->OnPerformed().AddRaw(&OnStateInputPressed);
 
         bIsInitialized = true;
 
@@ -400,7 +400,9 @@ namespace Nit::Engine
 
         InvalidateIterableSystems();
         CleanupPendingToDestroySystems();
-        InvokeIterableSystemsCallback(SystemStage::Start);
+
+        if (!bIsPaused && !bIsStopped)
+            InvokeIterableSystemsCallback(SystemStage::Start);
 
         NIT_LOG_TRACE("******************************\n");
         NIT_LOG_TRACE("***** MAIN LOOP STARTED ******\n");
@@ -449,7 +451,7 @@ namespace Nit::Engine
         }
 
         NIT_LOG_TRACE("Finishing engine...\n");
-        
+
         World::Finish();
         ClearAllSystems();
         Content::UnloadAssets();

@@ -100,6 +100,64 @@ namespace Nit::World
         return GlobalEntities;
     }
 
+    static bool IsEntity(Entity entity, const String& entityName)
+    {
+        if (entity.Has<NameComponent>())
+        {
+            auto& name = entity.GetName();
+            return name == entityName;
+        }
+
+        return false;
+    }
+
+    Entity FindEntityByName(const String& entityName)
+    {
+        for (const Entity& entity : GlobalEntities)
+        {
+            if (IsEntity(entity, entityName))
+                return entity;
+        }
+
+        for (auto& [name, scene] : OpenedScenes)
+        {
+            auto& entities = scene->GetEntities();
+
+            for (const Entity& entity : entities)
+            {
+                if (IsEntity(entity, entityName))
+                    return entity;
+            }
+        }
+    }
+
+    Entity CloneEntity(Entity sourceEntity, const String& name)
+    {
+        const RawEntity dstRawEntity = EntityRegistry->create();
+
+        for (auto&& curr : EntityRegistry->storage()) {
+            if (auto& storage = curr.second; storage.contains(sourceEntity.GetRaw())) {
+                storage.push(dstRawEntity, storage.value(sourceEntity.GetRaw()));
+            }
+        }
+
+        Entity entity = dstRawEntity;
+        entity.GetID().ID = Id();
+        entity.GetName().Name = name.empty() ? entity.GetName().Name.append("Clone") : name;
+
+        if (entity.Has<SceneComponent>())
+        {
+            auto& scene = entity.Get<SceneComponent>();
+            scene.OwnerScene.GetAs<Scene>().AddEntity(entity);
+        }
+        else
+        {
+            GlobalEntities.push_back(entity);
+        }
+
+        return entity;
+    }
+
     static void OnSceneCreated(Scene* scene)
     {
         AllScenes[scene->GetAssetData().Name] = scene;

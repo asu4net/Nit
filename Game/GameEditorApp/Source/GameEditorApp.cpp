@@ -13,6 +13,7 @@ int main(int argc, char* argv[])
     Engine::Init(config);
     
     EditorSystem::Register();
+    SpaceInvaders::Register();
 
     RunConfig runConfig;
     runConfig.bStartStopped = true;

@@ -16,6 +16,7 @@ RTTR_REGISTRATION
     
     rttr::registration::class_<CameraComponent>("CameraComponent")
         .constructor<>()(rttr::policy::ctor::as_object)
+        .property("IsStartCamera", &CameraComponent::IsStartCamera)
         .property("Size", &CameraComponent::Size)
         .property("NearPlane", &CameraComponent::NearPlane)
         .property("FarPlane", &CameraComponent::FarPlane);

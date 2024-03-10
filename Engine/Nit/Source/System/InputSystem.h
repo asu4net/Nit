@@ -4,6 +4,6 @@ namespace Nit::InputSystem
 {
     void Register();
 
-    InputAction* RegisterInputAction(KeyCode keyCode);    
-    bool UnregisterInputAction(InputAction* inputAction);
+    InputAction* CreateInputAction(KeyCode keyCode);    
+    bool DestroyInputAction(InputAction* inputAction);
 }

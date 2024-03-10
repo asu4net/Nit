@@ -1,0 +1,55 @@
+{
+    "AssetData": {
+        "Name": "SpaceShip",
+        "Path": "Sprites/SpaceShip.png",
+        "AssetId": {
+            "IdHandler": 8022600964223480877
+        },
+        "AssetType": "Sprite"
+    },
+    "MagFilter": "Linear",
+    "MinFilter": "Linear",
+    "WrapModeU": "Repeat",
+    "WrapModeV": "Repeat",
+    "VertexPositions": [
+        {
+            "x": -0.5,
+            "y": -0.5,
+            "z": 0.0
+        },
+        {
+            "x": 0.5,
+            "y": -0.5,
+            "z": 0.0
+        },
+        {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.0
+        },
+        {
+            "x": -0.5,
+            "y": 0.5,
+            "z": 0.0
+        }
+    ],
+    "VertexUVs": [
+        {
+            "x": 0.0,
+            "y": 0.0
+        },
+        {
+            "x": 1.0,
+            "y": 0.0
+        },
+        {
+            "x": 1.0,
+            "y": 1.0
+        },
+        {
+            "x": 0.0,
+            "y": 1.0
+        }
+    ],
+    "SubSprites": []
+}

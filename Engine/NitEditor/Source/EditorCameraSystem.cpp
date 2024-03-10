@@ -109,9 +109,6 @@ namespace Nit::EditorCameraSystem
     
     void OnFinish()
     {
-        if (Engine::IsPaused() || Engine::IsStopped())
-        {
-            CameraSystem::SetMainCameraEntity(editorCameraEntity);
-        }
+        CameraSystem::SetMainCameraEntity(editorCameraEntity);
     }
 }

@@ -26,6 +26,10 @@ namespace Nit::HierarchyWindow
             {
                 World::DestroyEntity(entity);
             }
+            if (ImGui::MenuItem("Clone Entity"))
+            {
+                World::CloneEntity(entity);
+            }
             ImGui::EndPopup();
         }
 
@@ -55,7 +59,9 @@ namespace Nit::HierarchyWindow
             ImGui::EndPopup();
         }
 
-        for (Entity entity : scene->GetEntities())
+        DynamicArray<Entity> entities = scene->GetEntities();
+
+        for (Entity entity : entities)
         {
             ShowEntityNode(entity, bIsExpanded);
         }

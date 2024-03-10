@@ -4,6 +4,7 @@ namespace Nit
 {
     struct CameraComponent
     {
+        bool IsStartCamera = false;
         float Size = 1.f;
         float NearPlane = 0.f;
         float FarPlane = 1000.f;

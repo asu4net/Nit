@@ -157,6 +157,7 @@
 }
 #component CameraComponent
 {
+    "IsStartCamera": true,
     "Size": 1.0,
     "NearPlane": 0.0,
     "FarPlane": 1000.0
