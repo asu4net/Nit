@@ -7,6 +7,7 @@
 #include "System/CameraSystem.h"
 #include "Component/CameraComponent.h"
 #include "System/InputSystem.h"
+#include "Asset/Shader.h"
 
 namespace Nit::Engine
 {
@@ -379,6 +380,13 @@ namespace Nit::Engine
         CameraSystem::Register();
         
         Content::LoadAssets();
+
+        // Set the default sprite shader
+        //AssetRef spriteShader = Content::GetAssetByName("SpriteShader");
+        //if (spriteShader.IsValid() && spriteShader.Is<Shader>())
+        //{
+        //    Renderer::SetSpriteShader(Renderer::GetShader(spriteShader.As<Shader>().GetRendererId()));
+        //}
 
         World::OpenDefaultScene();
 

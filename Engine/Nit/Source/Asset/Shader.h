@@ -11,6 +11,8 @@ namespace Nit
         bool Load() override;
         void Unload() override;
 
+        Id GetRendererId() const { return m_RendererShaderId; }
+
     private:
         Id m_RendererShaderId = 0;
         String m_VertexSource;

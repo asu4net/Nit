@@ -19,21 +19,32 @@ namespace Nit
         
         Id GetAssetId() const { return m_AssetId; }
         bool IsValid() const { return !m_Asset.expired(); }
-        WeakPtr<Asset> GetPtr() const { return m_Asset; }
+        WeakPtr<Asset> GetWeak() const { return m_Asset; }
+        SharedPtr<Asset> Get() const { return m_Asset.lock(); }
 
         template<typename T>
-        WeakPtr<T> GetPtrAs() const
+        WeakPtr<T> GetWeakAs() const
         { 
-            WeakPtr<Asset> asset = GetPtr();
-            return IsValid() ? std::static_pointer_cast<T>(asset.lock()) : nullptr;
+            WeakPtr<Asset> asset = GetWeak();
+            return IsValid() ? std::static_pointer_cast<T>(Get()) : nullptr;
         }
 
         template<typename T>
-        T& GetAs() const
+        SharedPtr<T> GetAs() const
         {
-            WeakPtr<T> asset = GetPtrAs<T>();
-            NIT_CHECK(IsValid(), "AssetRef needs to point to a valid target!");
-            return *asset.lock().get();
+            return IsValid() ? std::static_pointer_cast<T>(Get()) : nullptr;
+        }
+
+        template<typename T>
+        bool Is() const
+        {
+            return IsValid() ? GetAs<T>().get() : false;
+        }
+
+        template<typename T>
+        T& As() const
+        {
+            return *GetAs<T>().get();
         }
         
         void Retarget();

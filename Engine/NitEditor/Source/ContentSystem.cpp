@@ -67,7 +67,7 @@ namespace Nit::ContentSystem
         }
         else
         {
-            SharedPtr<Asset> asset = ref.GetPtr().lock();
+            SharedPtr<Asset> asset = ref.Get();
             Content::SerializeAsset(asset, Sprite::DefaultFolder());
             return true;
         }

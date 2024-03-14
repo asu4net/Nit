@@ -40,7 +40,7 @@ namespace Nit
 
     void Animation::PushKeysFromSpriteSheet(const AssetRef spriteSheetRef, float keyTime)
     {
-        Sprite& spriteSheet = spriteSheetRef.GetAs<Sprite>();
+        Sprite& spriteSheet = spriteSheetRef.As<Sprite>();
         float currentKeyTime = 0.f;
         
         spriteSheet.ForEachSubSprite({[&](const String& name, const SubSprite& subSprite) {

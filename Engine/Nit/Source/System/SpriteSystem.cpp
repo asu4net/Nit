@@ -52,9 +52,9 @@ namespace Nit::SpriteSystem
 
             if (sprite.SpriteAssetRef.IsValid())
             {
-                auto spritePtr = sprite.SpriteAssetRef.GetPtrAs<Sprite>();
+                auto spritePtr = sprite.SpriteAssetRef.GetWeakAs<Sprite>();
                 if (!spritePtr.expired() && 
-                    sprite.SpriteAssetRef.GetPtr().lock()->GetAssetData().AssetType == Type::get<Sprite>().get_name())
+                    sprite.SpriteAssetRef.GetWeak().lock()->GetAssetData().AssetType == Type::get<Sprite>().get_name())
                 {
                     primitive.SpriteRef = spritePtr.lock();
                 }

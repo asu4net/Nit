@@ -399,12 +399,12 @@ namespace ImGui
                 assetNames.push_back("None");
                 Content::EachAsset({
                     [&assetNames](const AssetRef& asset) {
-                        assetNames.push_back(asset.GetPtr().lock()->GetAssetData().Name);
+                        assetNames.push_back(asset.Get()->GetAssetData().Name);
                     }
                 });
 
                 AssetRef ref = variant.get_value<AssetRef>();
-                String selectedAsset = !ref.IsValid() ? "None" : ref.GetPtr().lock()->GetAssetData().Name;
+                String selectedAsset = !ref.IsValid() ? "None" : ref.Get()->GetAssetData().Name;
                 ImGui::Combo(propertyName.c_str(), selectedAsset, assetNames);
 
                 if (selectedAsset.find("None") == String::npos)

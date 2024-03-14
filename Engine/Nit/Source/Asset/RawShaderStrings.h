@@ -2,6 +2,25 @@
 
 namespace Nit
 {
+    const char* g_ErrorVertexSource = R"(
+        #version 410 core
+        
+        void main()
+        {
+        }
+    )";
+
+    const char* g_ErrorFragmentSource = R"(        
+        #version 410 core
+        
+        layout(location = 0) out vec4 color;
+                
+        void main()
+        {
+            color = vec4(0.827, 0.012, 1.0, 1.0);
+        }
+    )";
+
     const char* g_SpriteVertexShaderSource = R"(
         #version 410 core
         

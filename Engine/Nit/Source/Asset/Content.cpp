@@ -175,7 +175,7 @@ namespace Nit::Content
 
     bool TryLoadAsset(AssetRef assetRef)
     {
-        SharedPtr<Asset> asset = assetRef.GetPtr().lock();
+        SharedPtr<Asset> asset = assetRef.GetWeak().lock();
 
         const AssetData assetData = asset->GetAssetData();
         const char* fileName = assetData.Name.c_str();

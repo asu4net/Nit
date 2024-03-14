@@ -15,14 +15,16 @@ namespace Nit::Renderer
     Map<Id, SharedPtr<RendererTexture2D>> Textures;
     Map<Id, SharedPtr<RendererShader>> Shaders;
 
-    // Sprite Render
     SharedPtr<RendererShader> SpriteShader;
+    SharedPtr<RendererShader> ErrorShader;
+
     DynamicArray<SpritePrimitive> SpritePrimitivesDrawList;
     bool bErrorScreenEnabled = false;
 
     void Init(GraphicsAPI api)
     {
         API = RendererAPI::Create(api);
+        ErrorShader = RendererShader::Create(api);
         SpriteShader = RendererShader::Create(api);
 
         SpriteBatchRenderer::Init(API);
@@ -34,6 +36,7 @@ namespace Nit::Renderer
         SetBlendingMode(BlendingMode::Alpha);
         SetClearColor(Color::DarkGrey);
 
+        ErrorShader->Compile(g_ErrorVertexSource, g_ErrorFragmentSource);
         SpriteShader->Compile(g_SpriteVertexShaderSource, g_SpriteFragmentShaderSource);
     }
 
@@ -116,7 +119,7 @@ namespace Nit::Renderer
     void SubmitSprite(const String& spriteName, const Matrix4& transform, const Color& tintColor, const Vector2& size, Flip flip, int EntityID)
     {
         SpritePrimitive p;
-        p.SpriteRef = Content::GetAssetByName(spriteName).GetPtrAs<Sprite>().lock();
+        p.SpriteRef = Content::GetAssetByName(spriteName).GetWeakAs<Sprite>().lock();
         p.TintColor = tintColor;
         p.TransformMatrix = transform;
         p.UVScale = size;
@@ -129,7 +132,7 @@ namespace Nit::Renderer
     void SubmitSprite2D(const String& spriteName, const Vector2& position, const float angle, const Vector2& scale, const Color& tintColor, const Vector2& size, Flip flip, int EntityID)
     {
         SpritePrimitive p;
-        p.SpriteRef = Content::GetAssetByName(spriteName).GetPtrAs<Sprite>().lock();
+        p.SpriteRef = Content::GetAssetByName(spriteName).GetWeakAs<Sprite>().lock();
         p.TintColor = tintColor;
         p.TransformMatrix = Matrix4::CreateTransform(position, { 0, 0, angle }, scale);
         p.UVScale = size;
@@ -142,7 +145,7 @@ namespace Nit::Renderer
     void SubmitSprite(const AssetRef& spriteRef, const Matrix4& transform, const Color& tintColor, const Vector2& size, Flip flip, int EntityID)
     {
         SpritePrimitive p;
-        p.SpriteRef = spriteRef.GetPtrAs<Sprite>().lock();
+        p.SpriteRef = spriteRef.GetWeakAs<Sprite>().lock();
         p.TintColor = tintColor;
         p.TransformMatrix = transform;
         p.UVScale = size;
@@ -155,7 +158,7 @@ namespace Nit::Renderer
     void SubmitSprite2D(const AssetRef& spriteRef, const Vector2& position, const float angle, const Vector2& scale, const Color& tintColor, const Vector2& size, Flip flip, int EntityID)
     {
         SpritePrimitive p;
-        p.SpriteRef = spriteRef.GetPtrAs<Sprite>().lock();
+        p.SpriteRef = spriteRef.GetWeakAs<Sprite>().lock();
         p.TintColor = tintColor;
         p.TransformMatrix = Matrix4::CreateTransform(position, { 0, 0, angle }, scale);
         p.UVScale = size;

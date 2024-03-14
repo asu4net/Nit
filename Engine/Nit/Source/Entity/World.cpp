@@ -60,7 +60,7 @@ namespace Nit::World
         if (entity.Has<SceneComponent>())
         {
             auto& scene = entity.Get<SceneComponent>();
-            OpenedScenes[scene.OwnerScene.GetPtr().lock()->GetAssetData().Name]->DestroyEntity(entity);
+            OpenedScenes[scene.OwnerScene.GetWeak().lock()->GetAssetData().Name]->DestroyEntity(entity);
             return;
         }
 
@@ -129,6 +129,7 @@ namespace Nit::World
                     return entity;
             }
         }
+        return {};
     }
 
     Entity CloneEntity(Entity sourceEntity, const String& name)
@@ -148,7 +149,7 @@ namespace Nit::World
         if (entity.Has<SceneComponent>())
         {
             auto& scene = entity.Get<SceneComponent>();
-            scene.OwnerScene.GetAs<Scene>().AddEntity(entity);
+            scene.OwnerScene.As<Scene>().AddEntity(entity);
         }
         else
         {
@@ -173,7 +174,7 @@ namespace Nit::World
     {
         if (!assetRef.IsValid())
             return false;
-        const SharedPtr<Asset> asset = assetRef.GetPtr().lock();
+        const SharedPtr<Asset> asset = assetRef.GetWeak().lock();
         return asset->GetAssetData().AssetType == Type::get<Scene>().get_name();
     }
 
@@ -181,7 +182,7 @@ namespace Nit::World
     {
         if (!IsSceneAsset(assetRef))
             return nullptr;
-        return assetRef.GetPtrAs<Scene>().lock().get();
+        return assetRef.GetAs<Scene>().get();
     }
 
     void Init()
@@ -343,7 +344,7 @@ namespace Nit::World
         data.Name = sceneName;
         data.Path = Scene::DefaultFolder() + "/" + sceneName + Scene::GetSceneExstension();
         AssetRef sceneRef = Content::CreateAsset<Scene>(data);
-        SharedPtr<Scene> scene = sceneRef.GetPtrAs<Scene>().lock();
+        SharedPtr<Scene> scene = sceneRef.GetWeakAs<Scene>().lock();
         scene->Serialize();
         scene->SaveData();
         Content::TryLoadAsset(sceneRef);

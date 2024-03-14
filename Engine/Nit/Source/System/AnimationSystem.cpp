@@ -55,7 +55,7 @@ namespace Nit::AnimationSystem
                 return;
             }
 
-            Animation& animation = animationComponent.CurrentAnimation.GetAs<Animation>();
+            Animation& animation = animationComponent.CurrentAnimation.As<Animation>();
 
             if (!animation.GetSize())
             {
