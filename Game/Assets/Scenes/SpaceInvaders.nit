@@ -20,13 +20,13 @@
 #component SpriteComponent
 {
     "IsVisible": true,
-    "OrderInLayer": 0,
+    "SortingLayer": 0,
     "SpriteAssetRef": {
         "AssetId": {
             "IdHandler": 8022600964223480877
         }
     },
-    "Source": "Default",
+    "UseSubsprite": false,
     "SubSpriteName": "",
     "Size": {
         "x": 1.0,
@@ -38,7 +38,8 @@
         "b": 1.0,
         "a": 1.0
     },
-    "FlipMode": "None",
+    "FlipX": false,
+    "FLipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
@@ -92,13 +93,13 @@
 #component SpriteComponent
 {
     "IsVisible": false,
-    "OrderInLayer": 0,
+    "SortingLayer": 0,
     "SpriteAssetRef": {
         "AssetId": {
             "IdHandler": 18091073439085149829
         }
     },
-    "Source": "Default",
+    "UseSubsprite": false,
     "SubSpriteName": "",
     "Size": {
         "x": 1.0,
@@ -110,7 +111,8 @@
         "b": 1.0,
         "a": 1.0
     },
-    "FlipMode": "None",
+    "FlipX": false,
+    "FLipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0

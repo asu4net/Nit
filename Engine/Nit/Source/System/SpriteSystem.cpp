@@ -1,7 +1,6 @@
 #include "SpriteSystem.h"
 #include "Core\Engine.h"
 #include "Render\Renderer.h"
-#include "Render\SpritePrimitive.h"
 #include "Component\SpriteComponent.h"
 #include "Component\TransformComponent.h"
 
@@ -9,6 +8,11 @@
 namespace Nit::SpriteSystem
 {
     const String SystemID = "SpriteSystem";
+
+    void OnCreate();
+    void OnSpriteComponentAdded(Registry&, RawEntity entity);
+    void OnSpriteComponentRemoved(Registry&, RawEntity entity);
+    void OnPreDrawPrimitives();
 
     void Register()
     {
@@ -20,6 +24,7 @@ namespace Nit::SpriteSystem
     void OnCreate()
     {
         World::GetRegistry().on_construct<SpriteComponent>().connect<&OnSpriteComponentAdded>();
+        World::GetRegistry().on_destroy<SpriteComponent>().connect<&OnSpriteComponentRemoved>();
     }
 
     void OnSpriteComponentAdded(Registry&, RawEntity entity)
@@ -27,46 +32,60 @@ namespace Nit::SpriteSystem
         Entity spriteEntity = entity;
         SpriteComponent& spriteComponent = spriteEntity.Get<SpriteComponent>();
         spriteComponent.SpriteAssetRef.Retarget();
+
+        spriteComponent.Primitive = Renderer::CreatePrimitive<SpritePrimitive>();
+    }
+
+    void OnSpriteComponentRemoved(Registry&, RawEntity entity)
+    {
+        Entity spriteEntity = entity;
+        SpriteComponent& spriteComponent = spriteEntity.Get<SpriteComponent>();
+        
+        Renderer::DestroyPrimitive(spriteComponent.Primitive);
+        spriteComponent.Primitive = nullptr;
     }
 
     void OnPreDrawPrimitives()
     {
         const auto view = World::GetRegistry().view<TransformComponent, SpriteComponent>();
 
-        World::GetRegistry().sort<SpriteComponent>([](const SpriteComponent& a, const SpriteComponent& b)
-        {
-            return a.OrderInLayer < b.OrderInLayer;
-        });
-
         view.each([&](RawEntity entity, const TransformComponent& transformComponent, const SpriteComponent& sprite) {
+
+            auto& primitive = *sprite.Primitive;
+            primitive.bIsVisible = sprite.IsVisible;
 
             if (!sprite.IsVisible)
                 return;
 
-            SpritePrimitive primitive;
-            primitive.FlipMode = sprite.FlipMode;
-            primitive.TransformMatrix = transformComponent.GetMatrix();
+            primitive.bFlipX = sprite.bFlipX;
+            primitive.bFlipY = sprite.bFlipY;
+
+            primitive.Transform = transformComponent.GetMatrix();
             primitive.TintColor = sprite.TintColor;
             primitive.UVScale = sprite.UVScale;
             primitive.Size = sprite.Size;
 
             if (sprite.SpriteAssetRef.IsValid())
             {
-                auto spritePtr = sprite.SpriteAssetRef.GetWeakAs<Sprite>();
-                if (!spritePtr.expired() && 
-                    sprite.SpriteAssetRef.GetWeak().lock()->GetAssetData().AssetType == Type::get<Sprite>().get_name())
+                Sprite& spriteAsset = sprite.SpriteAssetRef.As<Sprite>();
+
+                if (sprite.bUseSubsprite && spriteAsset.ContainsSubSprite(sprite.SubSpriteName))
                 {
-                    primitive.SpriteRef = spritePtr.lock();
+                    SubSprite subSprite = spriteAsset.GetSubSprite(sprite.SubSpriteName);
+                    primitive.VertexPositions = subSprite.VertexPositions;
+                    primitive.VertexUVs = subSprite.VertexUVs;
                 }
+                else
+                {
+                    primitive.VertexPositions = spriteAsset.GetVertexPositions();
+                    primitive.VertexUVs = spriteAsset.GetVertexUVs();
+                }
+
+                primitive.TextureID = spriteAsset.GetRendererId();
             }
-
-            primitive.Source = sprite.Source;
-            primitive.SubSpriteName = sprite.SubSpriteName;
+            
             primitive.EntityID = (int) entity;
-
-            primitive.GenerateVertexData();
-
-            Renderer::SubmitSpritePrimitive(primitive);
+            primitive.SortingLayer = sprite.SortingLayer;
         });
     }
 }

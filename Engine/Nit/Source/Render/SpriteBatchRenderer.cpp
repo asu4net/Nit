@@ -20,7 +20,7 @@ namespace Nit
         }
 
         m_RendererAPI = API;
-        m_MaxVertices = MaxSprites * s_VerticesPerSprite;
+        m_MaxVertices = 3000 * s_VerticesPerSprite;
         m_Vertices = new SpriteVertex[m_MaxVertices];
         m_LastVertex = m_Vertices;
         m_Textures.resize(MaxTextureSlots);
@@ -127,7 +127,7 @@ namespace Nit
 
         m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
-        const uint32_t maxIndices = MaxSprites * s_IndicesPerSprite;
+        const uint32_t maxIndices = 3000 * s_IndicesPerSprite;
 
         uint32_t* indices = new uint32_t[maxIndices];
 

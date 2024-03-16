@@ -2,57 +2,274 @@
 #include "RendererShader.h"
 #include "RendererTexture2D.h"
 #include "Asset/RawShaderStrings.h"
-#include "SpriteBatchRenderer.h"
-#include "SpritePrimitive.h"
 #include "RenderCommand.h"
 #include "Core/Engine.h"
-#include "Asset/Content.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 namespace Nit::Renderer
 {
-    Matrix4 ProjectionViewMatrix;
-    SharedPtr<RendererAPI> API;
-    Map<Id, SharedPtr<RendererTexture2D>> Textures;
-    Map<Id, SharedPtr<RendererShader>> Shaders;
+    using TextureMap   = Map<Id, SharedPtr<RendererTexture2D>>;
+    using ShaderMap    = Map<Id, SharedPtr<RendererShader>>;
+    using TextureArray = DynamicArray<SharedPtr<RendererTexture2D>>;
+    using SlotArray    = DynamicArray<int32_t>;
 
-    SharedPtr<RendererShader> SpriteShader;
-    SharedPtr<RendererShader> ErrorShader;
+    constexpr uint32_t            VerticesPerPrimitive = 4;
+    constexpr uint32_t            IndicesPerPrimitive  = 6;
+    constexpr uint32_t            MaxTextureSlots      = 32;
 
-    DynamicArray<SpritePrimitive> SpritePrimitivesDrawList;
-    bool bErrorScreenEnabled = false;
+    SharedPtr<RendererAPI>        API;
+    Matrix4                       ProjectionViewMatrix; // quizás esto podría ir por vertex data también
+    TextureMap                    Textures;
+    ShaderMap                     Shaders;
+    SharedPtr<RendererTexture2D>  WhiteTexture;
+    SharedPtr<RendererShader>     ErrorShader;
+    bool                          bErrorScreenEnabled = false;
+    DynamicArray<Primitive2D*>    Primitives;
+    TextureArray                  TexturesToBind       = TextureArray(MaxTextureSlots);
+    SlotArray                     TextureSlots         = SlotArray(MaxTextureSlots);
+    uint32_t                      LastTextureSlot      = 1;
+    SharedPtr<RendererShader>     LastShader           = nullptr;
+
+    void NextBatch();
+    int CalculateTextureSlot(const SharedPtr<RendererTexture2D>& texture);
+    SharedPtr<IndexBuffer> CreateQuadIndexBuffer(uint32_t maxPrimitives);
+
+    namespace SpriteBatch
+    {
+        struct Vertex
+        {
+            Vector3  Position    = Vector3::Zero;
+            Color    TintColor   = Color::White;
+            Vector2  UVCoords    = Vector2::Zero;
+            uint32_t TextureSlot = 0;
+            int      EntityID    = -1;
+        };
+
+        constexpr uint32_t        MaxPrimitives  = 3000;
+        constexpr uint32_t        MaxVertices    = MaxPrimitives * VerticesPerPrimitive;
+        constexpr uint32_t        MaxIndices     = MaxPrimitives * IndicesPerPrimitive;
+
+        SharedPtr<RendererShader> DefaultShader;
+        SharedPtr<VertexArray>    VAO            = nullptr;
+        SharedPtr<VertexBuffer>   VBO            = nullptr;
+        SharedPtr<IndexBuffer>    IBO            = nullptr;
+        
+        //Per batch stuff
+        uint32_t                  IndexCount     = 0;
+        Vertex*                   Vertices       = new Vertex[MaxVertices];
+        Vertex*                   LastVertex     = Vertices;
+
+        void Create()
+        {
+            if (!API)
+            {
+                NIT_CHECK(false, "Missing sprite batch stuff\n");
+                return;
+            }
+
+            VAO = VertexArray::Create(API->GetGraphicsAPI());
+            VBO = VertexBuffer::Create(API->GetGraphicsAPI(), MaxVertices * sizeof(Vertex));
+
+            VBO->SetLayout({
+                {ShaderDataType::Float3, "a_Position"      },
+                {ShaderDataType::Float4, "a_TintColor"     },
+                {ShaderDataType::Float2, "a_UVCoords"      },
+                {ShaderDataType::Float , "a_TextureSlot"   },
+                {ShaderDataType::Float,  "a_EntityID"      }
+            });
+
+            VAO->AddVertexBuffer(VBO);
+            IBO = CreateQuadIndexBuffer(MaxPrimitives);
+            VAO->SetIndexBuffer(IBO);
+        }
+
+        void Reset()
+        {
+            LastVertex      = Vertices;
+            IndexCount      = 0;
+        }
+
+        void SubmitVertices(SpritePrimitive& sprite)
+        {
+            if (!LastShader || LastShader != DefaultShader)
+            {
+                DefaultShader->Bind();
+                DefaultShader->SetUniformIntArray("u_TextureSlots", &TextureSlots.front(), MaxTextureSlots);
+                LastShader = DefaultShader;
+            }
+
+            uint32_t textureSlot = 0;
+
+            if (auto texture = GetTexture2D(sprite.TextureID))
+            {
+                textureSlot = CalculateTextureSlot(texture); //This could trigger NextBatch()
+            }
+
+            Array<Vector2, 4> vertexUV = sprite.VertexUVs;
+            RenderUtils::FlipQuadVertexUVs(sprite.bFlipX, sprite.bFlipY, vertexUV);
+
+            if (SpriteBatch::IndexCount + IndicesPerPrimitive >= SpriteBatch::MaxIndices)
+            {
+                NextBatch();
+            }
+
+            for (uint32_t i = 0; i < VerticesPerPrimitive; i++)
+            {
+                Vertex vertex;
+
+                Vector3 localVertexPos = sprite.VertexPositions[i];
+                localVertexPos.x *= sprite.Size.x;
+                localVertexPos.y *= sprite.Size.y;
+
+                vertex.Position = Vector4(localVertexPos, 1.f) * sprite.Transform * ProjectionViewMatrix;
+
+                vertex.UVCoords = vertexUV[i];
+                vertex.UVCoords.x *= sprite.UVScale.y;
+                vertex.UVCoords.y *= sprite.UVScale.x;
+
+                vertex.TintColor = sprite.TintColor;
+                vertex.EntityID = sprite.EntityID;
+                vertex.TextureSlot = textureSlot;
+
+                *LastVertex = vertex;
+                LastVertex->TextureSlot = textureSlot;
+                LastVertex++;
+            }
+
+            IndexCount += IndicesPerPrimitive;
+        }
+
+        void SubmitDrawCommand()
+        {
+            if (const uint32_t vertexDataSize = static_cast<uint32_t>(reinterpret_cast<uint8_t*>(LastVertex) -
+                reinterpret_cast<uint8_t*>(Vertices)))
+            {
+                VBO->SetData(Vertices, vertexDataSize);
+
+                for (uint32_t i = 0; i < LastTextureSlot; i++)
+                    TexturesToBind[i]->Bind(i);
+
+                RenderCommandQueue::Submit<DrawElementsCommand>(API, VAO, IndexCount);
+            }
+        }
+    }; // SpriteBatch
+                          
+    SharedPtr<IndexBuffer> CreateQuadIndexBuffer(uint32_t maxPrimitives)
+    {
+        const uint32_t maxIndices = maxPrimitives * IndicesPerPrimitive;
+
+        uint32_t* indices = new uint32_t[maxIndices];
+
+        uint32_t offset = 0;
+        for (uint32_t i = 0; i < maxIndices; i += 6)
+        {
+            indices[i + 0] = offset + 0;
+            indices[i + 1] = offset + 1;
+            indices[i + 2] = offset + 2;
+
+            indices[i + 3] = offset + 2;
+            indices[i + 4] = offset + 3;
+            indices[i + 5] = offset + 0;
+
+            offset += 4;
+        }
+        auto idxBuffer = IndexBuffer::Create(API->GetGraphicsAPI(), indices, maxIndices);
+        delete[] indices;
+        return idxBuffer;
+    }
+
+    int CalculateTextureSlot(const SharedPtr<RendererTexture2D>& texture)
+    {
+        int textureSlot = 0;
+
+        if (texture)
+        {
+            // Search existing texture
+            for (uint32_t i = 1; i < LastTextureSlot; i++)
+            {
+                if (TexturesToBind[i]->GetTextureID() == texture->GetTextureID())
+                {
+                    textureSlot = i;
+                    break;
+                }
+            }
+
+            // If not exists save the new texture
+            if (textureSlot == 0)
+            {
+                if (LastTextureSlot > MaxTextureSlots)
+                {
+                    NextBatch();
+                }
+
+                TexturesToBind[LastTextureSlot] = texture;
+                textureSlot = LastTextureSlot;
+                LastTextureSlot++;
+            }
+        }
+
+        return textureSlot;
+    }
+
+    void StartBatch()
+    {
+        SpriteBatch::Reset();
+
+        LastTextureSlot = 1;
+    }
+
+    void Invalidate()
+    {
+        SpriteBatch::SubmitDrawCommand();
+
+        while (!RenderCommandQueue::IsEmpty())
+        {
+            RenderCommandQueue::ExecuteNext();
+        }
+    }
+
+    void NextBatch()
+    {
+        Invalidate();
+        StartBatch();
+    }
 
     void Init(GraphicsAPI api)
     {
         API = RendererAPI::Create(api);
         ErrorShader = RendererShader::Create(api);
-        SpriteShader = RendererShader::Create(api);
 
-        SpriteBatchRenderer::Init(API);
+        // Create the white texture
+        {
+            Texture2DSettings settings;
+            settings.Width = 1;
+            settings.Height = 1;
+            settings.Channels = 4;
 
-        NIT_LOG_TRACE("Renderer initialized!\n");
+            WhiteTexture = RendererTexture2D::Create(api);
+            constexpr uint32_t whiteTextureData = 0xffffffff;
+            WhiteTexture->UploadToGPU(settings, &whiteTextureData);
+            TexturesToBind[0] = WhiteTexture;
+        }
+
+        // Create the texture slots
+        {
+            for (uint32_t i = 0; i < MaxTextureSlots; i++)
+                TextureSlots[i] = i;
+        }
+
+        // Create the sprite batch render objects
+        SpriteBatch::Create();
 
         // Default settings
-        SetBlendingModeEnabled(true);
-        SetBlendingMode(BlendingMode::Alpha);
-        SetClearColor(Color::DarkGrey);
+        RenderCommandQueue::Submit<SetBlendingEnabledCommand>(API, true);
+        RenderCommandQueue::Submit<SetBlendingModeCommand>(API, BlendingMode::Alpha);
+        RenderCommandQueue::Submit<SetClearColorCommand>(API, Color::DarkGrey);
 
         ErrorShader->Compile(g_ErrorVertexSource, g_ErrorFragmentSource);
-        SpriteShader->Compile(g_SpriteVertexShaderSource, g_SpriteFragmentShaderSource);
-    }
-
-    void SetBlendingModeEnabled(bool enabled)
-    {
-        RenderCommandQueue::Submit<SetBlendingEnabledCommand>(API, enabled);
-    }
-
-    void SetBlendingMode(BlendingMode blendingMode)
-    {
-        RenderCommandQueue::Submit<SetBlendingModeCommand>(API, blendingMode);
-    }
-
-    void SetDepthTestEnabled(bool enabled)
-    {
-        RenderCommandQueue::Submit<SetDepthTestEnabledCommand>(API, enabled);
+        
+        NIT_LOG_TRACE("Renderer initialized!\n");
     }
 
     void SetErrorScreenEnabled(bool bEnabled)
@@ -60,35 +277,15 @@ namespace Nit::Renderer
         bErrorScreenEnabled = bEnabled;
     }
 
-    void SetClearColor(const Color& clearColor)
+    SharedPtr<RendererAPI> GetAPI()
     {
-        RenderCommandQueue::Submit<SetClearColorCommand>(API, clearColor);
-    }
-
-    void Clear()
-    {
-        RenderCommandQueue::Submit<ClearCommand>(API);
-    }
-
-    void SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height)
-    {
-        RenderCommandQueue::Submit<SetViewPortCommand>(API, x, y, width, height);
-    }
-
-    void SubmitSpritePrimitive(const SpritePrimitive& sprite)
-    {
-        SpritePrimitivesDrawList.emplace_back(sprite);
+        return API;
     }
 
     void DrawPrimitives()
     {
-        SpriteBatchRenderer::RenderData spriteRenderData{
-            ProjectionViewMatrix,
-            SpriteShader,
-        };
-
-        SetClearColor(bErrorScreenEnabled ? Color::Black : Color::DarkGrey);
-        Clear();
+        RenderCommandQueue::Submit<SetClearColorCommand>(API, bErrorScreenEnabled ? Color::Black : Color::DarkGrey);
+        RenderCommandQueue::Submit<ClearCommand>(API);
 
         if (bErrorScreenEnabled)
         {
@@ -99,40 +296,56 @@ namespace Nit::Renderer
             return;
         }
 
-        SpriteBatchRenderer::Begin(spriteRenderData);
-
-        for (const SpritePrimitive& sprite : SpritePrimitivesDrawList)
+        if (!SpriteBatch::DefaultShader)
         {
-            SharedPtr<RendererTexture2D> texture = nullptr;
-            
-            if (sprite.SpriteRef)
-            {
-                const Id textureId = sprite.SpriteRef->GetRendererId();
-                texture = GetTexture2D(textureId);
-            }
-
-            Array<SpriteVertex, 4> spriteVertices;
-
-            for (uint32_t i = 0; i < 4; i++)
-            {
-                spriteVertices[i].Position = sprite.GetVertexPositions()[i];
-                spriteVertices[i].LocalPosition = sprite.GetLocalVertexPositions()[i];
-                spriteVertices[i].TintColor = sprite.GetVertexColors()[i];
-                spriteVertices[i].UV = sprite.GetVertexUV()[i];
-                spriteVertices[i].TextureSlot = SpriteBatchRenderer::CalculateTextureSlot(texture);
-                spriteVertices[i].Shape = (uint32_t) sprite.GetFragmentShape();
-                spriteVertices[i].Thickness = sprite.Thickness;
-                spriteVertices[i].Fade = sprite.Fade;
-                spriteVertices[i].Bounds = sprite.Bounds;
-                spriteVertices[i].RectColor = sprite.RectColor;
-                spriteVertices[i].EntityID = sprite.EntityID;
-            }
-
-            SpriteBatchRenderer::SubmitSpriteVertexData(spriteVertices);
+            Invalidate();
+            return;
         }
 
-        SpritePrimitivesDrawList.clear();
-        SpriteBatchRenderer::End();
+        StartBatch();
+
+        std::sort(Primitives.begin(), Primitives.end(), [](const Primitive2D* a, const Primitive2D* b) 
+        { 
+            return a->SortingLayer < b->SortingLayer;
+        });
+
+        for (Primitive2D* primitive : Primitives)
+        {
+            if (!primitive->bIsVisible)
+                continue;
+
+            if (primitive->GetType() == Primitive2DType_Sprite)
+            {
+                SpriteBatch::SubmitVertices(*static_cast<SpritePrimitive*>(primitive));
+            }
+        }
+
+        Invalidate();
+    }
+
+    void PushPrimitive(Primitive2D* primitive)
+    {
+        if (!primitive)
+            return;
+        Primitives.push_back(primitive);
+    }
+
+    void PopPrimitive(Primitive2D* primitive)
+    {
+        if (!primitive)
+            return;
+        auto it = std::find(Primitives.begin(), Primitives.end(), primitive);
+        if (it == Primitives.end())
+            return;
+        Primitives.erase(it);
+    }
+
+    void DestroyPrimitive(Primitive2D* primitive)
+    {
+        if (!primitive)
+            return;
+        PopPrimitive(primitive);
+        delete primitive;
     }
 
     Id CreateTexture2D(const Texture2DSettings& settings, const void* data)
@@ -146,7 +359,8 @@ namespace Nit::Renderer
 
     SharedPtr<RendererTexture2D> GetTexture2D(Id id)
     {
-        NIT_CHECK(Textures.count(id), "Invalid id!");
+        if (!Textures.count(id))
+            return nullptr;
         return Textures[id];
     }
 
@@ -181,7 +395,7 @@ namespace Nit::Renderer
 
     void SetSpriteShader(const SharedPtr<RendererShader> spriteShader)
     {
-        SpriteShader = spriteShader;
+        SpriteBatch::DefaultShader = spriteShader;
     }
 
     void SetProjectionViewMatrix(const Matrix4& matrix)

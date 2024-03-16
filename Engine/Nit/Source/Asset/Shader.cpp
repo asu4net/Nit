@@ -2,14 +2,6 @@
 #include "Core/Engine.h"
 #include "Render/Renderer.h"
 
-RTTR_REGISTRATION
-{
-    using namespace Nit;
-    
-    rttr::registration::class_<Shader>("Shader")
-        .constructor<>();
-}
-
 namespace Nit
 {
     bool Shader::Load()

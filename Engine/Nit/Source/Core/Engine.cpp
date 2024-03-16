@@ -8,6 +8,7 @@
 #include "Component/CameraComponent.h"
 #include "System/InputSystem.h"
 #include "Asset/Shader.h"
+#include "Render/RenderCommand.h"
 
 namespace Nit::Engine
 {
@@ -302,7 +303,7 @@ namespace Nit::Engine
         ScreenSize = screenSize;
         ScreenWidth = static_cast<uint32_t>(screenSize.x);
         ScreenHeight = static_cast<uint32_t>(screenSize.y);
-        Renderer::SetViewport(0, 0, ScreenWidth, ScreenHeight);
+        RenderCommandQueue::Submit<SetViewPortCommand>(Renderer::GetAPI(), 0, 0, ScreenWidth, ScreenHeight);
     }
 
     Vector2 GetScreenSize()
@@ -368,7 +369,7 @@ namespace Nit::Engine
         // Viewport resizing for renderer
         MainWindow->Events().ResizeEvent.Add([&](int width, int height) { 
             
-            Renderer::SetViewport(0, 0, width, height);
+            RenderCommandQueue::Submit<SetViewPortCommand>(Renderer::GetAPI(), 0, 0, width, height);
             SetRawScreenSize(width, height);
         });
         
@@ -382,11 +383,11 @@ namespace Nit::Engine
         Content::LoadAssets();
 
         // Set the default sprite shader
-        //AssetRef spriteShader = Content::GetAssetByName("SpriteShader");
-        //if (spriteShader.IsValid() && spriteShader.Is<Shader>())
-        //{
-        //    Renderer::SetSpriteShader(Renderer::GetShader(spriteShader.As<Shader>().GetRendererId()));
-        //}
+        AssetRef spriteShader = Content::GetAssetByName("SpriteShader");
+        if (spriteShader.IsValid() && spriteShader.Is<Shader>())
+        {
+            Renderer::SetSpriteShader(Renderer::GetShader(spriteShader.As<Shader>().GetRendererId()));
+        }
 
         World::OpenDefaultScene();
 

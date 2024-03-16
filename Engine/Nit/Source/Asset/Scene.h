@@ -43,5 +43,4 @@ namespace Nit
     };
 
     NIT_FORCE_LINK(Scene)
-    YDECLARE_ASSET_EXTENSION(Scene, nit)
 }

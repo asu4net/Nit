@@ -63,7 +63,7 @@ namespace Nit::SpaceInvaders
         MissileTemplate = World::FindEntityByName("MissileTemplate");
 
         MissilePool.reserve(NumOfMissiles);
-        for (int i = 0; i < NumOfMissiles; ++i)
+        for (uint32_t i = 0; i < NumOfMissiles; ++i)
         {
             SpawnMissile();
         }
@@ -73,7 +73,7 @@ namespace Nit::SpaceInvaders
     {
         const int left  = Input::IsKeyPressed(Key_A) ? -1 : 0;
         const int right = Input::IsKeyPressed(Key_D) ?  1 : 0;
-        const int dir = left + right;
+        const float dir = (float) (left + right);
         Player.GetTransform().Position += Vector2::Right * dir * PlayerMoveSpeed * Time::GetDeltaTime();
 
         for (Entity missile : FiredMissiles)

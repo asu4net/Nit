@@ -1,0 +1,10 @@
+{
+    "AssetData": {
+        "Name": "SpriteShader",
+        "Path": "Shaders/SpriteShader.glsl",
+        "AssetId": {
+            "IdHandler": 4839248923048908
+        },
+        "AssetType": "Shader"
+    }
+}

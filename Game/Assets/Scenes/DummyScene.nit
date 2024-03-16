@@ -20,13 +20,13 @@
 #component SpriteComponent
 {
     "IsVisible": true,
-    "OrderInLayer": 7,
+    "SortingLayer": 7,
     "SpriteAssetRef": {
         "AssetId": {
             "IdHandler": 6628041762598263802
         }
     },
-    "Source": "Default",
+    "UseSubsprite": false,
     "SubSpriteName": "",
     "Size": {
         "x": 1.0,
@@ -38,7 +38,8 @@
         "b": 0.17039543390274048,
         "a": 1.0
     },
-    "FlipMode": "None",
+    "FlipX": false,
+    "FLipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
@@ -66,13 +67,13 @@
 #component SpriteComponent
 {
     "IsVisible": true,
-    "OrderInLayer": 10,
+    "SortingLayer": 10,
     "SpriteAssetRef": {
         "AssetId": {
             "IdHandler": 7428088530999033493
         }
     },
-    "Source": "Default",
+    "UseSubsprite": false,
     "SubSpriteName": "",
     "Size": {
         "x": 1.0,
@@ -84,7 +85,8 @@
         "b": 0.323718786239624,
         "a": 1.0
     },
-    "FlipMode": "None",
+    "FlipX": false,
+    "FLipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
@@ -112,13 +114,13 @@
 #component SpriteComponent
 {
     "IsVisible": true,
-    "OrderInLayer": 0,
+    "SortingLayer": 0,
     "SpriteAssetRef": {
         "AssetId": {
             "IdHandler": 15499479499984959463
         }
     },
-    "Source": "SubSprite",
+    "UseSubsprite": true,
     "SubSpriteName": "Aspid [0]",
     "Size": {
         "x": 1.0,
@@ -130,7 +132,8 @@
         "b": 1.0,
         "a": 1.0
     },
-    "FlipMode": "None",
+    "FlipX": false,
+    "FLipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0

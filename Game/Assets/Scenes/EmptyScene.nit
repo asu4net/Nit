@@ -33,13 +33,13 @@
 #component SpriteComponent
 {
     "IsVisible": true,
-    "OrderInLayer": 10,
+    "SortingLayer": 10,
     "SpriteAssetRef": {
         "AssetId": {
             "IdHandler": 7169056393874047641
         }
     },
-    "Source": "SubSprite",
+    "UseSubsprite": true,
     "SubSpriteName": "Aspid [0]",
     "Size": {
         "x": 1.0,
@@ -51,7 +51,8 @@
         "b": 1.0,
         "a": 1.0
     },
-    "FlipMode": "None",
+    "FlipX": false,
+    "FLipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
@@ -79,13 +80,13 @@
 #component SpriteComponent
 {
     "IsVisible": true,
-    "OrderInLayer": 10,
+    "SortingLayer": 10,
     "SpriteAssetRef": {
         "AssetId": {
             "IdHandler": 1174579054536346502
         }
     },
-    "Source": "Default",
+    "UseSubsprite": false,
     "SubSpriteName": "",
     "Size": {
         "x": 1.0,
@@ -97,7 +98,8 @@
         "b": 1.0,
         "a": 1.0
     },
-    "FlipMode": "None",
+    "FlipX": false,
+    "FLipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
@@ -125,13 +127,13 @@
 #component SpriteComponent
 {
     "IsVisible": true,
-    "OrderInLayer": 10,
+    "SortingLayer": 10,
     "SpriteAssetRef": {
         "AssetId": {
             "IdHandler": 18192631295402269877
         }
     },
-    "Source": "Default",
+    "UseSubsprite": false,
     "SubSpriteName": "",
     "Size": {
         "x": 1.0,
@@ -143,7 +145,8 @@
         "b": 1.0,
         "a": 1.0
     },
-    "FlipMode": "None",
+    "FlipX": false,
+    "FLipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
@@ -171,13 +174,13 @@
 #component SpriteComponent
 {
     "IsVisible": true,
-    "OrderInLayer": 10,
+    "SortingLayer": 10,
     "SpriteAssetRef": {
         "AssetId": {
             "IdHandler": 13420620286411129829
         }
     },
-    "Source": "Default",
+    "UseSubsprite": false,
     "SubSpriteName": "",
     "Size": {
         "x": 1.0,
@@ -189,7 +192,8 @@
         "b": 0.3083702623844147,
         "a": 1.0
     },
-    "FlipMode": "None",
+    "FlipX": false,
+    "FLipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0

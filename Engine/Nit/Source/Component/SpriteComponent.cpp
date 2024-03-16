@@ -9,9 +9,9 @@ namespace Nit
 {
     NIT_FORCE_LINK_IMPL(SpriteComponent);
 
-    SpriteComponent::SpriteComponent(const String& spriteAssetName, SpriteSource source)
+    SpriteComponent::SpriteComponent(const String& spriteAssetName, bool bSubsprite)
         : SpriteAssetRef(Content::GetAssetByName(spriteAssetName))
-        , Source(source)
+        , bUseSubsprite(bSubsprite)
     {
     }
 }
@@ -23,13 +23,14 @@ RTTR_REGISTRATION
     rttr::registration::class_<SpriteComponent>("SpriteComponent")
         .constructor<>()(rttr::policy::ctor::as_object)
         .property("IsVisible", &SpriteComponent::IsVisible)
-        .property("OrderInLayer", &SpriteComponent::OrderInLayer)
+        .property("SortingLayer", &SpriteComponent::SortingLayer)
         .property("SpriteAssetRef", &SpriteComponent::SpriteAssetRef)
-        .property("Source", &SpriteComponent::Source)
+        .property("UseSubsprite", &SpriteComponent::bUseSubsprite)
         .property("SubSpriteName", &SpriteComponent::SubSpriteName)
         .property("Size", &SpriteComponent::Size)
         .property("TintColor", &SpriteComponent::TintColor)
-        .property("FlipMode", &SpriteComponent::FlipMode)
+        .property("FlipX", &SpriteComponent::bFlipX)
+        .property("FlipY", &SpriteComponent::bFlipY)
         .property("UVScale", &SpriteComponent::UVScale);
 
     ComponentReflection::RegisterComponentType<SpriteComponent>();

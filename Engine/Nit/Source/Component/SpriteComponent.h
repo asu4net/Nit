@@ -4,28 +4,32 @@
 
 namespace Nit
 {
+    struct SpritePrimitive;
+
     struct SpriteComponent
     {
         bool IsVisible = true;
-        int OrderInLayer = 0; //TODO: Rename to sorting order
+        int SortingLayer = 0;
 
         AssetRef SpriteAssetRef;
-        SpriteSource Source = SpriteSource::Default;    
+        bool bUseSubsprite = false;
         String SubSpriteName = "";
         Vector2 Size = Vector2::One;
         Color TintColor = Color::White;
-        Flip FlipMode = Flip::None;
+        bool bFlipX = false;
+        bool bFlipY = false;
         Vector2 UVScale = Vector2::One;
+        SpritePrimitive* Primitive = nullptr;
 
         SpriteComponent() = default;
 
-        SpriteComponent(const AssetRef& spriteAssetRef, SpriteSource source = SpriteSource::Default)
+        SpriteComponent(const AssetRef& spriteAssetRef, bool bSubsprite = false)
             : SpriteAssetRef(spriteAssetRef)
-            , Source(source)
+            , bUseSubsprite(bSubsprite)
         {
         }
-
-        SpriteComponent(const String& spriteAssetName, SpriteSource source = SpriteSource::Default);
+        
+        SpriteComponent(const String& spriteAssetName, bool bSubsprite = false);
 
         SpriteComponent(const Color tintColor)
             : TintColor(tintColor)

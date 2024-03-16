@@ -22,18 +22,19 @@ namespace Nit::GridSystem
 
     void SubmitGridLine(const Vector2& start, const Vector2& end, bool bIsVertical = false)
     {
-        SpritePrimitive p;
+        /*SpritePrimitive p;
         p.StartPosition = start;
         p.EndPosition = end;
         p.TintColor = GridColor;
         p.NormalVector = bIsVertical ? Vector2::Right : Vector2::Up;
         p.Thickness = LineThickness;
         p.GenerateVertexData(SpriteShape::Line);
-        Renderer::SubmitSpritePrimitive(p);
+        Renderer::SubmitSpritePrimitive(p);*/
     }
     
     void OnPreDrawPrimitives()
     {
+        return;
         if (!Engine::IsPaused() || !Engine::IsStopped())
             return;
 

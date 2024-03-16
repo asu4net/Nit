@@ -24,5 +24,12 @@ namespace Nit
         RTTR_REGISTRATION_FRIEND
     };
 
-    YDECLARE_ASSET_EXTENSION(Shader, glsl)
+    namespace ShaderRegistration
+    {
+        RTTR_REGISTRATION
+        {
+            rttr::registration::class_<Shader>("Shader")
+                .constructor<>();
+        }
+    }
 }
