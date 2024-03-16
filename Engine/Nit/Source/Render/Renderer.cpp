@@ -30,6 +30,7 @@ namespace Nit::Renderer
     SlotArray                     TextureSlots         = SlotArray(MaxTextureSlots);
     uint32_t                      LastTextureSlot      = 1;
     SharedPtr<RendererShader>     LastShader           = nullptr;
+    Primitive2DType               LastPrimitive2D      = Primitive2DType_Default;
 
     void NextBatch();
     int CalculateTextureSlot(const SharedPtr<RendererTexture2D>& texture);
@@ -92,6 +93,11 @@ namespace Nit::Renderer
 
         void SubmitVertices(SpritePrimitive& sprite)
         {
+            if (!DefaultShader)
+            {
+                return;
+            }
+
             if (!LastShader || LastShader != DefaultShader)
             {
                 DefaultShader->Bind();
@@ -296,12 +302,6 @@ namespace Nit::Renderer
             return;
         }
 
-        if (!SpriteBatch::DefaultShader)
-        {
-            Invalidate();
-            return;
-        }
-
         StartBatch();
 
         std::sort(Primitives.begin(), Primitives.end(), [](const Primitive2D* a, const Primitive2D* b) 
@@ -314,9 +314,16 @@ namespace Nit::Renderer
             if (!primitive->bIsVisible)
                 continue;
 
+            if (LastPrimitive2D != primitive->GetType())
+            {
+                NextBatch();
+            }
+
             if (primitive->GetType() == Primitive2DType_Sprite)
             {
                 SpriteBatch::SubmitVertices(*static_cast<SpritePrimitive*>(primitive));
+                LastPrimitive2D = Primitive2DType_Sprite;
+                continue;
             }
         }
 

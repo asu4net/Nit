@@ -13,7 +13,7 @@ namespace Nit
 
 namespace Nit
 {
-    enum Primitive2D_Type
+    enum Primitive2DType
     {
         Primitive2DType_Default,
         Primitive2DType_Sprite,
@@ -24,8 +24,8 @@ namespace Nit
 
     struct Primitive2D
     {
-        virtual Primitive2D_Type GetType() const { return Primitive2DType_Default; };
-        bool IsType(Primitive2D_Type type) const { return GetType() == type; }
+        virtual Primitive2DType GetType() const { return Primitive2DType_Default; };
+        bool IsType(Primitive2DType type) const { return GetType() == type; }
 
         bool              bIsVisible      = false;
         Matrix4           Transform;      // Identity
@@ -39,7 +39,7 @@ namespace Nit
 
     struct SpritePrimitive : Primitive2D
     {
-        virtual Primitive2D_Type GetType() const override { return Primitive2DType_Sprite; }
+        virtual Primitive2DType GetType() const override { return Primitive2DType_Sprite; }
         
         Id                TextureID = 0;
         Vector2           Size = Vector2::One;
