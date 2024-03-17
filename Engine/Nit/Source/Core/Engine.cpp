@@ -9,6 +9,7 @@
 #include "System/InputSystem.h"
 #include "Asset/Shader.h"
 #include "Render/RenderCommand.h"
+#include "System/CircleSystem.h"
 
 namespace Nit::Engine
 {
@@ -377,16 +378,26 @@ namespace Nit::Engine
 
         InputSystem::Register();
         SpriteSystem::Register();
+        CircleSystem::Register();
         AnimationSystem::Register();
         CameraSystem::Register();
         
         Content::LoadAssets();
 
-        // Set the default sprite shader
-        AssetRef spriteShader = Content::GetAssetByName("SpriteShader");
-        if (spriteShader.IsValid() && spriteShader.Is<Shader>())
+        // Set the default shaders
         {
-            Renderer::SetSpriteShader(Renderer::GetShader(spriteShader.As<Shader>().GetRendererId()));
+            AssetRef shader = Content::GetAssetByName("SpriteShader");
+            if (shader.IsValid() && shader.Is<Shader>())
+            {
+                Renderer::SetSpriteShader(Renderer::GetShader(shader.As<Shader>().GetRendererId()));
+            }
+        }
+        {
+            AssetRef shader = Content::GetAssetByName("CircleShader");
+            if (shader.IsValid() && shader.Is<Shader>())
+            {
+                Renderer::SetCircleShader(Renderer::GetShader(shader.As<Shader>().GetRendererId()));
+            }
         }
 
         World::OpenDefaultScene();

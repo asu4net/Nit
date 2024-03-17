@@ -11,6 +11,7 @@
 #include "Asset/Sprite.h"
 #include "Asset/Scene.h"
 #include "Asset/Animation.h"
+#include "Asset/Material.h"
 
 // Window
 #include "Window/Window.h"
@@ -38,6 +39,7 @@
 #include "Component/SceneComponent.h"
 #include "Component/NameComponent.h"
 #include "Component/IDComponent.h"
+#include "Component/CircleComponent.h"
 
 // Input
 #include "Input/Input.h"

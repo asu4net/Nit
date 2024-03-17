@@ -6,10 +6,12 @@ namespace Nit::GridSystem
 {
     // Registration stuff
     void OnPreDrawPrimitives();
-    
+    void OnCreate();
+
     void Register()
     {
         Engine::CreateSystem("GridSystem", 500, ExecutionContext::Editor);
+        Engine::SetSystemCallback(SystemStage::Create, &OnCreate);
         Engine::SetSystemCallback(SystemStage::PreDrawPrimitives, &OnPreDrawPrimitives);
     }
 
@@ -19,6 +21,7 @@ namespace Nit::GridSystem
     const float LineLenght = 3.f;
     const float LineThickness = 0.005f;
     const float LinePadding = 0.1f;
+    CirclePrimitive* circle = nullptr;
 
     void SubmitGridLine(const Vector2& start, const Vector2& end, bool bIsVertical = false)
     {
@@ -30,6 +33,11 @@ namespace Nit::GridSystem
         p.Thickness = LineThickness;
         p.GenerateVertexData(SpriteShape::Line);
         Renderer::SubmitSpritePrimitive(p);*/
+        
+    }
+
+    void OnCreate()
+    {
     }
     
     void OnPreDrawPrimitives()

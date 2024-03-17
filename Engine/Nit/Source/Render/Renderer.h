@@ -34,7 +34,7 @@ namespace Nit
         Array<Vector2, 4> VertexUVs       = RenderUtils::GetQuadVertexUVs();
         Id                ShaderID        =  0;
         int               EntityID        = -1;
-        int               SortingLayer    = 0;
+        int               SortingLayer    =  0;
     };
 
     struct SpritePrimitive : Primitive2D
@@ -47,12 +47,22 @@ namespace Nit
         bool              bFlipY = false;
         Vector2           UVScale = Vector2::One;
     };
+
+    struct CirclePrimitive : Primitive2D
+    {
+        virtual Primitive2DType GetType() const override { return Primitive2DType_Circle; }
+
+        float Radius    = .5f;
+        float Thickness = .05f;
+        float Fade      = .01f;
+    };
 }
 
 namespace Nit::Renderer
 {
     void Init(GraphicsAPI api);
     void SetSpriteShader(const SharedPtr<RendererShader> spriteShader);
+    void SetCircleShader(const SharedPtr<RendererShader> circleShader);
     void SetProjectionViewMatrix(const Matrix4& matrix);
     void SetErrorScreenEnabled(bool bEnabled);
 
@@ -73,6 +83,14 @@ namespace Nit::Renderer
     inline SpritePrimitive* CreatePrimitive<SpritePrimitive>()
     {
         auto* primitive = new SpritePrimitive();
+        PushPrimitive(primitive);
+        return primitive;
+    }
+
+    template<>
+    inline CirclePrimitive* CreatePrimitive<CirclePrimitive>()
+    {
+        auto* primitive = new CirclePrimitive();
         PushPrimitive(primitive);
         return primitive;
     }

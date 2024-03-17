@@ -43,7 +43,8 @@ namespace Nit
         InputExecutionOrder     = 1000,
         AnimationExecutionOrder = 2000,
         CameraExecutionOrder    = 3000,
-        SpriteExecutionOrder    = 4000
+        SpriteExecutionOrder    = 4000,
+        CircleExecutionOrder    = 5000
     };
 
     enum class MinificationFilter { Linear, Nearest };

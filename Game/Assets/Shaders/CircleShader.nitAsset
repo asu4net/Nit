@@ -1,0 +1,10 @@
+{
+    "AssetData": {
+        "Name": "CircleShader",
+        "Path": "Shaders/CircleShader.glsl",
+        "AssetId": {
+            "IdHandler": 293894764394904
+        },
+        "AssetType": "Shader"
+    }
+}
