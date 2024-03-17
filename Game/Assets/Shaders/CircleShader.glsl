@@ -6,7 +6,8 @@ layout(location = 1) in vec3  a_LocalPosition;
 layout(location = 2) in vec4  a_TintColor;
 layout(location = 3) in float a_Thickness;
 layout(location = 4) in float a_Fade;
-layout(location = 5) in int   a_EntityID;
+layout(location = 5) in float a_Time;
+layout(location = 6) in int   a_EntityID;
 
 // Vertex output
 out vec3     v_LocalPosition;

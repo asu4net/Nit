@@ -1,0 +1,15 @@
+{
+    "AssetData": {
+        "Name": "GridMaterial",
+        "Path": "",
+        "AssetId": {
+            "IdHandler": 76648490389506
+        },
+        "AssetType": "Material"
+    },
+    "ShaderRef": {
+        "AssetId": {
+            "IdHandler": 12232894674978
+        }
+    }
+}

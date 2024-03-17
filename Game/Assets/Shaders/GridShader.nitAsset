@@ -1,0 +1,10 @@
+{
+    "AssetData": {
+        "Name": "GridShader",
+        "Path": "Shaders/GridShader.glsl",
+        "AssetId": {
+            "IdHandler": 12232894674978
+        },
+        "AssetType": "Shader"
+    }
+}

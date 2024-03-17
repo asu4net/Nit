@@ -30,6 +30,7 @@ namespace Nit::MaterialSystem
     void OnMaterialComponentAdded(Registry&, RawEntity rawEntity)
     {
         Entity entity = rawEntity;
+        entity.Get<MaterialComponent>().MaterialRef.Retarget();
     }
 
     void OnMaterialComponentRemoved(Registry&, RawEntity rawEntity)

@@ -45,6 +45,7 @@ namespace Nit::Renderer
             Color    TintColor     = Color::White;
             Vector2  UVCoords      = Vector2::Zero;
             uint32_t TextureSlot   = 0;
+            float    Time          = 0.f;
             int      EntityID      = -1;
         };
 
@@ -79,6 +80,7 @@ namespace Nit::Renderer
                 {ShaderDataType::Float4, "a_TintColor"     },
                 {ShaderDataType::Float2, "a_UVCoords"      },
                 {ShaderDataType::Float , "a_TextureSlot"   },
+                {ShaderDataType::Float , "a_Time"          },
                 {ShaderDataType::Float,  "a_EntityID"      }
             });
 
@@ -146,6 +148,7 @@ namespace Nit::Renderer
 
                 vertex.Position = Vector4(localVertexPos, 1.f) * sprite.Transform * ProjectionViewMatrix;
 
+                vertex.Time = Time::GetApplicationTime();
                 vertex.UVCoords = vertexUV[i];
                 vertex.UVCoords.x *= sprite.UVScale.y;
                 vertex.UVCoords.y *= sprite.UVScale.x;
@@ -191,6 +194,7 @@ namespace Nit::Renderer
             Color    TintColor     = Color::White;
             float    Thickness     = .05f;
             float    Fade          = .01f;
+            float    Time          =  0.f;
             int      EntityID      = -1;
         };
 
@@ -225,6 +229,7 @@ namespace Nit::Renderer
                 {ShaderDataType::Float4, "a_TintColor"     },
                 {ShaderDataType::Float,  "a_Thickness"     },
                 {ShaderDataType::Float , "a_Fade"          },
+                {ShaderDataType::Float , "a_Time"          },
                 {ShaderDataType::Float,  "a_EntityID"      }
             });
 
@@ -274,6 +279,7 @@ namespace Nit::Renderer
                 Vertex vertex;
 
                 Vector3 localVertexPos = circle.VertexPositions[i];
+                vertex.Time = Time::GetApplicationTime();
                 vertex.LocalPosition = localVertexPos;
                 vertex.Position = Vector4(localVertexPos * circle.Radius * 2, 1.f) * circle.Transform * ProjectionViewMatrix;
                 vertex.TintColor = circle.TintColor;

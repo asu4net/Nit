@@ -1,12 +1,13 @@
 #type vertex
 #version 410 core
 
-layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec3 a_LocalPosition;
-layout(location = 2) in vec4 a_TintColor;
-layout(location = 3) in vec2 a_UVCoords;
-layout(location = 4) in int  a_TextureSlot;
-layout(location = 5) in int  a_EntityID;
+layout(location = 0) in vec3  a_Position;
+layout(location = 1) in vec3  a_LocalPosition;
+layout(location = 2) in vec4  a_TintColor;
+layout(location = 3) in vec2  a_UVCoords;
+layout(location = 4) in int   a_TextureSlot;
+layout(location = 5) in float a_Time;
+layout(location = 6) in int   a_EntityID;
 
 // Vertex output
 out vec4      v_TintColor;

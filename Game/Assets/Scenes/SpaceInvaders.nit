@@ -39,7 +39,7 @@
         "a": 1.0
     },
     "FlipX": false,
-    "FLipY": false,
+    "FlipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
@@ -112,7 +112,7 @@
         "a": 1.0
     },
     "FlipX": false,
-    "FLipY": false,
+    "FlipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
