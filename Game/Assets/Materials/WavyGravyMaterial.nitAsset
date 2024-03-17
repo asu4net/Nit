@@ -1,0 +1,15 @@
+{
+    "AssetData": {
+        "Name": "WavyGravyMaterial",
+        "Path": "",
+        "AssetId": {
+            "IdHandler": 2347567895464665
+        },
+        "AssetType": "Material"
+    },
+    "ShaderRef": {
+        "AssetId": {
+            "IdHandler": 94760475037021
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "AssetData": {
+        "Name": "WavyGravyShader",
+        "Path": "Shaders/WavyGravyShader.glsl",
+        "AssetId": {
+            "IdHandler": 94760475037021
+        },
+        "AssetType": "Shader"
+    }
+}

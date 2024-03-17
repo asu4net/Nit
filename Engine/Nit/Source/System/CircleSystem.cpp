@@ -43,7 +43,7 @@ namespace Nit::CircleSystem
     {
         const auto view = World::GetRegistry().view<TransformComponent, CircleComponent>();
 
-        view.each([&](RawEntity entity, const TransformComponent& transformComponent, const CircleComponent& circle) {
+        view.each([&](RawEntity rawEntity, const TransformComponent& transformComponent, const CircleComponent& circle) {
 
             auto& primitive = *circle.Primitive;
             primitive.bIsVisible = circle.IsVisible;
@@ -51,13 +51,15 @@ namespace Nit::CircleSystem
             if (!circle.IsVisible)
                 return;
 
+            Entity entity = rawEntity;
+
             primitive.Transform = transformComponent.GetMatrix();
             primitive.TintColor = circle.TintColor;
             primitive.Radius = circle.Radius;
             primitive.Thickness = circle.Thickness;
             primitive.Fade = circle.Fade;
 
-            primitive.EntityID = (int)entity;
+            primitive.EntityID = (int) rawEntity;
             primitive.SortingLayer = circle.SortingLayer;
         });
     }

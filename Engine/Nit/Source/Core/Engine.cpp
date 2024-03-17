@@ -10,6 +10,7 @@
 #include "Asset/Shader.h"
 #include "Render/RenderCommand.h"
 #include "System/CircleSystem.h"
+#include "System/MaterialSystem.h"
 
 namespace Nit::Engine
 {
@@ -379,6 +380,7 @@ namespace Nit::Engine
         InputSystem::Register();
         SpriteSystem::Register();
         CircleSystem::Register();
+        MaterialSystem::Register();
         AnimationSystem::Register();
         CameraSystem::Register();
         

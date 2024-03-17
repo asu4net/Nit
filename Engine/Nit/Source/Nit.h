@@ -40,6 +40,7 @@
 #include "Component/NameComponent.h"
 #include "Component/IDComponent.h"
 #include "Component/CircleComponent.h"
+#include "Component/MaterialComponent.h"
 
 // Input
 #include "Input/Input.h"

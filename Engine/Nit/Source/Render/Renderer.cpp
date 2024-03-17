@@ -40,11 +40,12 @@ namespace Nit::Renderer
     {
         struct Vertex
         {
-            Vector3  Position    = Vector3::Zero;
-            Color    TintColor   = Color::White;
-            Vector2  UVCoords    = Vector2::Zero;
-            uint32_t TextureSlot = 0;
-            int      EntityID    = -1;
+            Vector3  Position      = Vector3::Zero;
+            Vector3  LocalPosition = Vector3::Zero;
+            Color    TintColor     = Color::White;
+            Vector2  UVCoords      = Vector2::Zero;
+            uint32_t TextureSlot   = 0;
+            int      EntityID      = -1;
         };
 
         constexpr uint32_t        MaxPrimitives  = 3000;
@@ -74,6 +75,7 @@ namespace Nit::Renderer
 
             VBO->SetLayout({
                 {ShaderDataType::Float3, "a_Position"      },
+                {ShaderDataType::Float3, "a_LocalPosition" },
                 {ShaderDataType::Float4, "a_TintColor"     },
                 {ShaderDataType::Float2, "a_UVCoords"      },
                 {ShaderDataType::Float , "a_TextureSlot"   },
@@ -93,16 +95,28 @@ namespace Nit::Renderer
 
         void SubmitVertices(SpritePrimitive& sprite)
         {
-            if (!DefaultShader)
+            if (sprite.ShaderID != 0)
             {
-                return;
+                auto shader = GetShader(sprite.ShaderID);
+                if (shader && shader != LastShader)
+                {
+                    NextBatch();
+                    shader->Bind();
+                    LastShader = shader;
+                }
             }
-
-            if (!LastShader || LastShader != DefaultShader)
+            else if (DefaultShader && DefaultShader != LastShader)
             {
+                NextBatch();
                 DefaultShader->Bind();
                 DefaultShader->SetUniformIntArray("u_TextureSlots", &TextureSlots.front(), MaxTextureSlots);
                 LastShader = DefaultShader;
+            }
+
+            if (!LastShader)
+            {
+                NIT_CHECK(false, "Missing shader!");
+                return;
             }
 
             uint32_t textureSlot = 0;
@@ -125,6 +139,8 @@ namespace Nit::Renderer
                 Vertex vertex;
 
                 Vector3 localVertexPos = sprite.VertexPositions[i];
+                vertex.LocalPosition = localVertexPos;
+                
                 localVertexPos.x *= sprite.Size.x;
                 localVertexPos.y *= sprite.Size.y;
 
@@ -171,8 +187,8 @@ namespace Nit::Renderer
         struct Vertex
         {
             Vector3  Position      = Vector3::Zero;
-            Color    TintColor     = Color::White;
             Vector3  LocalPosition = Vector3::Zero;
+            Color    TintColor     = Color::White;
             float    Thickness     = .05f;
             float    Fade          = .01f;
             int      EntityID      = -1;
@@ -205,8 +221,8 @@ namespace Nit::Renderer
 
             VBO->SetLayout({
                 {ShaderDataType::Float3, "a_Position"      },
-                {ShaderDataType::Float4, "a_TintColor"     },
                 {ShaderDataType::Float3, "a_LocalPosition" },
+                {ShaderDataType::Float4, "a_TintColor"     },
                 {ShaderDataType::Float,  "a_Thickness"     },
                 {ShaderDataType::Float , "a_Fade"          },
                 {ShaderDataType::Float,  "a_EntityID"      }
@@ -225,15 +241,27 @@ namespace Nit::Renderer
 
         void SubmitVertices(CirclePrimitive& circle)
         {
-            if (!DefaultShader)
+            if (circle.ShaderID != 0)
             {
-                return;
+                auto shader = GetShader(circle.ShaderID);
+                if (shader && shader != LastShader)
+                {
+                    NextBatch();
+                    shader->Bind();
+                    LastShader = shader;
+                }
             }
-
-            if (!LastShader || LastShader != DefaultShader)
+            else if (DefaultShader && DefaultShader != LastShader)
             {
+                NextBatch();
                 DefaultShader->Bind();
                 LastShader = DefaultShader;
+            }
+
+            if (!LastShader)
+            {
+                NIT_CHECK(false, "Missing shader!");
+                return;
             }
 
             if (IndexCount + IndicesPerPrimitive >= MaxIndices)

@@ -4,7 +4,6 @@
 #include "Component\SpriteComponent.h"
 #include "Component\TransformComponent.h"
 
-
 namespace Nit::SpriteSystem
 {
     const String SystemID = "SpriteSystem";
@@ -49,7 +48,9 @@ namespace Nit::SpriteSystem
     {
         const auto view = World::GetRegistry().view<TransformComponent, SpriteComponent>();
 
-        view.each([&](RawEntity entity, const TransformComponent& transformComponent, const SpriteComponent& sprite) {
+        view.each([&](RawEntity rawEntity, const TransformComponent& transformComponent, const SpriteComponent& sprite) {
+
+            Entity entity = rawEntity;
 
             auto& primitive = *sprite.Primitive;
             primitive.bIsVisible = sprite.IsVisible;
@@ -84,7 +85,7 @@ namespace Nit::SpriteSystem
                 primitive.TextureID = spriteAsset.GetRendererId();
             }
             
-            primitive.EntityID = (int) entity;
+            primitive.EntityID = (int) rawEntity;
             primitive.SortingLayer = sprite.SortingLayer;
         });
     }
