@@ -5,6 +5,8 @@
 #include "Entity/Entity.h"
 #include "Component/NameComponent.h"
 #include "EditorSystem.h"
+#include "EditorCameraSystem.h"
+#include "Component/TransformComponent.h"
 
 namespace Nit::HierarchyWindow
 {
@@ -36,6 +38,11 @@ namespace Nit::HierarchyWindow
         if (ImGui::IsItemClicked())
         {
             EditorSystem::SetSelectedEntity(entity);
+        }
+
+        if (ImGui::IsItemClicked() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+        {
+            EditorCameraSystem::SetPosition(entity.GetTransform().Position);
         }
 
         if (bIsExpanded)

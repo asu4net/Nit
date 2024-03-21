@@ -109,15 +109,19 @@ namespace Nit::ViewportWindow
             float* gizmoMatrixPtr = &gizmoMatrix.m[0][0];
 
             ImGuizmo::Manipulate(view, projection, operation, mode, gizmoMatrixPtr, nullptr, bSnapEnabled ? &snap : nullptr);
-            
+
             if (ImGuizmo::IsUsing())
             {
                 float matrixTranslation[3], matrixRotation[3], matrixScale[3];
-                
+             
                 ImGuizmo::DecomposeMatrixToComponents(gizmoMatrixPtr, matrixTranslation, matrixRotation, matrixScale);
-                transform.Position = { matrixTranslation[0], matrixTranslation[1], transform.Position.z };
-                transform.Rotation = { matrixRotation[0], matrixRotation[1], matrixRotation[2] };
-                transform.Scale = { matrixScale[0], matrixScale[1], matrixScale[2] };
+                const bool bIsNan = *gizmoMatrixPtr != *gizmoMatrixPtr;
+                if (!bIsNan)
+                {
+                    transform.Position = { matrixTranslation[0], matrixTranslation[1], transform.Position.z };
+                    transform.Rotation = { matrixRotation[0], matrixRotation[1], matrixRotation[2] };
+                    transform.Scale = { matrixScale[0], matrixScale[1], matrixScale[2] };
+                }
             }
         }
 

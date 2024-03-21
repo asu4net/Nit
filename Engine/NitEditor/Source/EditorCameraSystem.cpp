@@ -25,6 +25,11 @@ namespace Nit::EditorCameraSystem
 
     Entity editorCameraEntity;
 
+    void SetPosition(const Vector3& position)
+    {
+        editorCameraEntity.GetTransform().Position = position;
+    }
+
     void OnCreate()
     {
         EntityCreationParams creationParams;
