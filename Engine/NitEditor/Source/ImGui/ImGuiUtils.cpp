@@ -179,19 +179,21 @@ namespace ImGui
 
         ImGui::PushStyleColor(ImGuiCol_Button, { resetColor.r, resetColor.g, resetColor.b, resetColor.a });
 
-        if (ImGui::Button(label, buttonSize))
-            value = resetValue;
+        const bool bReset = ImGui::Button(label, buttonSize);
 
         ImGui::PopStyleColor();
         ImGui::SameLine();
         const bool bChanged = ImGui::DragFloat("##value", &value, speed);
         
+        if (bReset)
+            value = resetValue;
+
         if (bInPropertyContext)
             ImGui::PopItemWidth();
         
         ImGui::PopID();
 
-        return bChanged;
+        return bChanged || bReset;
     }
 
     bool DragVector2(const char* label, Nit::Vector2& vector, const Nit::Vector2& resetValue, float speed)
