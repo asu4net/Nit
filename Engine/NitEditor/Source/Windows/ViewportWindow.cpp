@@ -80,10 +80,7 @@ namespace Nit::ViewportWindow
                     int entityID = targetFramebuffer->ReadPixel(1, mouseX, mouseY);
                     RawEntity rawEntity = (RawEntity)entityID;
                     Entity entity = rawEntity;
-                    if (entity.IsValid())
-                    {
-                        EditorSystem::SetSelectedEntity(entity);
-                    }
+                    EditorSystem::SetSelectedEntity(entity);
                 }
                 wasPressed = true;
             }
