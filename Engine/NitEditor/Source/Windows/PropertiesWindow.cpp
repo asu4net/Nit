@@ -69,7 +69,7 @@ namespace Nit::PropertiesWindow
 
         ImGui::Begin("Properties", bShow);
 
-        if (Input::IsEnabled() && ImGui::IsWindowFocused())
+        if (Input::IsEnabled() && (ImGui::IsWindowFocused() || ImGui::IsWindowHovered()))
             Input::SetEnabled(false);
 
         Entity selectedEntity = EditorSystem::GetSelectedEntity();

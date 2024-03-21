@@ -68,26 +68,16 @@ namespace Nit::ViewportWindow
 
         MousePosition = { (float)mouseX, (float)mouseY };
 
-        static bool wasPressed = false;
-
         //Entity selection 
-        if (Input::IsMouseButtonPressed(MOUSE_BUTTON_1) && !ImGuizmo::IsOver())
+        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && !ImGuizmo::IsOver())
         {
-            if (!wasPressed)
+            if (mouseX >= 0 && mouseY >= 0 && mouseX < ViewportSize.x && mouseY < ViewportSize.y)
             {
-                if (mouseX >= 0 && mouseY >= 0 && mouseX < ViewportSize.x && mouseY < ViewportSize.y)
-                {
-                    int entityID = targetFramebuffer->ReadPixel(1, mouseX, mouseY);
-                    RawEntity rawEntity = (RawEntity)entityID;
-                    Entity entity = rawEntity;
-                    EditorSystem::SetSelectedEntity(entity);
-                }
-                wasPressed = true;
+                int entityID = targetFramebuffer->ReadPixel(1, mouseX, mouseY);
+                RawEntity rawEntity = (RawEntity)entityID;
+                Entity entity = rawEntity;
+                EditorSystem::SetSelectedEntity(entity);
             }
-        }
-        else
-        {
-            wasPressed = false;
         }
 
         // Gizmo stuff

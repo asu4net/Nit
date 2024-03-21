@@ -7,6 +7,9 @@ namespace Nit::SceneWindow
 {
     void Show(bool* bShow)
     {
+        if (Input::IsEnabled() && (ImGui::IsWindowFocused() || ImGui::IsWindowHovered()))
+            Input::SetEnabled(false);
+
         ImGui::Begin("Scene", bShow, ImGuiWindowFlags_NoCollapse);
 
         static const auto& allScenes = World::GetAllScenes();

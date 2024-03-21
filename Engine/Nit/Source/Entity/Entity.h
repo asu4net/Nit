@@ -11,7 +11,7 @@ namespace Nit
     {
     private:
         RawEntity m_RawEntity = entt::null;
-        Registry* m_Registry;
+        Registry* m_Registry = nullptr;
 
     public:
         Entity() = default;

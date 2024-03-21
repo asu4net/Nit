@@ -100,8 +100,16 @@ namespace Nit::HierarchyWindow
 
     void Show(bool* bShow)
     {
+        if (Input::IsEnabled() && (ImGui::IsWindowFocused() || ImGui::IsWindowHovered()))
+            Input::SetEnabled(false);
+
         ImGui::Begin("Hierarchy", bShow);
         
+        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
+        {
+            EditorSystem::SetSelectedEntity({});
+        }
+
         if (!World::HasRegistry())
         {
             return;
