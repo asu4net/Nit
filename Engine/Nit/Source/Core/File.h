@@ -6,10 +6,12 @@ namespace Nit
 
     class File
     {
-        static void Start(const UniquePtr<Window>& window);
+    public:
+        static void Init(const UniquePtr<Window>& window);
 
-        String OpenFile(const String& filter);
-        String SaveFile(const String& filter);
+        static String OpenFile(const String& filter);
+        static String SaveFile(const String& filter);
+        static String SelectFolder(const String& title = "", const String& defaultPath = "");
 
     private:
         static bool m_bInitialized;

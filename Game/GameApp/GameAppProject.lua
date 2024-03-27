@@ -18,6 +18,11 @@ project "GameApp"
         "%{IncludeDirs.entt}",
         "%{IncludeDirs.RTTR}"
     }
+
+    libdirs
+    {
+        binariesdir
+    }
     
     links { "Game" }
     

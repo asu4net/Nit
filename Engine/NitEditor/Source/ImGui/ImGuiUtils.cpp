@@ -3,6 +3,7 @@
 #include "imgui_internal.h"
 #include "Asset\AssetRef.h"
 #include "Asset\Content.h"
+#include "Core\File.h"
 
 namespace ImGui
 {
@@ -81,6 +82,35 @@ namespace ImGui
         {
             text = textBuffer;
         }
+        EndProperty();
+        return bTextChanged;
+    }
+
+    bool InputFolder(const char* label, Nit::String& text)
+    {
+        BeginProperty(label);
+        static constexpr uint32_t MAX_CHARS = 300;
+        char textBuffer[MAX_CHARS];
+        strcpy_s(textBuffer, text.c_str());
+        bool bTextChanged = ImGui::InputText("##text", textBuffer, sizeof(textBuffer));
+        ImGui::SameLine();
+
+        if (ImGui::Button("Find"))
+        {
+            const String path = File::SelectFolder("", text);
+
+            if (!path.empty())
+            {
+                strcpy_s(textBuffer, path.c_str());
+                bTextChanged = true;
+            }
+        }
+
+        if (bTextChanged)
+        {
+            text = textBuffer;
+        }
+
         EndProperty();
         return bTextChanged;
     }

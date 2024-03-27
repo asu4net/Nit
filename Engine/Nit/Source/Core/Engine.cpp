@@ -294,8 +294,7 @@ namespace Nit::Engine
     {
         return ScreenHeight;
     }
-
-
+    
     void SetScreenSize(const Vector2& screenSize)
     {
         NIT_CHECK(!bUseWindowScreenSize, "should call SetUseWindowScreenSize");
@@ -365,6 +364,7 @@ namespace Nit::Engine
         SetRawScreenSize(windowCfg.Width, windowCfg.Height);
 
         Time::Init();
+        File::Init(MainWindow);
         Input::Init(MainWindow);
         Renderer::Init(config.API); API = config.API;
 
@@ -435,10 +435,9 @@ namespace Nit::Engine
         while (MainWindow->IsOpened())
         {
             Time::CalculateTimeStep();
-
             InvokeIterableSystemsCallback(SystemStage::Update, true);
             InvokeIterableSystemsCallback(SystemStage::LateUpdate, true);
-
+            
             uint32_t fixedUpdateCalls = Time::GetFixedUpdateCalls();
 
             while (fixedUpdateCalls--)

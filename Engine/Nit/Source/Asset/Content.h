@@ -25,6 +25,8 @@ namespace Nit::Content
     WeakPtr<Asset> GetAssetById(Id id);
     AssetRef GetAssetByName(const String& name);
 
+    bool HasAsset(const String& name);
+
     void EnsureAssetDataConsistency(AssetData& assetData, bool bIgnoreChecks = false);
     AssetRef RegistryAsset(const SharedPtr<Asset>& asset, const AssetData& assetData);
     bool TryLoadAsset(AssetRef assetLink);

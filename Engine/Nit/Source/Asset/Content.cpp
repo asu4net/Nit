@@ -96,6 +96,11 @@ namespace Nit::Content
         return AssetRef(assetId);
     }
 
+    bool HasAsset(const String& name)
+    {
+        return m_AssetNameIdMap.count(name);
+    }
+
     void LoadAssets()
     {
         UnloadAssets();
@@ -190,6 +195,7 @@ namespace Nit::Content
         {
             NIT_LOG_WARN("Failed to load: %s", fileName);
             m_IdAssetMap.erase(assetData.AssetId);
+            asset.reset();
             return false;
         }
     }

@@ -26,6 +26,8 @@ namespace ImGui
     bool CenteredButton(const char* label, float alignment = 0.5f);
 
     bool InputText(const char* label, Nit::String& text);
+    bool InputFolder(const char* label, Nit::String& text);
+    
     void Text(const char* label, const char* text, ...);
     bool Bool(const char* label, bool& bEnabled);
     bool DragSInt(const char* label, int& num, float speed = 1.f);

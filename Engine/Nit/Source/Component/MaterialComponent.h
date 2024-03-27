@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "Asset/AssetRef.h"
 
 namespace Nit

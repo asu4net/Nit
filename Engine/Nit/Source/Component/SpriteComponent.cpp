@@ -5,6 +5,33 @@
 #include "Asset/Content.h"
 #include "ComponentReflection.h"
 
+/*
+Graphics2DComponent
+IsVisible
+SortingLayer
+TintColor
+Primitive*
+
+SpriteComponent
+next stuff
+
+CircleComponent
+radius
+thickness
+smooth
+
+Physics2DComponent
+
+mejorar el sistema de assets. 
+. unificar assets de render con los otros
+
+Tener un render system que renderice todas las entidades que llevan un componente relacionado.
+almacenar la información de las primitivas en los propios componentes. Que tenga funciones de
+draw y demás que pueda usar el usuario desde fuera. Lo único que si lo hace tendrá que funcionar
+en inmediate mode. (usando begin - end) por su cuenta.
+
+*/
+
 namespace Nit
 {
     NIT_FORCE_LINK_IMPL(SpriteComponent);
