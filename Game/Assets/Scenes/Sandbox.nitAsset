@@ -1,10 +1,10 @@
 {
     "IsStartScene": "false",
     "AssetData": {
-        "Name": "DummyScene",
-        "Path": "Scenes/DummyScene.nit",
+        "Name": "Sandbox",
+        "Path": "Scenes/Sandbox.nit",
         "AssetId": {
-            "IdHandler": 17607545293832115480
+            "IdHandler": 5400368519545319229
         },
         "AssetType": "Scene"
     }

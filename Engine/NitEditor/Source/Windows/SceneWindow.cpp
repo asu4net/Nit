@@ -17,8 +17,11 @@ namespace Nit::SceneWindow
 
         for (const auto& [name, scene] : allScenes)
             allSceneNames.push_back(name);
+        
+        static String selectedScene = !World::GetOpenedScenes().empty() ?
+            World::GetOpenedScenes().begin()->second->GetAssetData().Name : "";
 
-        static String selectedScene; ImGui::Combo("All Scenes", selectedScene, allSceneNames);
+        ImGui::Combo("All Scenes", selectedScene, allSceneNames);
 
         if (!selectedScene.empty())
         {

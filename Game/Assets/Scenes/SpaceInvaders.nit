@@ -23,11 +23,11 @@
     "SortingLayer": 0,
     "SpriteAssetRef": {
         "AssetId": {
-            "IdHandler": 8022600964223480877
+            "IdHandler": 5453174695345645786
         }
     },
-    "UseSubsprite": false,
-    "SubSpriteName": "",
+    "UseSubsprite": true,
+    "SubSpriteName": "SpaceShip",
     "Size": {
         "x": 1.0,
         "y": 1.0
@@ -96,11 +96,11 @@
     "SortingLayer": 0,
     "SpriteAssetRef": {
         "AssetId": {
-            "IdHandler": 18091073439085149829
+            "IdHandler": 5453174695345645786
         }
     },
-    "UseSubsprite": false,
-    "SubSpriteName": "",
+    "UseSubsprite": true,
+    "SubSpriteName": "Missile",
     "Size": {
         "x": 1.0,
         "y": 1.0
