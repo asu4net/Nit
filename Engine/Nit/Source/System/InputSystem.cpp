@@ -33,7 +33,7 @@ namespace Nit::InputSystem
 
         auto it = std::find(m_InputActions.begin(), m_InputActions.end(), inputAction);
 
-        if (!*it)
+        if (it == m_InputActions.end())
         {
             return false;
         }

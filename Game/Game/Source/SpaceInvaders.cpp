@@ -18,6 +18,7 @@ namespace Nit::SpaceInvaders
     uint32_t NumOfMissiles = 20;
     constexpr float PlayerMoveSpeed = 3.f;
     constexpr float MissileMoveSpeed = 5.f;
+    const String SpaceInvadersSceneName = "SpaceInvaders";
     
     Entity Player;
     InputAction* ShootAction;
@@ -53,6 +54,11 @@ namespace Nit::SpaceInvaders
 
     void OnStart()
     {
+        if (!World::IsSceneOpened(SpaceInvadersSceneName))
+        {
+            return;
+        }
+        
         ShootAction = InputSystem::CreateInputAction(Key_Space);
         ShootAction->OnPerformed().Add([] (const InputActionContext& context){
             if (Engine::IsPaused() || context.IsReleased) return;
@@ -71,6 +77,11 @@ namespace Nit::SpaceInvaders
 
     void OnUpdate()
     {
+        if (!World::IsSceneOpened(SpaceInvadersSceneName))
+        {
+            return;
+        }
+        
         const int left  = Input::IsKeyPressed(Key_A) ? -1 : 0;
         const int right = Input::IsKeyPressed(Key_D) ?  1 : 0;
         const float dir = (float) (left + right);
@@ -87,7 +98,9 @@ namespace Nit::SpaceInvaders
         MissilePool.clear();
         FiredMissiles.clear();
 
-        InputSystem::DestroyInputAction(ShootAction);
+        if (ShootAction)
+            InputSystem::DestroyInputAction(ShootAction);
+
         LastMissileIdx = 0;
     }
 }
