@@ -7,88 +7,6 @@
 #include <STB/stb_image.h>
 #include <GLAD/glad.h>
 
-// execute cmd command https://stackoverflow.com/questions/478898/how-do-i-execute-a-command-and-get-the-output-of-the-command-within-c-using-po
-
-// Pixel Scanning Algorithm. From https://www.david-colson.com/2020/03/10/exploring-rect-packing.html
-
-/*
-
-struct Rect
-{
-  int x, y;
-  int w, h;
-  bool wasPacked = false;
-};
-
-void PackRectsBLPixels(std::vector<Rect>& rects)
-{
-  // Sort by a heuristic
-  std::sort(rects.begin(), rects.end(), SortByHeight());
-
-  // Maintain a grid of bools, telling us whether each pixel has got a rect on it
-  std::vector<std::vector<bool>> image;
-  image.resize(700);
-  for (int i=0; i< 700; i++)
-  {
-    image[i].resize(700, false);
-  }
-
-  for (Rect& rect : rects)
-  {
-    // Loop over X and Y pixels
-    bool done = false;
-    for( int y = 0; y < 700 && !done; y++)
-    {
-      for( int x = 0; x < 700 && !done; x++)
-      {
-        // Make sure this rectangle doesn't go over the edge of the boundary
-        if ((y + rect.h) >= 700 || (x + rect.w) >= 700)
-          continue;
-
-        // For every coordinate, check top left and bottom right
-        if (!image[y][x] && !image[y + rect.h][x + rect.w])
-        {
-          // Corners of image are free
-          // If valid, check all pixels inside that rect
-          bool valid = true;
-          for (int ix = x; ix < x + rect.w; ix++)
-          {
-            for (int iy = y; iy < y + rect.h; iy++)
-            {
-              if (image[iy][ix])
-              {
-                valid = false;
-                break;
-              }
-            }
-          }
-
-          // If all good, we've found a location
-          if (valid)
-          {
-            rect.x = x;
-            rect.y = y;
-            done = true;
-
-            // Set the used pixels to true so we don't overlap them
-            for (int ix = x; ix < x + rect.w; ix++)
-            {
-              for (int iy = y; iy < y + rect.h; iy++)
-              {
-                image[iy][ix] = true;
-              }
-            }
-
-            rect.was_packed = true;
-          }
-        }
-      }
-    }
-  }
-}
-
-*/
-
 RTTR_REGISTRATION
 {
     using namespace Nit;
@@ -138,6 +56,11 @@ namespace Nit
 
     bool Sprite::Load()
     {
+        if (m_Data)
+        {
+            Unload();
+        }
+        
         const String absolutePath = GetAssetData().AbsolutePath;
 
         int width, height, channels;
@@ -199,13 +122,11 @@ namespace Nit
         Vector2 topRight;
         topRight.x = (locationInAtlas.x + size.x) * (1 / m_Size.x);
         topRight.y = 1 - (locationInAtlas.y / m_Size.y);
-
-        //const Vector2 uvMin((locationInAtlas.x * size.x)       / m_Size.x, (locationInAtlas.y * size.y)       / m_Size.y);
-        //const Vector2 uvMax(((locationInAtlas.x + 1) * size.x) / m_Size.x, ((locationInAtlas.y + 1) * size.y) / m_Size.y);
         
         RenderUtils::FillQuadVertexPositions(size, subSprite.VertexPositions);
         RenderUtils::FillQuadVertexUVs(bottomLeft, topRight, subSprite.VertexUVs);
         m_SubSprites[name] = subSprite;
+        
         return m_SubSprites[name];
     }
 
@@ -248,5 +169,10 @@ namespace Nit
         {
             eachDelegate(name, subSprite);
         }
+    }
+
+    void Sprite::ClearSubSprites()
+    {
+        m_SubSprites.clear();
     }
 }

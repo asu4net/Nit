@@ -123,13 +123,6 @@ namespace Nit::SpritePackerWindow
                 return;
             }
 
-            if (Content::HasAsset(name))
-            {
-                NIT_CHECK(false, "Asset already exist!");
-                ImGui::End();
-                return;
-            }
-
             StringStream ss;
             ss << "cd ../../ThirdParty/TexturePacker && TexturePacker";
             ss << " " << source;
@@ -171,16 +164,26 @@ namespace Nit::SpritePackerWindow
             atlasHeight = sheet.meta.size.h;
 
             AssetRef spriteRef;
-            AssetData spriteAssetData;
-            spriteAssetData.Name = name;
 
-            const String absolutePath = dest + "\\" + name + ".png";
-            const String relativePath = std::filesystem::relative(absolutePath, Nit::GetWorkingDirectory()).string();
-            spriteAssetData.Path = relativePath;
+            if (!Content::HasAsset(name))
+            {
+                AssetData spriteAssetData;
+                spriteAssetData.Name = name;
+
+                const String absolutePath = dest + "\\" + name + ".png";
+                const String relativePath = std::filesystem::relative(absolutePath, Nit::GetWorkingDirectory()).string();
+                spriteAssetData.Path = relativePath;
             
-            spriteRef = Content::CreateAsset<Sprite>(spriteAssetData);
-            Sprite& sprite = spriteRef.As<Sprite>();
-            Content::TryLoadAsset(spriteRef);
+                spriteRef = Content::CreateAsset<Sprite>(spriteAssetData);
+                Content::TryLoadAsset(spriteRef);
+            }
+            else
+            {
+                spriteRef = Content::GetAssetByName(name);
+                Sprite& sprite = spriteRef.As<Sprite>();
+                sprite.Load();
+                sprite.ClearSubSprites();
+            }
 
             if (!spriteRef.IsValid())
             {
@@ -189,6 +192,8 @@ namespace Nit::SpritePackerWindow
                 return;
             }
 
+            Sprite& sprite = spriteRef.As<Sprite>();
+            
             for (const SpriteData& data : sheet.frames)
             {
                 const Frame& frame = data.frame;

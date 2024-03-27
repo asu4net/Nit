@@ -51,7 +51,8 @@ namespace Nit
         bool                     HasSubSprites() const { return !m_SubSprites.empty(); }
         bool                     ContainsSubSprite(const String& name);
         void                     ForEachSubSprite(Delegate<void(const String&, const SubSprite&)> eachDelegate);
-
+        void                     ClearSubSprites();
+        
     private:
         void*                   m_Data = nullptr;
         Id                      m_RendererTextureId = 0;
