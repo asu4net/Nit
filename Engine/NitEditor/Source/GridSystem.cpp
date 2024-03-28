@@ -5,14 +5,18 @@
 namespace Nit::GridSystem
 {
     // Registration stuff
-    void OnPreDrawPrimitives();
     void OnCreate();
+    void OnStart();
+    void OnFinish();
+    void OnDestroy();
 
     void Register()
     {
         Engine::CreateSystem("GridSystem", 500, ExecutionContext::Editor);
         Engine::SetSystemCallback(SystemStage::Create, &OnCreate);
-        Engine::SetSystemCallback(SystemStage::PreDrawPrimitives, &OnPreDrawPrimitives);
+        Engine::SetSystemCallback(SystemStage::Start, &OnStart);
+        Engine::SetSystemCallback(SystemStage::Finish, &OnFinish);
+        Engine::SetSystemCallback(SystemStage::Destroy, &OnDestroy);
     }
 
     // Actual code
@@ -21,28 +25,24 @@ namespace Nit::GridSystem
     const float LineLenght = 3.f;
     const float LineThickness = 0.005f;
     const float LinePadding = 0.1f;
-    CirclePrimitive* circle = nullptr;
-
-    void SubmitGridLine(const Vector2& start, const Vector2& end, bool bIsVertical = false)
+    DynamicArray<LinePrimitive*> Lines;
+    
+    void SubmitGridLine(const Vector2& start, const Vector2& end)
     {
-        /*SpritePrimitive p;
-        p.StartPosition = start;
-        p.EndPosition = end;
-        p.TintColor = GridColor;
-        p.NormalVector = bIsVertical ? Vector2::Right : Vector2::Up;
-        p.Thickness = LineThickness;
-        p.GenerateVertexData(SpriteShape::Line);
-        Renderer::SubmitSpritePrimitive(p);*/
-        
+        LinePrimitive* line = Renderer::CreatePrimitive<LinePrimitive>();
+
+        line->bIsVisible = true;
+        line->Start      = start;
+        line->End        = end;
+        line->TintColor  = GridColor;
+        line->Thickness  = LineThickness;
+        line->SortingLayer = -Math::FloatMax();
+
+        Lines.push_back(line);
     }
 
     void OnCreate()
     {
-    }
-    
-    void OnPreDrawPrimitives()
-    {
-        return;
         if (!Engine::IsPaused() || !Engine::IsStopped())
             return;
 
@@ -68,22 +68,47 @@ namespace Nit::GridSystem
 
         for (int i = 0; i < GridLines; i++)
         {
-            SubmitGridLine({ i * LinePadding, 0 }, { i * LinePadding, LineLenght }, true);
+            SubmitGridLine({ i * LinePadding, 0 }, { i * LinePadding, LineLenght });
         }
 
         for (int i = 0; i < GridLines; i++)
         {
-            SubmitGridLine({ i * LinePadding, 0 }, { i * LinePadding,  -LineLenght }, true);
+            SubmitGridLine({ i * LinePadding, 0 }, { i * LinePadding,  -LineLenght });
         }
 
         for (int i = 0; i < GridLines; i++)
         {
-            SubmitGridLine({ i * -LinePadding, 0 }, { i * -LinePadding, LineLenght }, true);
+            SubmitGridLine({ i * -LinePadding, 0 }, { i * -LinePadding, LineLenght });
         }
 
         for (int i = 0; i < GridLines; i++)
         {
-            SubmitGridLine({ i * -LinePadding, 0 }, { i * -LinePadding,  -LineLenght }, true);
+            SubmitGridLine({ i * -LinePadding, 0 }, { i * -LinePadding,  -LineLenght });
+        }
+    }
+    
+    void OnDestroy()
+    {
+        for (LinePrimitive* line : Lines)
+        {
+            Renderer::DestroyPrimitive(line);
+        }
+        Lines.clear();
+    }
+
+    void OnStart()
+    {
+        for (LinePrimitive* line : Lines)
+        {
+            line->bIsVisible = false;
+        }
+    }
+
+    void OnFinish()
+    {
+        for (LinePrimitive* line : Lines)
+        {
+            line->bIsVisible = true;
         }
     }
 }

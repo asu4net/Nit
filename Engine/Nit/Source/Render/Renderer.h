@@ -56,6 +56,16 @@ namespace Nit
         float Thickness = .05f;
         float Fade      = .01f;
     };
+
+    struct LinePrimitive : Primitive2D
+    {
+        virtual Primitive2DType GetType() const override { return Primitive2DType_Line; }
+        
+        Vector2 Start   = Vector2::Zero;
+        Vector2 End     = Vector2::Right;
+        float Thickness = .05f;
+        float Fade      = .01f;
+    };
 }
 
 namespace Nit::Renderer
@@ -63,6 +73,7 @@ namespace Nit::Renderer
     void Init(GraphicsAPI api);
     void SetSpriteShader(const SharedPtr<RendererShader> spriteShader);
     void SetCircleShader(const SharedPtr<RendererShader> circleShader);
+    void SetLineShader(const SharedPtr<RendererShader> lineShader);
     void SetProjectionViewMatrix(const Matrix4& matrix);
     void SetErrorScreenEnabled(bool bEnabled);
 
@@ -91,6 +102,14 @@ namespace Nit::Renderer
     inline CirclePrimitive* CreatePrimitive<CirclePrimitive>()
     {
         auto* primitive = new CirclePrimitive();
+        PushPrimitive(primitive);
+        return primitive;
+    }
+
+    template<>
+    inline LinePrimitive* CreatePrimitive<LinePrimitive>()
+    {
+        auto* primitive = new LinePrimitive();
         PushPrimitive(primitive);
         return primitive;
     }

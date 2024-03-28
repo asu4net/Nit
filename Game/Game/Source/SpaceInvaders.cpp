@@ -77,12 +77,8 @@ namespace Nit::SpaceInvaders
             source = AudioSources.back();
             AudioSources.erase(AudioSources.end() - 1);
         }
-
-        AudioSystem::SetPitch(source, 1);
-        AudioSystem::SetGain(source, 1);
-        AudioSystem::SetLoop(source, false);
+        
         AudioSystem::Play(source);
-
         PlayingAudioSources.push_back(source);
     }
 
@@ -90,6 +86,12 @@ namespace Nit::SpaceInvaders
     void OnCreate()
     {
         MissileClip = Content::GetAssetByName("laser").GetWeakAs<AudioClip>();
+
+        LinePrimitive* line = Renderer::CreatePrimitive<LinePrimitive>();
+        line->bIsVisible = true;
+        line->TintColor = Color::Red;
+        line->Start = Vector2::Right;
+        line->End = line->Start + Vector2(0.7, 0.2);
     }
     
     void OnStart()

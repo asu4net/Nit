@@ -403,6 +403,13 @@ namespace Nit::Engine
                 Renderer::SetCircleShader(Renderer::GetShader(shader.As<Shader>().GetRendererId()));
             }
         }
+        {
+            AssetRef shader = Content::GetAssetByName("LineShader");
+            if (shader.IsValid() && shader.Is<Shader>())
+            {
+                Renderer::SetLineShader(Renderer::GetShader(shader.As<Shader>().GetRendererId()));
+            }
+        }
 
         World::OpenDefaultScene();
 

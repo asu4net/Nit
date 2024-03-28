@@ -1,0 +1,10 @@
+{
+    "AssetData": {
+        "Name": "LineShader",
+        "Path": "Shaders/LineShader.glsl",
+        "AssetId": {
+            "IdHandler": 74792639239087366
+        },
+        "AssetType": "Shader"
+    }
+}

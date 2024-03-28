@@ -19,7 +19,7 @@ namespace Nit::Renderer
     constexpr uint32_t            MaxTextureSlots      = 32;
 
     SharedPtr<RendererAPI>        API;
-    Matrix4                       ProjectionViewMatrix; // quiz·s esto podrÌa ir por vertex data tambiÈn
+    Matrix4                       ProjectionViewMatrix; // quiz√°s esto podr√≠a ir por vertex data tambi√©n
     TextureMap                    Textures;
     ShaderMap                     Shaders;
     SharedPtr<RendererTexture2D>  WhiteTexture;
@@ -310,7 +310,151 @@ namespace Nit::Renderer
             }
         }
     }; // CircleBatch
-                          
+
+    namespace LineBatch
+    {
+        struct Vertex
+        {
+            Vector3  Position      = Vector3::Zero;
+            Vector3  LocalPosition = Vector3::Zero;
+            Color    TintColor     = Color::White;
+            float    Fade          = .01f;
+            float    Time          =  0.f;
+            int      EntityID      = -1;
+        };
+
+        constexpr uint32_t        MaxPrimitives = 3000;
+        constexpr uint32_t        MaxVertices = MaxPrimitives * VerticesPerPrimitive;
+        constexpr uint32_t        MaxIndices = MaxPrimitives * IndicesPerPrimitive;
+
+        SharedPtr<RendererShader> DefaultShader;
+        SharedPtr<VertexArray>    VAO = nullptr;
+        SharedPtr<VertexBuffer>   VBO = nullptr;
+        SharedPtr<IndexBuffer>    IBO = nullptr;
+
+        //Per batch stuff
+        uint32_t                  IndexCount = 0;
+        Vertex*                   Vertices = new Vertex[MaxVertices];
+        Vertex*                   LastVertex = Vertices;
+
+        void Create()
+        {
+            if (!API)
+            {
+                NIT_CHECK(false, "Missing line batch stuff\n");
+                return;
+            }
+
+            VAO = VertexArray::Create(API->GetGraphicsAPI());
+            VBO = VertexBuffer::Create(API->GetGraphicsAPI(), MaxVertices * sizeof(Vertex));
+
+            VBO->SetLayout({
+                {ShaderDataType::Float3, "a_Position"      },
+                {ShaderDataType::Float3, "a_LocalPosition" },
+                {ShaderDataType::Float4, "a_TintColor"     },
+                {ShaderDataType::Float , "a_Fade"          },
+                {ShaderDataType::Float , "a_Time"          },
+                {ShaderDataType::Float,  "a_EntityID"      }
+            });
+
+            VAO->AddVertexBuffer(VBO);
+            IBO = CreateQuadIndexBuffer(MaxPrimitives);
+            VAO->SetIndexBuffer(IBO);
+        }
+
+        void Reset()
+        {
+            LastVertex = Vertices;
+            IndexCount = 0;
+        }
+
+        void SubmitVertices(LinePrimitive& line)
+        {
+            if (line.ShaderID != 0)
+            {
+                auto shader = GetShader(line.ShaderID);
+                if (shader && shader != LastShader)
+                {
+                    NextBatch();
+                    shader->Bind();
+                    LastShader = shader;
+                }
+            }
+            else if (DefaultShader && DefaultShader != LastShader)
+            {
+                NextBatch();
+                DefaultShader->Bind();
+                LastShader = DefaultShader;
+            }
+
+            if (!LastShader)
+            {
+                NIT_CHECK(false, "Missing shader!");
+                return;
+            }
+
+            if (IndexCount + IndicesPerPrimitive >= MaxIndices)
+            {
+                NextBatch();
+            }
+
+            Vector2 lineNormal = {
+                -(line.End.y - line.Start.y), // x
+                  line.End.x - line.Start.x   // y
+            };
+
+            lineNormal.Normalize();
+
+            const float halfThickness = line.Thickness / 2.f;
+            
+            for (uint32_t i = 0; i < VerticesPerPrimitive; i++)
+            {
+                Vertex vertex;
+
+                // Line specific
+                Vector3 localVertexPos;
+
+                switch (i)
+                {
+                case 0: localVertexPos = line.Start + lineNormal *  halfThickness; break; 
+                case 1: localVertexPos = line.End   + lineNormal *  halfThickness; break; 
+                case 2: localVertexPos = line.End   + lineNormal * -halfThickness; break; 
+                case 3: localVertexPos = line.Start + lineNormal * -halfThickness; break; 
+                }
+                
+                vertex.Position = Vector4(localVertexPos, 1.f) * line.Transform * ProjectionViewMatrix;
+                
+                //------
+                vertex.LocalPosition   = localVertexPos;
+                vertex.Time            = Time::GetApplicationTime();
+                vertex.TintColor       = line.TintColor;
+                vertex.Fade            = line.Fade;
+                vertex.EntityID        = line.EntityID;
+                
+                *LastVertex = vertex;
+                LastVertex++;
+            }
+
+            IndexCount += IndicesPerPrimitive;
+        }
+
+        void SubmitDrawCommand()
+        {
+            if (const uint32_t vertexDataSize = static_cast<uint32_t>(reinterpret_cast<uint8_t*>(LastVertex) -
+                reinterpret_cast<uint8_t*>(Vertices)))
+            {
+                VBO->SetData(Vertices, vertexDataSize);
+
+                RenderCommandQueue::Submit<DrawElementsCommand>(API, VAO, IndexCount);
+            }
+
+            while (!RenderCommandQueue::IsEmpty())
+            {
+                RenderCommandQueue::ExecuteNext();
+            }
+        }
+    }
+    
     SharedPtr<IndexBuffer> CreateQuadIndexBuffer(uint32_t maxPrimitives)
     {
         const uint32_t maxIndices = maxPrimitives * IndicesPerPrimitive;
@@ -372,7 +516,8 @@ namespace Nit::Renderer
     {
         SpriteBatch::Reset();
         CircleBatch::Reset();
-
+        LineBatch::Reset();
+        
         LastTextureSlot = 1;
     }
 
@@ -380,6 +525,7 @@ namespace Nit::Renderer
     {
         SpriteBatch::SubmitDrawCommand();
         CircleBatch::SubmitDrawCommand();
+        LineBatch::SubmitDrawCommand();
     }
 
     void NextBatch()
@@ -414,7 +560,8 @@ namespace Nit::Renderer
 
         SpriteBatch::Create();
         CircleBatch::Create();
-
+        LineBatch::Create();
+        
         // Default settings
         RenderCommandQueue::Submit<SetBlendingEnabledCommand>(API, true);
         RenderCommandQueue::Submit<SetBlendingModeCommand>(API, BlendingMode::Alpha);
@@ -477,6 +624,13 @@ namespace Nit::Renderer
             {
                 CircleBatch::SubmitVertices(*static_cast<CirclePrimitive*>(primitive));
                 LastPrimitive2D = Primitive2DType_Circle;
+                continue;
+            }
+
+            if (primitive->GetType() == Primitive2DType_Line)
+            {
+                LineBatch::SubmitVertices(*static_cast<LinePrimitive*>(primitive));
+                LastPrimitive2D = Primitive2DType_Line;
                 continue;
             }
         }
@@ -562,6 +716,11 @@ namespace Nit::Renderer
     void SetCircleShader(const SharedPtr<RendererShader> circleShader)
     {
         CircleBatch::DefaultShader = circleShader;
+    }
+
+    void SetLineShader(const SharedPtr<RendererShader> lineShader)
+    {
+        LineBatch::DefaultShader = lineShader;
     }
 
     void SetProjectionViewMatrix(const Matrix4& matrix)
