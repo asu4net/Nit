@@ -143,4 +143,10 @@ namespace Nit
     {
         return std::sqrtf(std::powf(a.x - b.x, 2) + std::powf(a.y - b.y, 2) + std::powf(a.z - b.z, 2));
     }
+
+    Vector3 Vector3::LookAt(const Vector3& rotation, const Vector3& axis)
+    {
+        const Matrix4 rotationMatrix = Matrix4::Rotate(rotationMatrix, rotation);
+        return rotationMatrix * axis;
+    }
 }

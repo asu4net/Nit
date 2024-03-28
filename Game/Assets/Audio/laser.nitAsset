@@ -1,0 +1,10 @@
+{
+    "AssetData": {
+        "Name": "laser",
+        "Path": "Audio/laser.wav",
+        "AssetId": {
+            "IdHandler": 17207175090995884444
+        },
+        "AssetType": "AudioClip"
+    }
+}

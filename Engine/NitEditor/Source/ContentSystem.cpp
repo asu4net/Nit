@@ -1,4 +1,5 @@
 #include "ContentSystem.h"
+#include "Asset/AudioClip.h"
 #include "Core\Engine.h"
 #include "Asset\Content.h"
 #include "Asset\Sprite.h"
@@ -37,11 +38,6 @@ namespace Nit::ContentSystem
 
     bool TryImportAsset(const std::filesystem::path& path)
     {
-        if (path.extension() != ".png" && path.extension() != ".jpg")
-        {
-            return false;
-        }
-
         const String assetName = path.stem().string();
 
         if (Content::GetAssetByName(assetName).IsValid())
@@ -60,7 +56,11 @@ namespace Nit::ContentSystem
         {
             ref = Content::CreateAsset<Sprite>(assetData);
         }
-
+        else if (path.extension() == ".wav")
+        {
+            ref = Content::CreateAsset<AudioClip>(assetData);
+        }
+        
         if (!ref.IsValid() || !Content::TryLoadAsset(ref))
         {
             return false;
@@ -68,7 +68,7 @@ namespace Nit::ContentSystem
         else
         {
             SharedPtr<Asset> asset = ref.Get();
-            Content::SerializeAsset(asset, Sprite::DefaultFolder());
+            Content::SerializeAsset(asset, "");
             return true;
         }
     }

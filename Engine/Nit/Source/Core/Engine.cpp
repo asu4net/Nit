@@ -9,6 +9,7 @@
 #include "System/InputSystem.h"
 #include "Asset/Shader.h"
 #include "Render/RenderCommand.h"
+#include "System/AudioSystem.h"
 #include "System/CircleSystem.h"
 #include "System/MaterialSystem.h"
 
@@ -383,6 +384,7 @@ namespace Nit::Engine
         MaterialSystem::Register();
         AnimationSystem::Register();
         CameraSystem::Register();
+        AudioSystem::Register();
         
         Content::LoadAssets();
 

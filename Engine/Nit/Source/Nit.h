@@ -12,6 +12,7 @@
 #include "Asset/Scene.h"
 #include "Asset/Animation.h"
 #include "Asset/Material.h"
+#include "Asset/AudioClip.h"
 
 // Window
 #include "Window/Window.h"

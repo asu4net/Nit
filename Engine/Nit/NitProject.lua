@@ -9,6 +9,13 @@ project "Nit"
     pchsource "Source/NitPCH.cpp"
     forceincludes { "NitPCH.h" }
     
+    disablewarnings 
+	{ 
+		"5030",
+		"4065",
+		"4834"
+	}
+
     includedirs 
     { 
         "%{IncludeDirs.Nit}",
@@ -17,7 +24,10 @@ project "Nit"
         "%{IncludeDirs.STB}",
         "%{IncludeDirs.entt}",
         "%{IncludeDirs.RTTR}",
-        "%{IncludeDirs.rapidjson}" 
+        "%{IncludeDirs.rapidjson}",
+        "%{IncludeDirs.OpenALInclude}",
+        "%{IncludeDirs.OpenALSource}",
+        "%{IncludeDirs.OpenALCommon}"
     }
     
     links
@@ -25,7 +35,15 @@ project "Nit"
         "GLFW",
         "opengl32.lib",
         "GLAD",
-        "RTTR"
+        "RTTR",
+        "OpenAL"
+    }
+
+    defines
+    {
+        "_CRT_SECURE_NO_WARNINGS",
+        "_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING",
+        "AL_LIBTYPE_STATIC"
     }
 
     files { "**.h", "**.cpp" }

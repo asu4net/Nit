@@ -1,15 +1,18 @@
 #include "SpaceInvaders.h"
 #include "Nit.h"
+#include "System/AudioSystem.h"
 
 namespace Nit::SpaceInvaders
 {
+    void OnCreate();
     void OnStart();
     void OnUpdate();
     void OnFinish();
-
+    
     void Register()
     {
-        Engine::CreateSystem("Space Invaders", 5000, ExecutionContext::Runtime);
+        Engine::CreateSystem("Space Invaders", 8000, ExecutionContext::Runtime);
+        Engine::SetSystemCallback(SystemStage::Create, &OnCreate);
         Engine::SetSystemCallback(SystemStage::Start, &OnStart);
         Engine::SetSystemCallback(SystemStage::Update, &OnUpdate);
         Engine::SetSystemCallback(SystemStage::Finish, &OnFinish);
@@ -25,8 +28,13 @@ namespace Nit::SpaceInvaders
     Entity MissileTemplate;
     DynamicArray<Entity> MissilePool;
     DynamicArray<Entity> FiredMissiles;
+    WeakPtr<AudioClip> MissileClip;
+    
+    DynamicArray<AudioSource> AudioSources;
+    DynamicArray<AudioSource> PlayingAudioSources;
+    
     int LastMissileIdx = 0;
-
+    
     void SpawnMissile()
     {
         StringStream missileName;
@@ -50,10 +58,50 @@ namespace Nit::SpaceInvaders
         FiredMissiles.push_back(missile);
         missile.GetTransform().Position = Player.GetTransform().Position;
         missile.Get<SpriteComponent>().IsVisible = true;
+
+        // Audio management
+        
+        if (MissileClip.expired())
+        {
+            return;
+        }
+
+        AudioSource source;
+        
+        if (AudioSources.empty())
+        {
+            source = AudioSystem::CreateSource(MissileClip.lock());
+        }
+        else
+        {
+            source = AudioSources.back();
+            AudioSources.erase(AudioSources.end() - 1);
+        }
+
+        AudioSystem::SetPitch(source, 1);
+        AudioSystem::SetGain(source, 1);
+        AudioSystem::SetLoop(source, false);
+        AudioSystem::Play(source);
+
+        PlayingAudioSources.push_back(source);
     }
 
+
+    void OnCreate()
+    {
+        MissileClip = Content::GetAssetByName("laser").GetWeakAs<AudioClip>();
+    }
+    
     void OnStart()
     {
+        // stress test
+        // for (uint32_t i = 0; i < 5000; i++)
+        // {
+        //     Entity entity = World::CreateEntity();
+        //     auto& sprite = entity.Add<SpriteComponent>();
+        //     sprite.SpriteAssetRef = Content::GetAssetByName("Bola");
+        // }
+        
         if (!World::IsSceneOpened(SpaceInvadersSceneName))
         {
             return;
@@ -91,6 +139,19 @@ namespace Nit::SpaceInvaders
         {
             missile.GetTransform().Position += Vector2::Up * MissileMoveSpeed * Time::GetDeltaTime();
         }
+        
+        PlayingAudioSources.erase(std::remove_if(PlayingAudioSources.begin(), PlayingAudioSources.end(),
+            [](AudioSource& audio)
+            {
+                const bool bHasFinished = !AudioSystem::IsPlaying(audio);
+
+                if (bHasFinished)
+                {
+                    AudioSources.push_back(audio);    
+                }
+                return bHasFinished;
+            }),
+            PlayingAudioSources.end());
     }
 
     void OnFinish()
