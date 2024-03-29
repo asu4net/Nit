@@ -23,28 +23,30 @@ namespace Nit
         SharedPtr<Asset> Get() const { return m_Asset.lock(); }
 
         template<typename T>
+        bool Is() const
+        {
+            return IsValid() ? Type::get<T>() == Get()->get_type() : false;
+        }
+        
+        template<typename T>
         WeakPtr<T> GetWeakAs() const
         { 
             WeakPtr<Asset> asset = GetWeak();
-            return IsValid() ? std::static_pointer_cast<T>(Get()) : nullptr;
+            return Is<T>() ? std::static_pointer_cast<T>(Get()) : nullptr;
         }
 
         template<typename T>
         SharedPtr<T> GetAs() const
         {
-            return IsValid() ? std::static_pointer_cast<T>(Get()) : nullptr;
-        }
-
-        template<typename T>
-        bool Is() const
-        {
-            return IsValid() ? GetAs<T>().get() : false;
+            return Is<T>() ? std::static_pointer_cast<T>(Get()) : nullptr;
         }
 
         template<typename T>
         T& As() const
         {
-            return *GetAs<T>().get();
+            SharedPtr<T> ptr = GetAs<T>();
+            NIT_CHECK(ptr, "Type missmatch!");
+            return *ptr.get();
         }
         
         void Retarget();

@@ -30,6 +30,19 @@ namespace Nit
     {
     }
 
+    EntityRef::EntityRef(const EntityRef& other) = default;
+
+    EntityRef::EntityRef(EntityRef&& other) noexcept
+        : m_TargetEntity(std::move(other.m_TargetEntity))
+        , m_EntityId(other.m_EntityId)
+    {
+    }
+
+    EntityRef::~EntityRef()
+    {
+        Clear();
+    }
+
     EntityRef& EntityRef::operator=(EntityRef&& other) noexcept
     {
         m_TargetEntity = std::move(other.m_TargetEntity);

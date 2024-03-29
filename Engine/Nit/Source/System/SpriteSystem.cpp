@@ -53,20 +53,14 @@ namespace Nit::SpriteSystem
             Entity entity = rawEntity;
 
             auto& primitive = *sprite.Primitive;
-            primitive.bIsVisible = sprite.IsVisible;
 
             if (!sprite.IsVisible)
+            {
+                primitive.bIsVisible = false;
                 return;
+            }
 
-            primitive.bFlipX = sprite.bFlipX;
-            primitive.bFlipY = sprite.bFlipY;
-
-            primitive.Transform = transformComponent.GetMatrix();
-            primitive.TintColor = sprite.TintColor;
-            primitive.UVScale = sprite.UVScale;
-            primitive.Size = sprite.Size;
-
-            if (sprite.SpriteAssetRef.IsValid())
+            if (sprite.SpriteAssetRef.Is<Sprite>())
             {
                 Sprite& spriteAsset = sprite.SpriteAssetRef.As<Sprite>();
 
@@ -84,6 +78,22 @@ namespace Nit::SpriteSystem
 
                 primitive.TextureID = spriteAsset.GetRendererId();
             }
+            else
+            {
+                SpritePrimitive defaultSprite;
+                sprite.Primitive->VertexPositions = defaultSprite.VertexPositions; 
+                sprite.Primitive->VertexUVs       = defaultSprite.VertexUVs;
+                sprite.Primitive->TextureID       = 0;
+            }
+
+            primitive.bIsVisible = true;
+            primitive.bFlipX = sprite.bFlipX;
+            primitive.bFlipY = sprite.bFlipY;
+
+            primitive.Transform = transformComponent.GetMatrix();
+            primitive.TintColor = sprite.TintColor;
+            primitive.UVScale = sprite.UVScale;
+            primitive.Size = sprite.Size;
             
             primitive.EntityID = (int) rawEntity;
             primitive.SortingLayer = sprite.SortingLayer;

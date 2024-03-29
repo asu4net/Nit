@@ -3,8 +3,12 @@
 #include "imgui_internal.h"
 #include "Asset\AssetRef.h"
 #include "Asset\Content.h"
+#include "Component/IDComponent.h"
+#include "Component/NameComponent.h"
 #include "Core\File.h"
 #include "Entity/Entity.h"
+#include "Entity/EntityRef.h"
+#include "Entity/World.h"
 
 namespace ImGui
 {
@@ -439,21 +443,26 @@ namespace ImGui
                 AssetRef ref = variant.get_value<AssetRef>();
                 String selectedAsset = !ref.IsValid() ? "None" : ref.Get()->GetAssetData().Name;
                 ImGui::Combo(propertyName.c_str(), selectedAsset, assetNames);
-
-                if (selectedAsset.find("None") == String::npos)
-                {
-                    AssetRef assetRef = Content::GetAssetByName(selectedAsset);
-                    property.set_value(instance, assetRef);
-                }
+                AssetRef assetRef = Content::GetAssetByName(selectedAsset);
+                property.set_value(instance, assetRef);
                 continue;
             }
 
-            if (propertyType == Type::get<Entity>())
+            if (propertyType == Type::get<EntityRef>())
             {
                 DynamicArray<String> entityNames;
                 entityNames.push_back("None");
+                World::EachEntity({
+                [&entityNames](const Entity& entity)
+                {
+                    entityNames.push_back(entity.GetName().Name);
+                }});
 
-                
+                EntityRef ref = variant.get_value<EntityRef>();
+
+                String selectedEntityName = !ref.IsValid() ? "None" : ref.Get().GetName().Name;
+                ImGui::Combo(propertyName.c_str(), selectedEntityName, entityNames);
+                property.set_value(instance, World::FindEntityByName(selectedEntityName));
                 
                 continue;
             }

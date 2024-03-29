@@ -17,19 +17,6 @@
         "z": 1.0
     }
 }
-#component AnimationComponent
-{
-    "CurrentAnimation": {
-        "AssetId": {
-            "IdHandler": 6710390242952465144
-        }
-    },
-    "PlayOnStart": true,
-    "CurrentIndex": 1,
-    "CurrentTime": 0.09728650748729706,
-    "LoopEnabled": true,
-    "IsPlaying": true
-}
 #component SpriteComponent
 {
     "IsVisible": true,
@@ -52,11 +39,24 @@
         "a": 1.0
     },
     "FlipX": false,
-    "FLipY": false,
+    "FlipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
     }
+}
+#component AnimationComponent
+{
+    "CurrentAnimation": {
+        "AssetId": {
+            "IdHandler": 6710390242952465144
+        }
+    },
+    "PlayOnStart": true,
+    "CurrentIndex": 1,
+    "CurrentTime": 0.09728650748729706,
+    "LoopEnabled": true,
+    "IsPlaying": true
 }
 #entity Cpp 11816024332466923836
 #component TransformComponent
@@ -99,7 +99,7 @@
         "a": 1.0
     },
     "FlipX": false,
-    "FLipY": false,
+    "FlipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
@@ -146,7 +146,7 @@
         "a": 1.0
     },
     "FlipX": false,
-    "FLipY": false,
+    "FlipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
@@ -177,7 +177,7 @@
     "SortingLayer": 10,
     "SpriteAssetRef": {
         "AssetId": {
-            "IdHandler": 13420620286411129829
+            "IdHandler": 15796849799858880631
         }
     },
     "UseSubsprite": false,
@@ -187,16 +187,24 @@
         "y": 1.0
     },
     "TintColor": {
-        "r": 0.8790322542190552,
-        "g": 0.4602400064468384,
-        "b": 0.3083702623844147,
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
         "a": 1.0
     },
     "FlipX": false,
-    "FLipY": false,
+    "FlipY": false,
     "UVScale": {
         "x": 1.0,
         "y": 1.0
+    }
+}
+#component MaterialComponent
+{
+    "MaterialRef": {
+        "AssetId": {
+            "IdHandler": 2347567895464665
+        }
     }
 }
 #entity SceneCamera 16228540880595064672

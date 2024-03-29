@@ -202,6 +202,14 @@ namespace Nit::World
         return entity;
     }
 
+    void EachEntity(Delegate<void(Entity& e)> callback)
+    {
+        for (auto&[id, e] : IdEntityMap)
+        {
+            callback(e);
+        }
+    }
+
     static void OnSceneCreated(Scene* scene)
     {
         AllScenes[scene->GetAssetData().Name] = scene;
