@@ -134,6 +134,15 @@ namespace Nit
         return std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z);
     }
 
+    Vector3 Vector3::Multiply(const Vector3& a, const Vector3& b)
+    {
+        Vector3 r;
+        r.x = a.x * b.x;
+        r.y = a.y * b.y;
+        r.z = a.z * b.z;
+        return r;
+    }
+
     float Vector3::Dot(const Vector3& a, const Vector3& b)
     {
         return a.x * b.x + a.y * b.y + a.z * b.z;
@@ -146,7 +155,8 @@ namespace Nit
 
     Vector3 Vector3::LookAt(const Vector3& rotation, const Vector3& axis)
     {
-        const Matrix4 rotationMatrix = Matrix4::Rotate(rotationMatrix, rotation);
+        Matrix4 rotationMatrix;
+        rotationMatrix = Matrix4::Rotate(rotationMatrix, Math::ToRadians(rotation));
         return rotationMatrix * axis;
     }
 }

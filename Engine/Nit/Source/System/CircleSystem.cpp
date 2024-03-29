@@ -1,4 +1,6 @@
 #include "CircleSystem.h"
+
+#include "FamilySystem.h"
 #include "Core\Engine.h"
 #include "Component\CircleComponent.h"
 #include "Render\Renderer.h"
@@ -53,7 +55,7 @@ namespace Nit::CircleSystem
 
             Entity entity = rawEntity;
 
-            primitive.Transform = transformComponent.GetMatrix();
+            primitive.Transform = FamilySystem::GetMatrix(entity);
             primitive.TintColor = circle.TintColor;
             primitive.Radius = circle.Radius;
             primitive.Thickness = circle.Thickness;

@@ -40,13 +40,15 @@ namespace Nit
 
     enum EngineSystemsExecutionOrder : uint32_t
     {
-        InputExecutionOrder     = 1000,
-        AnimationExecutionOrder = 2000,
-        CameraExecutionOrder    = 3000,
-        SpriteExecutionOrder    = 4000,
-        CircleExecutionOrder    = 5000,
-        MaterialExecutionOrder  = 6000,
-        AudioExecutionOrder     = 7000
+        EditorExecutionOrder    = 50000,
+        FamilyExecutionOrder    = 10000,
+        InputExecutionOrder     = 20000,
+        AnimationExecutionOrder = 30000,
+        CameraExecutionOrder    = 40000,
+        SpriteExecutionOrder    = 50000,
+        CircleExecutionOrder    = 60000,
+        MaterialExecutionOrder  = 70000,
+        AudioExecutionOrder     = 80000
     };
 
     enum class MinificationFilter { Linear, Nearest };

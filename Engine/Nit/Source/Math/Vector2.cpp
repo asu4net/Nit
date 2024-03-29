@@ -97,6 +97,33 @@ namespace Nit
         return std::to_string(x) + ", " + std::to_string(y);
     }
 
+    Vector2 Vector2::Multiply(const Vector2& a, const Vector2& b)
+    {
+        Vector2 r;
+        r.x = a.x * b.x;
+        r.y = a.y * b.y;
+        return r;
+    }
+    
+    Vector2 Vector2::RotateAround(Vector2 pivot, float angle, Vector2 point)
+    {
+        float s = sin(Math::ToRadians(angle));
+        float c = cos(Math::ToRadians(angle));
+
+        // translate point back to origin:
+        point.x -= pivot.x;
+        point.y -= pivot.y;
+
+        // rotate point
+        float xnew = point.x * c - point.y * s;
+        float ynew = point.x * s + point.y * c;
+
+        // translate point back:
+        point.x = xnew + pivot.x;
+        point.y = ynew + pivot.y;
+        return point;
+    }
+    
     float Vector2::Dot(const Vector2& a, const Vector2& b)
     {
         return a.x * b.x + a.y * b.y;

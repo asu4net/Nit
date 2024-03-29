@@ -7,9 +7,10 @@ namespace Nit
     struct FamilyComponent
     {
         EntityRef ParentRef;
-
+        EntityRef PrevParentRef;
+        
         FamilyComponent() = default;
-
+        
         RTTR_ENABLE_NO_VIRTUAL
     };
 

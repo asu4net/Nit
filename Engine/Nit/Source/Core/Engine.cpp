@@ -11,6 +11,7 @@
 #include "Render/RenderCommand.h"
 #include "System/AudioSystem.h"
 #include "System/CircleSystem.h"
+#include "System/FamilySystem.h"
 #include "System/MaterialSystem.h"
 
 namespace Nit::Engine
@@ -378,6 +379,7 @@ namespace Nit::Engine
         
         World::Init();
 
+        FamilySystem::Register();
         InputSystem::Register();
         SpriteSystem::Register();
         CircleSystem::Register();

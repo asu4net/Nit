@@ -1,4 +1,6 @@
 #include "SpriteSystem.h"
+
+#include "FamilySystem.h"
 #include "Core\Engine.h"
 #include "Render\Renderer.h"
 #include "Component\SpriteComponent.h"
@@ -90,7 +92,7 @@ namespace Nit::SpriteSystem
             primitive.bFlipX = sprite.bFlipX;
             primitive.bFlipY = sprite.bFlipY;
 
-            primitive.Transform = transformComponent.GetMatrix();
+            primitive.Transform = FamilySystem::GetMatrix(entity);
             primitive.TintColor = sprite.TintColor;
             primitive.UVScale = sprite.UVScale;
             primitive.Size = sprite.Size;

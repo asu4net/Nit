@@ -19,7 +19,6 @@
 namespace Nit::EditorSystem
 {
     const String ID = "EditorSystem";
-    const uint32_t ExecutionOrder = 5000;
     SharedPtr<Framebuffer> TargetFramebuffer;
     Entity SelectedEntity;
 
@@ -37,11 +36,6 @@ namespace Nit::EditorSystem
     String GetID()
     {
         return ID;
-    }
-
-    uint32_t GetExecutionOrder()
-    {
-        return ExecutionOrder;
     }
 
     void CreateFramebuffer()
@@ -127,7 +121,7 @@ namespace Nit::EditorSystem
 
     void Register()
     {
-        Engine::CreateSystem(ID, ExecutionOrder, ExecutionContext::Always);
+        Engine::CreateSystem(ID, EditorExecutionOrder, ExecutionContext::Always);
         Engine::SetSystemCallback(SystemStage::Create, OnCreate);
         Engine::SetSystemCallback(SystemStage::Update, OnUpdate);
         Engine::SetSystemCallback(SystemStage::PreDrawPrimitives, OnPreDrawPrimitives);

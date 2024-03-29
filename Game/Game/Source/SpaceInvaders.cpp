@@ -86,7 +86,7 @@ namespace Nit::SpaceInvaders
     void OnCreate()
     {
         MissileClip = Content::GetAssetByName("laser").GetWeakAs<AudioClip>();
-
+        
         LinePrimitive* line = Renderer::CreatePrimitive<LinePrimitive>();
         line->bIsVisible = true;
         line->TintColor = Color::Red;
@@ -109,13 +109,14 @@ namespace Nit::SpaceInvaders
             return;
         }
         
+        Player = World::FindEntityByName("SpaceShip");
+
         ShootAction = InputSystem::CreateInputAction(Key_Space);
         ShootAction->OnPerformed().Add([] (const InputActionContext& context){
             if (Engine::IsPaused() || context.IsReleased) return;
             FireMissile();
         });
 
-        Player = World::FindEntityByName("SpaceShip");
         MissileTemplate = World::FindEntityByName("MissileTemplate");
 
         MissilePool.reserve(NumOfMissiles);
