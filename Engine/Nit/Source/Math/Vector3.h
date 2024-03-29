@@ -42,6 +42,8 @@ namespace Nit
         String ToString() const;
 
         static Vector3 Multiply(const Vector3& a, const Vector3& b);
+        static Vector3 Divide(const Vector3& a, const Vector3& b);
+        
         static float Dot(const Vector3& a, const Vector3& b);
         static float Distance(const Vector3& a, const Vector3& b);
         static Vector3 LookAt(const Vector3& rotation, const Vector3& axis);

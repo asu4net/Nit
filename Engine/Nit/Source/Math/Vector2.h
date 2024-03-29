@@ -32,6 +32,7 @@ namespace Nit
         
         static Vector2 RotateAround(Vector2 pivot, float angle, Vector2 point);
         static Vector2 Multiply(const Vector2& a, const Vector2& b);
+        static Vector2 Divide(const Vector2& a, const Vector2& b);
         static float Dot(const Vector2& a, const Vector2& b);
         static float Distance(const Vector2& a, const Vector2& b);
         static float Angle(const Vector2& a, const Vector2& b);

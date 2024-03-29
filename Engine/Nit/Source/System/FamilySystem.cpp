@@ -45,7 +45,7 @@ namespace Nit::FamilySystem
         );
         const Vector3 childRotation = childTransform.Rotation + parentRotation;
         const Vector3 childScale = Vector3::Multiply(childTransform.Scale, parentTransform.Scale);        
-        return Matrix4::CreateTransform(childPosition, childRotation);
+        return Matrix4::CreateTransform(childPosition, childRotation, childScale);
     }
 
     void ReconcileTransformWithParent(Entity entity)
@@ -65,13 +65,8 @@ namespace Nit::FamilySystem
 
         TransformComponent& parentTransform = familyComponent.ParentRef.Get().GetTransform();
         transform.Position -= parentTransform.Position;
-
         transform.Rotation -= parentTransform.Rotation;
-        
-        transform.Scale.x  /= parentTransform.Scale.x;
-        transform.Scale.y  /= parentTransform.Scale.y;
-        transform.Scale.z  /= parentTransform.Scale.z;
-        
+        transform.Scale = Vector3::Divide(transform.Scale, parentTransform.Scale);
         familyComponent.PrevParentRef = EntityRef(familyComponent.ParentRef);
     }
 

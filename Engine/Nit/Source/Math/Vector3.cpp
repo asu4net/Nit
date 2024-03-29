@@ -143,6 +143,15 @@ namespace Nit
         return r;
     }
 
+    Vector3 Vector3::Divide(const Vector3& a, const Vector3& b)
+    {
+        Vector3 r;
+        r.x = a.x / b.x;
+        r.y = a.y / b.y;
+        r.z = a.z / b.z;
+        return r;
+    }
+
     float Vector3::Dot(const Vector3& a, const Vector3& b)
     {
         return a.x * b.x + a.y * b.y + a.z * b.z;

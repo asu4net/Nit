@@ -104,7 +104,15 @@ namespace Nit
         r.y = a.y * b.y;
         return r;
     }
-    
+
+    Vector2 Vector2::Divide(const Vector2& a, const Vector2& b)
+    {
+        Vector2 r;
+        r.x = a.x / b.x;
+        r.y = a.y / b.y;
+        return r;
+    }
+
     Vector2 Vector2::RotateAround(Vector2 pivot, float angle, Vector2 point)
     {
         float s = sin(Math::ToRadians(angle));
