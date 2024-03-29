@@ -462,7 +462,9 @@ namespace ImGui
 
                 String selectedEntityName = !ref.IsValid() ? "None" : ref.Get().GetName().Name;
                 ImGui::Combo(propertyName.c_str(), selectedEntityName, entityNames);
-                property.set_value(instance, World::FindEntityByName(selectedEntityName));
+                Entity selectedEntity = World::FindEntityByName(selectedEntityName);
+                EntityRef selectedEntityRef = EntityRef(selectedEntity); 
+                property.set_value(instance, selectedEntityRef);
                 
                 continue;
             }

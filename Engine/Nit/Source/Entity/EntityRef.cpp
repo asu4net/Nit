@@ -26,8 +26,14 @@ namespace Nit
 
     EntityRef::EntityRef(Entity entity)
         : m_TargetEntity(entity)
-        , m_EntityId(m_TargetEntity.IsValid() ? m_TargetEntity.Get<IDComponent>().ID : 0)
+        , m_EntityId(0)
     {
+        if (m_TargetEntity.IsValid())
+        {
+            m_EntityId = m_TargetEntity.Get<IDComponent>().ID;
+            return;
+        }
+        m_TargetEntity = Entity();
     }
 
     EntityRef::EntityRef(const EntityRef& other) = default;
