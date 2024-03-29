@@ -66,9 +66,9 @@ namespace Nit::HierarchyWindow
             ImGui::EndPopup();
         }
 
-        DynamicArray<Entity> entities = scene->GetEntities();
+        EntityArray entities = scene->GetEntities();
 
-        for (Entity entity : entities)
+        for (Entity& entity : entities)
         {
             ShowEntityNode(entity, bIsExpanded);
         }

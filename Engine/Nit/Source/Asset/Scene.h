@@ -5,37 +5,34 @@
 namespace Nit
 {
     class ComponentType;
-
+    using EntityArray = DynamicArray<Entity>;
+    
     class Scene : public Asset
     {
     public:
         static String GetSceneExstension();
         static String DefaultFolder();
 
-        Scene();
-        ~Scene();
+        Scene  ();
+        ~Scene ();
 
-        bool Load() override;
-        
-        void LoadData();
-        void SaveData();
-
-        void Serialize();
-        void Deserialize();
-
-        bool IsStartScene() const { return m_bIsStartScene; }
-
-        String GetData() const { return m_Data; }
-
-        void AddEntity(Entity entity);
-        void DestroyEntity(Entity entity);
-
-        const DynamicArray<Entity>& GetEntities() const { return m_Entities; }
-        void ReleaseEntities();
-
+        bool        Load          () override;
+        void        LoadData      ();
+        void        SaveData      ();
+        void        Serialize     ();
+        void        Deserialize   ();
+        bool        IsStartScene  ()                                   const { return m_bIsStartScene; }
+        String      GetData       ()                                   const { return m_Data; }
+        void        PushEntity    (Entity entity);
+        EntityArray GetEntities   ()                                   const { return m_Entities; }
+        void        EachEntity    (Delegate<void(Entity& e)> callback);
+        Entity      FindEntity    (const String& name)                 const;
+        void        PopEntity     (Entity entity);
+        void        ClearEntities ();
+    
     private:
-        String m_Data;
-        bool m_bIsStartScene = false;
+        String               m_Data;
+        bool                 m_bIsStartScene = false;
         DynamicArray<Entity> m_Entities;
         
         RTTR_ENABLE(Asset)

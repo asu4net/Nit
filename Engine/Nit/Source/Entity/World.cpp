@@ -11,7 +11,8 @@ namespace Nit::World
     Map<String, Scene*> AllScenes;
     Map<String, Scene*> OpenedScenes;
     DynamicArray<Entity> GlobalEntities;
-
+    Map<Id, Entity> IdEntityMap;
+    
     Registry* EntityRegistry = nullptr;
     uint32_t CreatedEntitiesCount = 0;
 
@@ -30,6 +31,7 @@ namespace Nit::World
         EntityRegistry->emplace<IDComponent>(rawEntity, id);
         EntityRegistry->emplace<TransformComponent>(rawEntity, params.Position, params.Rotation, params.Scale);
         const Entity entity(rawEntity);
+        IdEntityMap[id] = entity; 
         CreatedEntitiesCount++;
 
         if (!params.SceneOwner.empty())
@@ -37,7 +39,7 @@ namespace Nit::World
             if (AllScenes.count(params.SceneOwner))
             {
                 EntityRegistry->emplace<SceneComponent>(rawEntity, Content::GetAssetByName(params.SceneOwner), params.IsSerializable);
-                AllScenes[params.SceneOwner]->AddEntity(entity);
+                AllScenes[params.SceneOwner]->PushEntity(entity);
             }
             else
             {
@@ -57,79 +59,119 @@ namespace Nit::World
         if (!entity.IsValid())
             return;
 
+        // Remove entity from world
+        PopEntity(entity);
+
+        // Remove entity from scene
         if (entity.Has<SceneComponent>())
         {
-            auto& scene = entity.Get<SceneComponent>();
-            OpenedScenes[scene.OwnerScene.GetWeak().lock()->GetAssetData().Name]->DestroyEntity(entity);
-            return;
+            auto& sceneComponent = entity.Get<SceneComponent>();
+            SharedPtr<Scene> scene = sceneComponent.OwnerScene.GetAs<Scene>(); 
+            OpenedScenes[scene->GetAssetData().Name]->PopEntity(entity);
         }
-
-        auto it = std::find(GlobalEntities.begin(), GlobalEntities.end(), entity);
-        if (it == GlobalEntities.end())
+        // Remove entity from global entities
+        else
         {
-            return;
+            auto it = std::find_if(GlobalEntities.begin(), GlobalEntities.end(),
+            [&entity] (Entity e)
+            {
+                return entity == e;
+            });
+            
+            if (it != GlobalEntities.end())
+            {
+                GlobalEntities.erase(it);
+            }
+            else
+            {
+                NIT_CHECK(false, "Trying to remove unexisting entity!");
+            }
         }
 
-        GlobalEntities.erase(it);
-        World::GetRegistry().destroy(entity.GetRaw());
+        // Destroy entity on the registry
+        EntityRegistry->destroy(entity.GetRaw());
     }
 
-    void PushGlobalEntity(Entity entity)
+    void DestroyEntities(Scene& scene)
     {
-        if (!entity.IsValid() || entity.Has<SceneComponent>())
+        scene.EachEntity({
+        [](Entity& e)
+        {
+            PopEntity(e);
+            EntityRegistry->destroy(e.GetRaw());
+        }});
+        scene.ClearEntities();
+    }
+
+    void PushEntity(Entity entity)
+    {
+        if (!entity.IsValid() || !entity.Has<IDComponent>())
         {
             NIT_CHECK(false, "Invalid entity!");
             return;
         }
-        GlobalEntities.push_back(entity);
+        IdEntityMap[entity.GetID().ID] = entity;
     }
 
-    void PopGlobalEntity(Entity entity)
+    void PopEntity(Id entityId)
     {
-        auto it = std::find_if(GlobalEntities.begin(), GlobalEntities.end(), [&entity] (Entity e) { return entity == e; });
-        if (it == GlobalEntities.end())
+        if (!IdEntityMap.count(entityId))
         {
-            GlobalEntities.erase(it);
+            NIT_CHECK(false, "Invalid id!");
             return;
         }
-        NIT_CHECK(false, "Trying to remove unexisting entity!");
+        IdEntityMap.erase(entityId);
+    }
+
+    void PopEntity(Entity entity)
+    {
+        if (!entity.IsValid() || !entity.Has<IDComponent>())
+        {
+            NIT_CHECK(false, "Invalid entity!");
+            return;
+        }
+        PopEntity(entity.GetID().ID);
+    }
+
+    Entity FindEntity(Id id)
+    {
+        if (!IdEntityMap.count(id))
+        {
+            return Entity();
+        }
+        return IdEntityMap[id];
     }
 
     DynamicArray<Nit::Entity>& GetGlobalEntities()
     {
         return GlobalEntities;
     }
-
-    static bool IsEntity(Entity entity, const String& entityName)
-    {
-        if (entity.Has<NameComponent>())
-        {
-            auto& name = entity.GetName();
-            return name == entityName;
-        }
-
-        return false;
-    }
-
+    
     Entity FindEntityByName(const String& entityName)
     {
         for (const Entity& entity : GlobalEntities)
         {
-            if (IsEntity(entity, entityName))
-                return entity;
+             auto it = std::find_if(GlobalEntities.begin(), GlobalEntities.end(),
+             [&entityName](const Entity& entity)
+             {
+                 return entity.GetName() == entityName;
+             });
+             if (it != GlobalEntities.end())
+             {
+                 return *it;
+             }
         }
-
+        
         for (auto& [name, scene] : OpenedScenes)
         {
-            auto& entities = scene->GetEntities();
-
-            for (const Entity& entity : entities)
+            Entity entity = scene->FindEntity(entityName);
+            if (entity.IsValid())
             {
-                if (IsEntity(entity, entityName))
-                    return entity;
+                return entity;
             }
         }
-        return {};
+        
+        return Entity();
     }
 
     Entity CloneEntity(Entity sourceEntity, const String& name)
@@ -149,13 +191,14 @@ namespace Nit::World
         if (entity.Has<SceneComponent>())
         {
             auto& scene = entity.Get<SceneComponent>();
-            scene.OwnerScene.As<Scene>().AddEntity(entity);
+            scene.OwnerScene.As<Scene>().PushEntity(entity);
         }
         else
         {
             GlobalEntities.push_back(entity);
         }
-
+        
+        IdEntityMap[entity.GetID().ID] = entity;
         return entity;
     }
 
@@ -166,7 +209,7 @@ namespace Nit::World
 
     static void OnSceneDestroyed(Scene* scene)
     {
-        scene->ReleaseEntities();
+        DestroyEntities(*scene);
         AllScenes.erase(scene->GetAssetData().Name);
     }
 
@@ -284,7 +327,7 @@ namespace Nit::World
         }
 
         Scene* scene = OpenedScenes[sceneName];
-        scene->ReleaseEntities();
+        DestroyEntities(*scene);
         OpenedScenes.erase(sceneName);
 
         NIT_LOG_TRACE("Scene closed! %s\n", sceneName.c_str());
@@ -322,7 +365,7 @@ namespace Nit::World
     {
         for (auto& [name, scene] : OpenedScenes)
         {
-            scene->ReleaseEntities();
+            DestroyEntities(*scene);
             scene->Deserialize();
         }
     }

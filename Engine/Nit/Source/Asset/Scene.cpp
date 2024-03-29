@@ -157,7 +157,8 @@ namespace Nit
                     else if (nameComponent.IsEmpty()) nameComponent = word;
                     else idComponent = std::stoull(word);
                 }
-                AddEntity(entity);
+                PushEntity(entity);
+                World::PushEntity(entity);
             }
             else if (line.find("#component") != String::npos)
             {
@@ -192,28 +193,37 @@ namespace Nit
         }
     }
 
-    void Scene::AddEntity(Entity entity)
+    void Scene::PushEntity(Entity entity)
     {
         m_Entities.push_back(entity);
     }
 
-    void Scene::DestroyEntity(Entity entity)
+    void Scene::EachEntity(Delegate<void(Entity& e)> callback)
     {
-        auto it = std::find(m_Entities.begin(), m_Entities.end(), entity);
-        if (it == m_Entities.end())
-            return;
-        m_Entities.erase(it);
-        World::GetRegistry().destroy(entity.GetRaw());
+        for (Entity& e : m_Entities)
+        {
+            callback(e);
+        }
     }
 
-    void Scene::ReleaseEntities()
+    Entity Scene::FindEntity(const String& name) const
     {
-        // move to world
-        for (Entity& entity : m_Entities)
+        auto it = std::find_if(m_Entities.begin(), m_Entities.end(),
+        [&name](const Entity& entity)
         {
-            RawEntity rawEntity = entity.GetRaw();
-            World::GetRegistry().destroy(rawEntity);
-        }
+            return entity.GetName() == name;
+        });
+
+        return it != m_Entities.end() ? *it : Entity();
+    }
+
+    void Scene::PopEntity(Entity entity)
+    {
+        m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), entity));
+    }
+
+    void Scene::ClearEntities()
+    {
         m_Entities.clear();
     }
 }

@@ -19,7 +19,6 @@ namespace Nit
         }
 
         Matrix4 GetMatrix()  const { return Matrix4::CreateTransform(Position, Rotation, Scale); }
-        
         Vector3 GetUp()      const { return Vector3::LookAt(Rotation, Vector3::Up); }
         Vector3 GetRight()   const { return Vector3::LookAt(Rotation, Vector3::Right); }
         Vector3 GetForward() const { return Vector3::LookAt(Rotation, Vector3::Forward); }

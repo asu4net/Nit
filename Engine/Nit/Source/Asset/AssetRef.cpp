@@ -62,12 +62,12 @@ namespace Nit
 
     void AssetRef::Retarget(Id id)
     {
-        m_AssetId = id;
-        
-        if (id != 0)
-        {
-            m_Asset = Content::GetAssetById(id);
-        }
+            m_AssetId = id;
+            
+            if (id != 0)
+            {
+                m_Asset = Content::GetAssetById(id);
+            }
     }
 
     void AssetRef::Clear()

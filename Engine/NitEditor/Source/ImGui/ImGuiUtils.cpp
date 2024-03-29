@@ -4,6 +4,7 @@
 #include "Asset\AssetRef.h"
 #include "Asset\Content.h"
 #include "Core\File.h"
+#include "Entity/Entity.h"
 
 namespace ImGui
 {
@@ -444,6 +445,16 @@ namespace ImGui
                     AssetRef assetRef = Content::GetAssetByName(selectedAsset);
                     property.set_value(instance, assetRef);
                 }
+                continue;
+            }
+
+            if (propertyType == Type::get<Entity>())
+            {
+                DynamicArray<String> entityNames;
+                entityNames.push_back("None");
+
+                
+                
                 continue;
             }
 

@@ -318,6 +318,7 @@ namespace Nit::Renderer
             Vector3  Position      = Vector3::Zero;
             Vector3  LocalPosition = Vector3::Zero;
             Color    TintColor     = Color::White;
+            Vector2  Size          = Vector2::Zero;
             float    Fade          = .01f;
             float    Time          =  0.f;
             int      EntityID      = -1;
@@ -352,6 +353,7 @@ namespace Nit::Renderer
                 {ShaderDataType::Float3, "a_Position"      },
                 {ShaderDataType::Float3, "a_LocalPosition" },
                 {ShaderDataType::Float4, "a_TintColor"     },
+                {ShaderDataType::Float2, "a_Size"          },
                 {ShaderDataType::Float , "a_Fade"          },
                 {ShaderDataType::Float , "a_Time"          },
                 {ShaderDataType::Float,  "a_EntityID"      }
@@ -406,6 +408,7 @@ namespace Nit::Renderer
             lineNormal.Normalize();
 
             const float halfThickness = line.Thickness / 2.f;
+            const Vector2 size = { (line.End - line.Start).Magnitude(), line.Thickness };
             
             for (uint32_t i = 0; i < VerticesPerPrimitive; i++)
             {
@@ -423,9 +426,9 @@ namespace Nit::Renderer
                 }
                 
                 vertex.Position = Vector4(localVertexPos, 1.f) * line.Transform * ProjectionViewMatrix;
-                
+                vertex.Size = size;
                 //------
-                vertex.LocalPosition   = localVertexPos;
+                vertex.LocalPosition   = RenderUtils::GetQuadVertexUVs()[i];
                 vertex.Time            = Time::GetApplicationTime();
                 vertex.TintColor       = line.TintColor;
                 vertex.Fade            = line.Fade;

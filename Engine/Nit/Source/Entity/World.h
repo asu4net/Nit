@@ -23,8 +23,11 @@ namespace Nit::World
     Entity CreateEntity(const EntityCreationParams& params = {});
     void DestroyEntity(Entity entity);
 
-    void PushGlobalEntity(Entity entity);
-    void PopGlobalEntity(Entity entity);
+    void PushEntity(Entity entity);
+    void PopEntity(Id entityId);
+    void PopEntity(Entity entity);
+    Entity FindEntity(Id id);
+
     DynamicArray<Entity>& GetGlobalEntities();
 
     Entity FindEntityByName(const String& entityName);
