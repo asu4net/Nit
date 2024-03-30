@@ -13,6 +13,7 @@
 #include "Windows\HierarchyWindow.h"
 #include "Windows\PropertiesWindow.h"
 #include "ContentSystem.h"
+#include "GizmoSystem.h"
 #include "Windows\SpritePackerWindow.h"
 
 
@@ -131,5 +132,6 @@ namespace Nit::EditorSystem
         ContentSystem::Register();
         GridSystem::Register();
         EditorCameraSystem::Register();
+        GizmoSystem::Register();
     }
 }

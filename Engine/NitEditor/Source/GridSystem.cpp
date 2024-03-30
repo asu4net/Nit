@@ -12,7 +12,7 @@ namespace Nit::GridSystem
 
     void Register()
     {
-        Engine::CreateSystem("GridSystem", 500, ExecutionContext::Editor);
+        Engine::CreateSystem("GridSystem", EditorExecutionOrder, ExecutionContext::Editor);
         Engine::SetSystemCallback(SystemStage::Create, &OnCreate);
         Engine::SetSystemCallback(SystemStage::Start, &OnStart);
         Engine::SetSystemCallback(SystemStage::Finish, &OnFinish);

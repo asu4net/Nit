@@ -16,7 +16,7 @@ namespace Nit::EditorCameraSystem
 
     void Register()
     {
-        Engine::CreateSystem("EditorCameraSystem", 600, ExecutionContext::Editor);
+        Engine::CreateSystem("EditorCameraSystem", CameraExecutionOrder - 1, ExecutionContext::Editor);
         Engine::SetSystemCallback(SystemStage::Create, &OnCreate);
         Engine::SetSystemCallback(SystemStage::Start, &OnStart);
         Engine::SetSystemCallback(SystemStage::LateUpdate, &OnLateUpdate);

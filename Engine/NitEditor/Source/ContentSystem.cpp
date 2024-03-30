@@ -10,7 +10,7 @@ namespace Nit::ContentSystem
 
     void Register()
     {
-        Engine::CreateSystem("ContentSystem", 5100, ExecutionContext::Editor);
+        Engine::CreateSystem("ContentSystem", EditorExecutionOrder, ExecutionContext::Editor);
         Engine::SetSystemCallback(SystemStage::Create, &OnCreate);
     }
 
