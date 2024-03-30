@@ -13,6 +13,7 @@
 #include "System/CircleSystem.h"
 #include "System/FamilySystem.h"
 #include "System/MaterialSystem.h"
+#include "System/Physics2DSystem.h"
 
 namespace Nit::Engine
 {
@@ -387,6 +388,7 @@ namespace Nit::Engine
         AnimationSystem::Register();
         CameraSystem::Register();
         AudioSystem::Register();
+        Physics2DSystem::Register();
         
         Content::LoadAssets();
 

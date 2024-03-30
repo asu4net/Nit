@@ -13,6 +13,7 @@
 #include "Asset/Animation.h"
 #include "Asset/Material.h"
 #include "Asset/AudioClip.h"
+#include "Asset/PhysicMaterial.h"
 
 // Window
 #include "Window/Window.h"
@@ -43,6 +44,9 @@
 #include "Component/CircleComponent.h"
 #include "Component/MaterialComponent.h"
 #include "Component/FamilyComponent.h"
+#include "Component/BoxCollider2DComponent.h"
+#include "Component/Rigidbody2DComponent.h"
+#include "Component/CircleColliderComponent.h"
 
 // Input
 #include "Input/Input.h"

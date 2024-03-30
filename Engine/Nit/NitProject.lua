@@ -27,7 +27,8 @@ project "Nit"
         "%{IncludeDirs.rapidjson}",
         "%{IncludeDirs.OpenALInclude}",
         "%{IncludeDirs.OpenALSource}",
-        "%{IncludeDirs.OpenALCommon}"
+        "%{IncludeDirs.OpenALCommon}",
+        "%{IncludeDirs.Box2D}"
     }
     
     links
@@ -36,7 +37,8 @@ project "Nit"
         "opengl32.lib",
         "GLAD",
         "RTTR",
-        "OpenAL"
+        "OpenAL",
+        "Box2D"
     }
 
     defines

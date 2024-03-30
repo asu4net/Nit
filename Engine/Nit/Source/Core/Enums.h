@@ -45,10 +45,11 @@ namespace Nit
         InputExecutionOrder     = 20000,
         AnimationExecutionOrder = 30000,
         CameraExecutionOrder    = 40000,
-        SpriteExecutionOrder    = 50000,
-        CircleExecutionOrder    = 60000,
-        MaterialExecutionOrder  = 70000,
-        AudioExecutionOrder     = 80000
+        PhysicsExecutionOrder   = 50000,
+        SpriteExecutionOrder    = 60000,
+        CircleExecutionOrder    = 70000,
+        MaterialExecutionOrder  = 80000,
+        AudioExecutionOrder     = 90000
     };
 
     enum class MinificationFilter { Linear, Nearest };
