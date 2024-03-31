@@ -107,6 +107,7 @@ namespace Nit::Physics2DSystem
         b2FixtureDef fixtureDef;
         SetFixtureDefinition(fixtureDef, boxShape, collider.PhysicMaterialRef);
         collider.FixturePtr = static_cast<void*>(body->CreateFixture(&fixtureDef));
+        collider.PrevSize = collider.Size;
     }
 
     void CreateCircleFixture(Rigidbody2DComponent& pb2D, CircleColliderComponent& collider)
@@ -122,6 +123,7 @@ namespace Nit::Physics2DSystem
         b2FixtureDef fixtureDef;
         SetFixtureDefinition(fixtureDef, circleShape, collider.PhysicMaterialRef);
         collider.FixturePtr = static_cast<void*>(body->CreateFixture(&fixtureDef));
+        collider.PrevRadius = collider.Radius;
     }
 
     void UpdateBodyData(Rigidbody2DComponent& rb, TransformComponent& transform, const Vector2& center)
@@ -149,13 +151,6 @@ namespace Nit::Physics2DSystem
         }
         
         body->SetGravityScale(rb.GravityScale);
-        
-        if (rb.BodyType != rb.PrevBodyType)
-        {
-            body->SetType(static_cast<b2BodyType>(rb.BodyType));
-            if (rb.BodyType == EBodyType::Kinematic)
-                body->SetLinearVelocity({ 0, 0 });
-        }
     }
 
     void TryCreateBox2DBodies()
@@ -166,25 +161,48 @@ namespace Nit::Physics2DSystem
         {
             auto [transform, rb] = view.get<TransformComponent, Rigidbody2DComponent>(rawEntity);
             Entity entity = rawEntity;
-            
-            if (rb.BodyPtr)
+
+            // Check if re-creation needed
             {
-                continue;
+                if (entity.Has<BoxCollider2DComponent>())
+                {
+                    auto& boxCollider = entity.Get<BoxCollider2DComponent>();
+
+                    if (!rb.BodyPtr)
+                    {
+                        CreateBody(rb, transform.Position + boxCollider.Center, transform.Rotation.z);
+                    }
+
+                    if (!boxCollider.FixturePtr || boxCollider.Size != boxCollider.PrevSize)
+                    {
+                        CreateBoxFixture(rb, boxCollider);
+                    }
+                }
+                else if (entity.Has<CircleColliderComponent>())
+                {
+                    auto& circleCollider = entity.Get<CircleColliderComponent>();
+
+                    if (!rb.BodyPtr)
+                    {
+                        CreateBody(rb, transform.Position + circleCollider.Center, transform.Rotation.z);
+                    }
+
+                    if (circleCollider.FixturePtr || circleCollider.Radius != circleCollider.PrevRadius)
+                    {
+                        CreateCircleFixture(rb, circleCollider);
+                    }
+                }
             }
-            
-            if (entity.Has<BoxCollider2DComponent>())
+
+            // Check for changes on body type
             {
-                auto& boxCollider = entity.Get<BoxCollider2DComponent>();
-                boxCollider.PrevSize = boxCollider.Size;
-                CreateBody(rb, transform.Position + boxCollider.Center, transform.Rotation.z);
-                CreateBoxFixture(rb, boxCollider);
-            }
-            else if (entity.Has<CircleColliderComponent>())
-            {
-                auto& circleCollider = entity.Get<CircleColliderComponent>();
-                circleCollider.Radius = circleCollider.Radius;
-                CreateBody(rb, transform.Position + circleCollider.Center, transform.Rotation.z);
-                CreateCircleFixture(rb, circleCollider);
+                b2Body* body = static_cast<b2Body*>(rb.BodyPtr);
+                if (rb.BodyType != rb.PrevBodyType)
+                {
+                    body->SetType(static_cast<b2BodyType>(rb.BodyType));
+                    if (rb.BodyType == EBodyType::Kinematic)
+                        body->SetLinearVelocity({ 0, 0 });
+                }
             }
         }
     }
@@ -283,31 +301,25 @@ namespace Nit::Physics2DSystem
         // Update physic world
         PhysicWorld->SetGravity(ToBox2D(Gravity));
         PhysicWorld->Step(Time::FixedDeltaTime, VelocityIterations, PositionIterations);
-        
-        Registry& registry = World::GetRegistry();
-        
-        // Update CircleColliders
-        {
-            registry.view<CircleColliderComponent, TransformComponent, Rigidbody2DComponent>()
-           .each([&](const auto entity, CircleColliderComponent& collider, TransformComponent& transform, Rigidbody2DComponent& rb)
-           {
-               if (collider.Radius != collider.PrevRadius)
-                   CreateCircleFixture(rb, collider);
-               
-               UpdateBodyData(rb, transform, collider.Center);
-           });
-        }
 
-        // Update BoxColliders
+        auto view = World::GetRegistry().view<TransformComponent, Rigidbody2DComponent>();
+        
+        for (RawEntity rawEntity : view)
         {
-            registry.view<BoxCollider2DComponent, TransformComponent, Rigidbody2DComponent>()
-            .each([&](const auto entity, BoxCollider2DComponent& collider, TransformComponent& transform, Rigidbody2DComponent& rb)
+            auto [transform, rb] = view.get<TransformComponent, Rigidbody2DComponent>(rawEntity);
+            Entity entity = rawEntity;
+            
+            if (entity.Has<BoxCollider2DComponent>())
             {
-                if (collider.Size != collider.PrevSize)
-                    CreateBoxFixture(rb, collider);
-                
-                UpdateBodyData(rb, transform, collider.Center);
-            });
+                auto& boxCollider = entity.Get<BoxCollider2DComponent>();
+                UpdateBodyData(rb, transform, boxCollider.Center);
+
+            }
+            else if (entity.Has<CircleColliderComponent>())
+            {
+                auto& circleCollider = entity.Get<CircleColliderComponent>();
+                UpdateBodyData(rb, transform, circleCollider.Center);
+            }
         }
     }
 }
