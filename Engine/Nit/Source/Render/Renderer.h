@@ -71,14 +71,21 @@ namespace Nit
 namespace Nit::Renderer
 {
     void Init(GraphicsAPI api);
+    Registry* GetRegistryPtr();
+    Registry& GetRegistry();
     void SetSpriteShader(const SharedPtr<RendererShader> spriteShader);
+    SharedPtr<RendererShader> GetSpriteShader();
+    
     void SetCircleShader(const SharedPtr<RendererShader> circleShader);
     void SetLineShader(const SharedPtr<RendererShader> lineShader);
     void SetProjectionViewMatrix(const Matrix4& matrix);
+    Matrix4 GetProjectionViewMatrix();
     void SetErrorScreenEnabled(bool bEnabled);
 
     SharedPtr<RendererAPI> GetAPI();
 
+    int CalculateTextureSlot(const SharedPtr<RendererTexture2D>& texture);
+    void NextBatch();
     void DrawPrimitives();
 
     void PushPrimitive(Primitive2D* primitive);

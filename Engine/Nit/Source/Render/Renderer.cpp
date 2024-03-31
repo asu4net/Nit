@@ -18,6 +18,7 @@ namespace Nit::Renderer
     constexpr uint32_t            IndicesPerPrimitive  = 6;
     constexpr uint32_t            MaxTextureSlots      = 32;
 
+    Registry*                     EntityRegistry       = nullptr;
     SharedPtr<RendererAPI>        API;
     Matrix4                       ProjectionViewMatrix; // quizás esto podría ir por vertex data también
     TextureMap                    Textures;
@@ -31,9 +32,7 @@ namespace Nit::Renderer
     uint32_t                      LastTextureSlot      = 1;
     SharedPtr<RendererShader>     LastShader           = nullptr;
     Primitive2DType               LastPrimitive2D      = Primitive2DType_Default;
-
-    void NextBatch();
-    int CalculateTextureSlot(const SharedPtr<RendererTexture2D>& texture);
+    
     SharedPtr<IndexBuffer> CreateQuadIndexBuffer(uint32_t maxPrimitives);
 
     namespace SpriteBatch
@@ -539,6 +538,7 @@ namespace Nit::Renderer
 
     void Init(GraphicsAPI api)
     {
+        EntityRegistry = new Registry();
         API = RendererAPI::Create(api);
         ErrorShader = RendererShader::Create(api);
 
@@ -575,6 +575,16 @@ namespace Nit::Renderer
         NIT_LOG_TRACE("Renderer initialized!\n");
     }
 
+    Registry* GetRegistryPtr()
+    {
+        return EntityRegistry;
+    }
+
+    Registry& GetRegistry()
+    {
+        return *EntityRegistry;
+    }
+    
     void SetErrorScreenEnabled(bool bEnabled)
     {
         bErrorScreenEnabled = bEnabled;
@@ -716,6 +726,11 @@ namespace Nit::Renderer
         SpriteBatch::DefaultShader = spriteShader;
     }
 
+    SharedPtr<RendererShader> GetSpriteShader()
+    {
+        return SpriteBatch::DefaultShader;
+    }
+
     void SetCircleShader(const SharedPtr<RendererShader> circleShader)
     {
         CircleBatch::DefaultShader = circleShader;
@@ -729,5 +744,10 @@ namespace Nit::Renderer
     void SetProjectionViewMatrix(const Matrix4& matrix)
     {
         ProjectionViewMatrix = matrix;
+    }
+
+    Matrix4 GetProjectionViewMatrix()
+    {
+        return ProjectionViewMatrix;
     }
 }
