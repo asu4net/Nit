@@ -211,7 +211,6 @@ namespace Nit::Physics2DSystem
     void OnBoxCollider2DAdded(Registry&, RawEntity rawEntity);
     void OnCircleColliderAdded(Registry&, RawEntity rawEntity);
     void OnRigidbody2DRemoved(Registry&, RawEntity rawEntity);
-    void OnDestroy();
     void OnStart();
     void OnUpdate();
     void OnFixedUpdate();
@@ -220,7 +219,6 @@ namespace Nit::Physics2DSystem
     {
         Engine::CreateSystem("Physics2DSystem", PhysicsExecutionOrder, ExecutionContext::Runtime);
         Engine::SetSystemCallback(SystemStage::Create,      &OnCreate);
-        Engine::SetSystemCallback(SystemStage::Destroy,     &OnDestroy);
         Engine::SetSystemCallback(SystemStage::Start,       &OnStart);
         Engine::SetSystemCallback(SystemStage::Update,      &OnUpdate);
         Engine::SetSystemCallback(SystemStage::FixedUpdate, &OnFixedUpdate);
