@@ -15,7 +15,7 @@ namespace Nit::CircleSystem
 
     void Register()
     {
-        Engine::CreateSystem("CircleSystem", CircleExecutionOrder, ExecutionContext::Always);
+        Engine::CreateSystem("CircleSystem", SpriteExecutionOrder, ExecutionContext::Always);
         Engine::SetSystemCallback(SystemStage::Create, &OnCreate);
         Engine::SetSystemCallback(SystemStage::PreDrawPrimitives, &OnPreDrawPrimitives);
     }

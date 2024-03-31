@@ -10,6 +10,7 @@
 #include "Component/TransformComponent.h"
 #include "ImGuizmo.h"
 #include "EditorSystem.h"
+#include "Component/Rigidbody2DComponent.h"
 
 namespace Nit::ViewportWindow
 {
@@ -18,6 +19,8 @@ namespace Nit::ViewportWindow
     Vector2 ViewportMaxBound;
     Vector2 MousePosition;
 
+    bool bWasUsingGizmo = false;
+    
     Vector2 GetMousePosition()
     {
         return MousePosition;
@@ -122,6 +125,25 @@ namespace Nit::ViewportWindow
                     transform.Rotation = { matrixRotation[0], matrixRotation[1], matrixRotation[2] };
                     transform.Scale = { matrixScale[0], matrixScale[1], matrixScale[2] };
                 }
+            }
+
+            if (ImGuizmo::IsUsing() && !bWasUsingGizmo)
+            {
+                if (selectedEntity.Has<Rigidbody2DComponent>())
+                {
+                    auto& rb = selectedEntity.Get<Rigidbody2DComponent>();
+                    rb.FollowTransform = true;
+                }
+                bWasUsingGizmo = true;
+            }
+            else if (!ImGuizmo::IsUsing() && bWasUsingGizmo)
+            {
+                if (selectedEntity.Has<Rigidbody2DComponent>())
+                {
+                    auto& rb = selectedEntity.Get<Rigidbody2DComponent>();
+                    rb.FollowTransform = false;
+                }
+                bWasUsingGizmo = false;
             }
         }
 

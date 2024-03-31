@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace GizmoSystem
+namespace Nit::GizmoSystem
 {
     void Register();
 }

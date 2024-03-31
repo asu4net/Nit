@@ -6,15 +6,17 @@ namespace Nit
     
     struct Rigidbody2DComponent
     {
-        EBodyType BodyType     = EBodyType::Dynamic;
-        float     Mass         = 1.f;
-        float     GravityScale = 1.f;
-        void*     BodyPtr      = nullptr;
+        bool      IsEnabled          = true;
+        EBodyType BodyType           = EBodyType::Dynamic;
+        float     Mass               = 1.f;
+        float     GravityScale       = 1.f;
+        bool      FollowTransform    = false;
+        void*     BodyPtr            = nullptr;
+        EBodyType PrevBodyType       = EBodyType::Dynamic;
 
-        EBodyType PrevBodyType = EBodyType::Dynamic;
-        
         Rigidbody2DComponent() = default;
-
+        Rigidbody2DComponent(const Rigidbody2DComponent& other);
+        
         RTTR_ENABLE_NO_VIRTUAL
     };
 

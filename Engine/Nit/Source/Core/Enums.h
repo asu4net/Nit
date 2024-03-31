@@ -40,14 +40,13 @@ namespace Nit
 
     enum EngineSystemsExecutionOrder : uint32_t
     {
-        EditorExecutionOrder    = 50000,
-        FamilyExecutionOrder    = 10000,
-        InputExecutionOrder     = 20000,
-        AnimationExecutionOrder = 30000,
-        CameraExecutionOrder    = 40000,
-        PhysicsExecutionOrder   = 50000,
-        SpriteExecutionOrder    = 60000,
-        CircleExecutionOrder    = 70000,
+        EditorExecutionOrder    = 10000,
+        FamilyExecutionOrder    = 20000,
+        InputExecutionOrder     = 30000,
+        AnimationExecutionOrder = 40000,
+        CameraExecutionOrder    = 50000,
+        PhysicsExecutionOrder   = 60000,
+        SpriteExecutionOrder    = 70000,
         MaterialExecutionOrder  = 80000,
         AudioExecutionOrder     = 90000
     };

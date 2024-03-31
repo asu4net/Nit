@@ -124,9 +124,30 @@ namespace Nit::Physics2DSystem
         collider.FixturePtr = static_cast<void*>(body->CreateFixture(&fixtureDef));
     }
 
-    void UpdateBodyData(Rigidbody2DComponent& rb)
+    void UpdateBodyData(Rigidbody2DComponent& rb, TransformComponent& transform, const Vector2& center)
     {
         b2Body* body = static_cast<b2Body*>(rb.BodyPtr);
+
+        if (!rb.IsEnabled)
+        {
+            body->SetEnabled(false);
+            return;
+        }
+                
+        body->SetEnabled(true);
+
+        if (rb.FollowTransform)
+        {
+            body->SetAwake(false);
+            body->SetTransform(ToBox2D(transform.Position), Math::ToRadians(transform.Rotation.z));
+        }
+        else
+        {
+            body->SetAwake(true);
+            transform.Position   = Vector3(FromBox2D(body->GetTransform().p - ToBox2D(center)), transform.Position.z);
+            transform.Rotation.z = Math::ToDegrees(body->GetAngle());
+        }
+        
         body->SetGravityScale(rb.GravityScale);
         
         if (rb.BodyType != rb.PrevBodyType)
@@ -136,12 +157,45 @@ namespace Nit::Physics2DSystem
                 body->SetLinearVelocity({ 0, 0 });
         }
     }
+
+    void TryCreateBox2DBodies()
+    {
+        auto view = World::GetRegistry().view<TransformComponent, Rigidbody2DComponent>();
+        
+        for (RawEntity rawEntity : view)
+        {
+            auto [transform, rb] = view.get<TransformComponent, Rigidbody2DComponent>(rawEntity);
+            Entity entity = rawEntity;
+            
+            if (rb.BodyPtr)
+            {
+                continue;
+            }
+            
+            if (entity.Has<BoxCollider2DComponent>())
+            {
+                auto& boxCollider = entity.Get<BoxCollider2DComponent>();
+                boxCollider.PrevSize = boxCollider.Size;
+                CreateBody(rb, transform.Position + boxCollider.Center, transform.Rotation.z);
+                CreateBoxFixture(rb, boxCollider);
+            }
+            else if (entity.Has<CircleColliderComponent>())
+            {
+                auto& circleCollider = entity.Get<CircleColliderComponent>();
+                circleCollider.Radius = circleCollider.Radius;
+                CreateBody(rb, transform.Position + circleCollider.Center, transform.Rotation.z);
+                CreateCircleFixture(rb, circleCollider);
+            }
+        }
+    }
     
     void OnCreate();
-    void OnComponentAdded(Registry&, RawEntity rawEntity);
-    void OnComponentRemoved(Registry&, RawEntity rawEntity);
+    void OnBoxCollider2DAdded(Registry&, RawEntity rawEntity);
+    void OnCircleColliderAdded(Registry&, RawEntity rawEntity);
+    void OnRigidbody2DRemoved(Registry&, RawEntity rawEntity);
     void OnDestroy();
     void OnStart();
+    void OnUpdate();
     void OnFixedUpdate();
 
     void Register()
@@ -150,6 +204,7 @@ namespace Nit::Physics2DSystem
         Engine::SetSystemCallback(SystemStage::Create,      &OnCreate);
         Engine::SetSystemCallback(SystemStage::Destroy,     &OnDestroy);
         Engine::SetSystemCallback(SystemStage::Start,       &OnStart);
+        Engine::SetSystemCallback(SystemStage::Update,      &OnUpdate);
         Engine::SetSystemCallback(SystemStage::FixedUpdate, &OnFixedUpdate);
     }
 
@@ -158,92 +213,71 @@ namespace Nit::Physics2DSystem
         PhysicWorld = new b2World({Gravity.x, Gravity.y});
         
         Registry& registry = World::GetRegistry();
-        registry.on_construct<BoxCollider2DComponent>  ().connect<&OnComponentAdded>();
-        registry.on_construct<CircleColliderComponent> ().connect<&OnComponentAdded>();
-        registry.on_construct<Rigidbody2DComponent>    ().connect<&OnComponentAdded>();
-        registry.on_destroy  <Rigidbody2DComponent>    ().connect<&OnComponentRemoved>();
+        registry.on_construct<BoxCollider2DComponent>  ().connect<&OnBoxCollider2DAdded>();
+        registry.on_construct<CircleColliderComponent> ().connect<&OnBoxCollider2DAdded>();
+        registry.on_destroy  <Rigidbody2DComponent>    ().connect<&OnRigidbody2DRemoved>();
     }
 
     void OnDestroy()
     {
         Registry& registry = World::GetRegistry();
-        registry.on_construct<BoxCollider2DComponent>  ().disconnect<&OnComponentAdded>();
-        registry.on_construct<CircleColliderComponent> ().disconnect<&OnComponentAdded>();
-        registry.on_construct<Rigidbody2DComponent>    ().disconnect<&OnComponentAdded>();
-        registry.on_destroy  <Rigidbody2DComponent>    ().disconnect<&OnComponentRemoved>();
+        registry.on_construct<BoxCollider2DComponent>  ().disconnect<&OnBoxCollider2DAdded>();
+        registry.on_construct<CircleColliderComponent> ().disconnect<&OnCircleColliderAdded>();
+        registry.on_destroy  <Rigidbody2DComponent>    ().disconnect<&OnRigidbody2DRemoved>();
     }
 
-    void OnComponentAdded(Registry&, RawEntity rawEntity)
+    void OnBoxCollider2DAdded(Registry&, RawEntity rawEntity)
     {
         Entity entity = rawEntity;
-        
-        if (!entity.Has<Rigidbody2DComponent>()) return;
-        auto& pb = entity.Get<Rigidbody2DComponent>();
-        
-        if (pb.BodyPtr) return;
-        const auto& transform = entity.Get<TransformComponent>();
+        if (entity.Has<CircleColliderComponent>())
+        {
+            entity.Remove<BoxCollider2DComponent>();
+        }
+    }
 
+    void OnCircleColliderAdded(Registry&, RawEntity rawEntity)
+    {
+        Entity entity = rawEntity;
         if (entity.Has<BoxCollider2DComponent>())
         {
-            auto& boxCollider = entity.Get<BoxCollider2DComponent>();
-            if (boxCollider.FixturePtr) return;
-            boxCollider.PrevSize = boxCollider.Size;
-            CreateBody(pb, transform.Position + boxCollider.Center, transform.Rotation.z);
-            CreateBoxFixture(pb, boxCollider);
+            entity.Remove<CircleColliderComponent>();
         }
-        
+    }
+
+    void OnRigidbody2DRemoved(Registry&, RawEntity rawEntity)
+    {
+        Entity entity = rawEntity;
+        auto& rb = entity.Get<Rigidbody2DComponent>();
+        PhysicWorld->DestroyBody(static_cast<b2Body*>(rb.BodyPtr));
+        if (entity.Has<BoxCollider2DComponent>())
+        {
+            entity.Get<BoxCollider2DComponent>().FixturePtr = nullptr;
+        }
         else if (entity.Has<CircleColliderComponent>())
         {
-            auto& circleCollider = entity.Get<CircleColliderComponent>();
-            if (circleCollider.FixturePtr) return;
-            circleCollider.Radius = circleCollider.Radius;
-            CreateBody(pb, transform.Position + circleCollider.Center, transform.Rotation.z);
-            CreateCircleFixture(pb, circleCollider);
-        }
-    }
-
-    void OnComponentRemoved(Registry&, RawEntity rawEntity)
-    {
-        Entity entity = rawEntity;
-
-        if (!entity.Has<Rigidbody2DComponent>()) return;
-        
-        auto& pb = entity.Get<Rigidbody2DComponent>();
-        PhysicWorld->DestroyBody(static_cast<b2Body*>(pb.BodyPtr));
-        pb.BodyPtr = nullptr;
-        
-        if (entity.Has<BoxCollider2DComponent>())
-            entity.Get<BoxCollider2DComponent>().FixturePtr = nullptr;
-
-        if (entity.Has<CircleColliderComponent>())
             entity.Get<CircleColliderComponent>().FixturePtr = nullptr;
+        }
     }
 
     void OnStart()
     {
-        Registry& registry = World::GetRegistry();
-
-        // Init circle colliders
+        TryCreateBox2DBodies();
+        // Set the start positions
         {
-            registry.view<CircleColliderComponent, TransformComponent, Rigidbody2DComponent>()
-             .each([&](const auto entity, CircleColliderComponent& collider, TransformComponent& transform, Rigidbody2DComponent& rb)
+            World::GetRegistry().view<TransformComponent, Rigidbody2DComponent>()
+             .each([&](const auto entity, TransformComponent& transform, Rigidbody2DComponent& rb)
              {
                  b2Body* body   = static_cast<b2Body*>(rb.BodyPtr);
-                 body->SetTransform(ToBox2D(transform.Position), transform.Rotation.z);  
+                 body->SetTransform(ToBox2D(transform.Position), Math::ToRadians(transform.Rotation.z));  
              });
-        }
-
-        // Init box colliders
-        {
-            registry.view<BoxCollider2DComponent, TransformComponent, Rigidbody2DComponent>()
-               .each([&](const auto entity, BoxCollider2DComponent& collider, TransformComponent& transform, Rigidbody2DComponent& rb)
-               {
-                  b2Body* body   = static_cast<b2Body*>(rb.BodyPtr);
-                  body->SetTransform(ToBox2D(transform.Position), transform.Rotation.z);  
-               });
         }
     }
 
+    void OnUpdate()
+    {
+        TryCreateBox2DBodies();
+    }
+    
     void OnFixedUpdate()
     {
         // Update physic world
@@ -255,32 +289,25 @@ namespace Nit::Physics2DSystem
         // Update CircleColliders
         {
             registry.view<CircleColliderComponent, TransformComponent, Rigidbody2DComponent>()
-           .each([&](const auto entity, CircleColliderComponent& collider, TransformComponent& transform, Rigidbody2DComponent& physicBody)
+           .each([&](const auto entity, CircleColliderComponent& collider, TransformComponent& transform, Rigidbody2DComponent& rb)
            {
                if (collider.Radius != collider.PrevRadius)
-                   CreateCircleFixture(physicBody, collider);
-            
-               const b2Body* body   = static_cast<b2Body*>(physicBody.BodyPtr);
-               transform.Position   = Vector3(FromBox2D(body->GetTransform().p - ToBox2D(collider.Center)), transform.Position.z);
-               transform.Rotation.z = Math::ToDegrees(body->GetAngle());
-               UpdateBodyData(physicBody);
+                   CreateCircleFixture(rb, collider);
+               
+               UpdateBodyData(rb, transform, collider.Center);
            });
         }
 
         // Update BoxColliders
         {
             registry.view<BoxCollider2DComponent, TransformComponent, Rigidbody2DComponent>()
-            .each([&](const auto entity, BoxCollider2DComponent& collider, TransformComponent& transform, Rigidbody2DComponent& physicBody)
+            .each([&](const auto entity, BoxCollider2DComponent& collider, TransformComponent& transform, Rigidbody2DComponent& rb)
             {
                 if (collider.Size != collider.PrevSize)
-                    CreateBoxFixture(physicBody, collider);
-
-               const b2Body* body   = static_cast<b2Body*>(physicBody.BodyPtr);
-               transform.Position   = Vector3(FromBox2D(body->GetTransform().p - ToBox2D(collider.Center)), transform.Position.z);
-               transform.Rotation.z = Math::ToDegrees(body->GetAngle());
-               UpdateBodyData(physicBody);
+                    CreateBoxFixture(rb, collider);
+                
+                UpdateBodyData(rb, transform, collider.Center);
             });
         }
     }
-
 }
