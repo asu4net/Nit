@@ -5,6 +5,7 @@
 #include "Render\Renderer.h"
 #include "Component\SpriteComponent.h"
 #include "Component\TransformComponent.h"
+#include "Render/RenderComponents.h"
 
 namespace Nit::SpriteSystem
 {
@@ -34,7 +35,9 @@ namespace Nit::SpriteSystem
         SpriteComponent& spriteComponent = spriteEntity.Get<SpriteComponent>();
         spriteComponent.SpriteAssetRef.Retarget();
 
-        spriteComponent.Primitive = Renderer::CreatePrimitive<SpritePrimitive>();
+        spriteComponent.renderEntity = Renderer::CreateRenderEntity();
+        spriteComponent.renderEntity.Add<Primitive2DComponent>();
+        spriteComponent.renderEntity.Add<SpriteShapeComponent>();
     }
 
     void OnSpriteComponentRemoved(Registry&, RawEntity entity)
@@ -42,23 +45,24 @@ namespace Nit::SpriteSystem
         Entity spriteEntity = entity;
         SpriteComponent& spriteComponent = spriteEntity.Get<SpriteComponent>();
         
-        Renderer::DestroyPrimitive(spriteComponent.Primitive);
-        spriteComponent.Primitive = nullptr;
+        //Renderer::DestroyPrimitive(spriteComponent.Primitive);
+        //spriteComponent.Primitive = nullptr;
     }
 
     void OnPreDrawPrimitives()
     {
         const auto view = World::GetRegistry().view<TransformComponent, SpriteComponent>();
 
-        view.each([&](RawEntity rawEntity, const TransformComponent& transformComponent, const SpriteComponent& sprite) {
+        view.each([&](RawEntity rawEntity, const TransformComponent& transformComponent, SpriteComponent& sprite) {
 
             Entity entity = rawEntity;
 
-            auto& primitive = *sprite.Primitive;
-
+            auto& primitive2DComponent = sprite.renderEntity.Get<Primitive2DComponent>();
+            auto& spriteShapeComponent = sprite.renderEntity.Get<SpriteShapeComponent>();
+            
             if (!sprite.IsVisible)
             {
-                primitive.bIsVisible = false;
+                sprite.renderEntity.SetVisible(false);
                 return;
             }
 
@@ -69,36 +73,36 @@ namespace Nit::SpriteSystem
                 if (sprite.bUseSubsprite && spriteAsset.ContainsSubSprite(sprite.SubSpriteName))
                 {
                     SubSprite subSprite = spriteAsset.GetSubSprite(sprite.SubSpriteName);
-                    primitive.VertexPositions = subSprite.VertexPositions;
-                    primitive.VertexUVs = subSprite.VertexUVs;
+                    primitive2DComponent.VertexPositions = subSprite.VertexPositions;
+                    primitive2DComponent.VertexUVs = subSprite.VertexUVs;
                 }
                 else
                 {
-                    primitive.VertexPositions = spriteAsset.GetVertexPositions();
-                    primitive.VertexUVs = spriteAsset.GetVertexUVs();
+                    primitive2DComponent.VertexPositions = spriteAsset.GetVertexPositions();
+                    primitive2DComponent.VertexUVs = spriteAsset.GetVertexUVs();
                 }
 
-                primitive.TextureID = spriteAsset.GetRendererId();
+                spriteShapeComponent.TextureID = spriteAsset.GetRendererId();
             }
             else
             {
                 SpritePrimitive defaultSprite;
-                sprite.Primitive->VertexPositions = defaultSprite.VertexPositions; 
-                sprite.Primitive->VertexUVs       = defaultSprite.VertexUVs;
-                sprite.Primitive->TextureID       = 0;
+                primitive2DComponent.VertexPositions = defaultSprite.VertexPositions; 
+                primitive2DComponent.VertexUVs   = defaultSprite.VertexUVs;
+                spriteShapeComponent.TextureID       = 0;
             }
 
-            primitive.bIsVisible = true;
-            primitive.bFlipX = sprite.bFlipX;
-            primitive.bFlipY = sprite.bFlipY;
+            sprite.renderEntity.SetVisible(true);
+            spriteShapeComponent.bFlipX = sprite.bFlipX;
+            spriteShapeComponent.bFlipY = sprite.bFlipY;
 
-            primitive.Transform = FamilySystem::GetMatrix(entity);
-            primitive.TintColor = sprite.TintColor;
-            primitive.UVScale = sprite.UVScale;
-            primitive.Size = sprite.Size;
-            
-            primitive.EntityID = (int) rawEntity;
-            primitive.SortingLayer = sprite.SortingLayer;
+            sprite.renderEntity.SetTransform(FamilySystem::GetMatrix(entity));
+            primitive2DComponent.TintColor = sprite.TintColor;
+            spriteShapeComponent.UVScale = sprite.UVScale;
+            spriteShapeComponent.Size = sprite.Size;
+
+            sprite.renderEntity.Get<RenderComponent>().EntityID = (int) rawEntity;
+            primitive2DComponent.SortingLayer = sprite.SortingLayer;
         });
     }
 }

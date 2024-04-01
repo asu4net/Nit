@@ -7,10 +7,8 @@ namespace Nit
 {
     RenderEntity::RenderEntity(const RawEntity rawEntity)
         : m_Registry(Renderer::GetRegistryPtr())
+        , m_RawEntity(rawEntity)
     {
-        NIT_CHECK(IsValid(), "Invalid RenderEntity!");
-        m_RawEntity = m_Registry->create();
-        m_Registry->emplace<RenderComponent>(m_RawEntity);
     }
 
     const Matrix4& RenderEntity::GetTransform() const

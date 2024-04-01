@@ -1,6 +1,7 @@
 #pragma once
 #include "Asset/AssetRef.h"
 #include "Asset/Sprite.h"
+#include "Render/RenderEntity.h"
 
 namespace Nit
 {
@@ -19,7 +20,7 @@ namespace Nit
         bool bFlipX = false;
         bool bFlipY = false;
         Vector2 UVScale = Vector2::One;
-        SpritePrimitive* Primitive = nullptr;
+        RenderEntity renderEntity;
 
         SpriteComponent() = default;
 

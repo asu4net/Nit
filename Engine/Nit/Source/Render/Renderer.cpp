@@ -6,6 +6,8 @@
 #include "Core/Engine.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "RenderComponents.h"
+#include "SpriteRenderSystem.h"
 
 namespace Nit::Renderer
 {
@@ -32,157 +34,11 @@ namespace Nit::Renderer
     uint32_t                      LastTextureSlot      = 1;
     SharedPtr<RendererShader>     LastShader           = nullptr;
     Primitive2DType               LastPrimitive2D      = Primitive2DType_Default;
+
+    SharedPtr<RendererShader> DefaultSpriteShader;
+    IRenderSystem2D* renderSystem = new SpriteRenderSystem();
     
     SharedPtr<IndexBuffer> CreateQuadIndexBuffer(uint32_t maxPrimitives);
-
-    namespace SpriteBatch
-    {
-        struct Vertex
-        {
-            Vector3  Position      = Vector3::Zero;
-            Vector3  LocalPosition = Vector3::Zero;
-            Color    TintColor     = Color::White;
-            Vector2  UVCoords      = Vector2::Zero;
-            uint32_t TextureSlot   = 0;
-            float    Time          = 0.f;
-            int      EntityID      = -1;
-        };
-
-        constexpr uint32_t        MaxPrimitives  = 3000;
-        constexpr uint32_t        MaxVertices    = MaxPrimitives * VerticesPerPrimitive;
-        constexpr uint32_t        MaxIndices     = MaxPrimitives * IndicesPerPrimitive;
-
-        SharedPtr<RendererShader> DefaultShader;
-        SharedPtr<VertexArray>    VAO            = nullptr;
-        SharedPtr<VertexBuffer>   VBO            = nullptr;
-        SharedPtr<IndexBuffer>    IBO            = nullptr;
-        
-        //Per batch stuff
-        uint32_t                  IndexCount     = 0;
-        Vertex*                   Vertices       = new Vertex[MaxVertices];
-        Vertex*                   LastVertex     = Vertices;
-
-        void Create()
-        {
-            if (!API)
-            {
-                NIT_CHECK(false, "Missing sprite batch stuff\n");
-                return;
-            }
-
-            VAO = VertexArray::Create(API->GetGraphicsAPI());
-            VBO = VertexBuffer::Create(API->GetGraphicsAPI(), MaxVertices * sizeof(Vertex));
-
-            VBO->SetLayout({
-                {ShaderDataType::Float3, "a_Position"      },
-                {ShaderDataType::Float3, "a_LocalPosition" },
-                {ShaderDataType::Float4, "a_TintColor"     },
-                {ShaderDataType::Float2, "a_UVCoords"      },
-                {ShaderDataType::Float , "a_TextureSlot"   },
-                {ShaderDataType::Float , "a_Time"          },
-                {ShaderDataType::Float,  "a_EntityID"      }
-            });
-
-            VAO->AddVertexBuffer(VBO);
-            IBO = CreateQuadIndexBuffer(MaxPrimitives);
-            VAO->SetIndexBuffer(IBO);
-        }
-
-        void Reset()
-        {
-            LastVertex      = Vertices;
-            IndexCount      = 0;
-        }
-
-        void SubmitVertices(SpritePrimitive& sprite)
-        {
-            if (sprite.ShaderID != 0)
-            {
-                auto shader = GetShader(sprite.ShaderID);
-                if (shader && shader != LastShader)
-                {
-                    NextBatch();
-                    shader->Bind();
-                    LastShader = shader;
-                }
-            }
-            else if (DefaultShader && DefaultShader != LastShader)
-            {
-                NextBatch();
-                DefaultShader->Bind();
-                DefaultShader->SetUniformIntArray("u_TextureSlots", &TextureSlots.front(), MaxTextureSlots);
-                LastShader = DefaultShader;
-            }
-
-            if (!LastShader)
-            {
-                NIT_CHECK(false, "Missing shader!");
-                return;
-            }
-
-            uint32_t textureSlot = 0;
-
-            if (auto texture = GetTexture2D(sprite.TextureID))
-            {
-                textureSlot = CalculateTextureSlot(texture); //This could trigger NextBatch()
-            }
-
-            Array<Vector2, 4> vertexUV = sprite.VertexUVs;
-            RenderUtils::FlipQuadVertexUVs(sprite.bFlipX, sprite.bFlipY, vertexUV);
-
-            if (IndexCount + IndicesPerPrimitive >= MaxIndices)
-            {
-                NextBatch();
-            }
-
-            for (uint32_t i = 0; i < VerticesPerPrimitive; i++)
-            {
-                Vertex vertex;
-
-                Vector3 localVertexPos = sprite.VertexPositions[i];
-                vertex.LocalPosition = localVertexPos;
-                
-                localVertexPos.x *= sprite.Size.x;
-                localVertexPos.y *= sprite.Size.y;
-
-                vertex.Position = Vector4(localVertexPos, 1.f) * sprite.Transform * ProjectionViewMatrix;
-
-                vertex.Time = Time::GetApplicationTime();
-                vertex.UVCoords = vertexUV[i];
-                vertex.UVCoords.x *= sprite.UVScale.y;
-                vertex.UVCoords.y *= sprite.UVScale.x;
-
-                vertex.TintColor = sprite.TintColor;
-                vertex.EntityID = sprite.EntityID;
-                vertex.TextureSlot = textureSlot;
-
-                *LastVertex = vertex;
-                LastVertex->TextureSlot = textureSlot;
-                LastVertex++;
-            }
-
-            IndexCount += IndicesPerPrimitive;
-        }
-
-        void SubmitDrawCommand()
-        {
-            if (const uint32_t vertexDataSize = static_cast<uint32_t>(reinterpret_cast<uint8_t*>(LastVertex) -
-                reinterpret_cast<uint8_t*>(Vertices)))
-            {
-                VBO->SetData(Vertices, vertexDataSize);
-
-                for (uint32_t i = 0; i < LastTextureSlot; i++)
-                    TexturesToBind[i]->Bind(i);
-
-                RenderCommandQueue::Submit<DrawElementsCommand>(API, VAO, IndexCount);
-            }
-
-            while (!RenderCommandQueue::IsEmpty())
-            {
-                RenderCommandQueue::ExecuteNext();
-            }
-        }
-    }; // SpriteBatch
 
     namespace CircleBatch
     {
@@ -516,7 +372,6 @@ namespace Nit::Renderer
 
     void StartBatch()
     {
-        SpriteBatch::Reset();
         CircleBatch::Reset();
         LineBatch::Reset();
         
@@ -525,7 +380,7 @@ namespace Nit::Renderer
 
     void Invalidate()
     {
-        SpriteBatch::SubmitDrawCommand();
+        renderSystem->Draw();
         CircleBatch::SubmitDrawCommand();
         LineBatch::SubmitDrawCommand();
     }
@@ -561,7 +416,8 @@ namespace Nit::Renderer
                 TextureSlots[i] = i;
         }
 
-        SpriteBatch::Create();
+        renderSystem->Init();
+        
         CircleBatch::Create();
         LineBatch::Create();
         
@@ -608,14 +464,16 @@ namespace Nit::Renderer
             }
             return;
         }
-
+        
+        renderSystem->BatchVertices();
+        
         StartBatch();
 
         std::sort(Primitives.begin(), Primitives.end(), [](const Primitive2D* a, const Primitive2D* b) 
         { 
             return a->SortingLayer < b->SortingLayer;
         });
-
+        
         for (Primitive2D* primitive : Primitives)
         {
             if (!primitive->bIsVisible)
@@ -628,7 +486,7 @@ namespace Nit::Renderer
 
             if (primitive->GetType() == Primitive2DType_Sprite)
             {
-                SpriteBatch::SubmitVertices(*static_cast<SpritePrimitive*>(primitive));
+                //SpriteBatch::SubmitVertices(*static_cast<SpritePrimitive*>(primitive));
                 LastPrimitive2D = Primitive2DType_Sprite;
                 continue;
             }
@@ -721,14 +579,31 @@ namespace Nit::Renderer
         Shaders.erase(id);
     }
 
-    void SetSpriteShader(const SharedPtr<RendererShader> spriteShader)
+    void SetSpriteShader(const SharedPtr<RendererShader>& spriteShader)
     {
-        SpriteBatch::DefaultShader = spriteShader;
+        DefaultSpriteShader = spriteShader;
     }
 
-    SharedPtr<RendererShader> GetSpriteShader()
+    const SharedPtr<RendererShader>& GetSpriteShader()
     {
-        return SpriteBatch::DefaultShader;
+        return DefaultSpriteShader;
+    }
+
+    void SetLastShader(const SharedPtr<RendererShader>& lastShader)
+    {
+        LastShader = lastShader;
+    }
+
+    const SharedPtr<RendererShader>& GetLastShader()
+    {
+        return LastShader;
+    }
+
+    RenderEntity CreateRenderEntity()
+    {
+        RawEntity rawEntity = EntityRegistry->create();
+        EntityRegistry->emplace<RenderComponent>(rawEntity);
+        return RenderEntity(rawEntity);
     }
 
     void SetCircleShader(const SharedPtr<RendererShader> circleShader)

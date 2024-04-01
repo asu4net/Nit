@@ -1,4 +1,5 @@
 #pragma once
+#include "RenderEntity.h"
 #include "RenderUtils.h"
 
 namespace Nit
@@ -73,8 +74,11 @@ namespace Nit::Renderer
     void Init(GraphicsAPI api);
     Registry* GetRegistryPtr();
     Registry& GetRegistry();
-    void SetSpriteShader(const SharedPtr<RendererShader> spriteShader);
-    SharedPtr<RendererShader> GetSpriteShader();
+    void SetSpriteShader(const SharedPtr<RendererShader>& spriteShader);
+    const SharedPtr<RendererShader>& GetSpriteShader();
+    void SetLastShader(const SharedPtr<RendererShader>& lastShader);
+    const SharedPtr<RendererShader>& GetLastShader();
+    RenderEntity CreateRenderEntity();
     
     void SetCircleShader(const SharedPtr<RendererShader> circleShader);
     void SetLineShader(const SharedPtr<RendererShader> lineShader);

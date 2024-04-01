@@ -28,8 +28,12 @@ namespace Nit
         auto view = Renderer::GetRegistry().view<RenderComponent, Primitive2DComponent, SpriteShapeComponent>();
         for (RawEntity rawEntity : view)
         {
-            auto[render, primitive, sprite] = view.get<RenderComponent, Primitive2DComponent, SpriteShapeComponent>(rawEntity);
+            auto[baseRenderData, primitive, sprite] = view.get<RenderComponent, Primitive2DComponent, SpriteShapeComponent>(rawEntity);
 
+            RenderEntity entity = rawEntity;
+            
+            SubmitShader(baseRenderData.shaderID);
+            
             uint32_t textureSlot = 0;
 
             if (auto texture = Renderer::GetTexture2D(sprite.TextureID))
@@ -50,13 +54,13 @@ namespace Nit
                 vertex.LocalPosition = localVertexPos;
                 localVertexPos.x *= sprite.Size.x;
                 localVertexPos.y *= sprite.Size.y;
-                vertex.Position = Vector4(localVertexPos, 1.f) * render.Transform * projectionViewMatrix;
+                vertex.Position = Vector4(localVertexPos, 1.f) * baseRenderData.Transform * projectionViewMatrix;
                 vertex.Time = appTime;
                 vertex.UVCoords = vertexUV[i];
                 vertex.UVCoords.x *= sprite.UVScale.y;
                 vertex.UVCoords.y *= sprite.UVScale.x;
                 vertex.TintColor = primitive.TintColor;
-                vertex.EntityID = render.EntityID;
+                vertex.EntityID = baseRenderData.EntityID;
                 vertex.TextureSlot = textureSlot;
                 
                 SubmitVertex(vertex);

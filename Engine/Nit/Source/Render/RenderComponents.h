@@ -7,6 +7,7 @@ namespace Nit
     {
         bool    bIsVisible = true;
         Matrix4 Transform;
+        Id      shaderID = 0;
         int     EntityID = -1;
     };
     

@@ -42,7 +42,7 @@ namespace Nit::MaterialSystem
         if (entity.Has<SpriteComponent>())
         {
             auto& cmp = entity.Get<SpriteComponent>();
-            primitive = cmp.Primitive;
+            //primitive = cmp.Primitive;
         }
         else if (entity.Has<CircleComponent>())
         {
@@ -68,7 +68,7 @@ namespace Nit::MaterialSystem
             if (entity.Has<SpriteComponent>())
             {
                 auto& cmp = entity.Get<SpriteComponent>();
-                primitive = cmp.Primitive;
+                //primitive = cmp.Primitive;
             }
             else if (entity.Has<CircleComponent>())
             {

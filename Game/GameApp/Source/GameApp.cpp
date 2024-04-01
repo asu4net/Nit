@@ -3,6 +3,7 @@
 
 int main(int argc, char* argv[])
 {
+    using namespace Nit;
     InitConfig config;
     config.WindowConfiguration.Title = "Test Game :D";
     config.WindowConfiguration.bStartMaximized = true;
