@@ -135,7 +135,7 @@ namespace Nit::Physics2DSystem
             body->SetEnabled(false);
             return;
         }
-                
+        
         body->SetEnabled(true);
 
         if (rb.FollowTransform)
@@ -187,7 +187,7 @@ namespace Nit::Physics2DSystem
                         CreateBody(rb, transform.Position + circleCollider.Center, transform.Rotation.z);
                     }
 
-                    if (circleCollider.FixturePtr || circleCollider.Radius != circleCollider.PrevRadius)
+                    if (!circleCollider.FixturePtr || circleCollider.Radius != circleCollider.PrevRadius)
                     {
                         CreateCircleFixture(rb, circleCollider);
                     }
@@ -229,41 +229,25 @@ namespace Nit::Physics2DSystem
         PhysicWorld = new b2World({Gravity.x, Gravity.y});
         
         Registry& registry = World::GetRegistry();
-        registry.on_construct<BoxCollider2DComponent>  ().connect<&OnBoxCollider2DAdded>();
-        registry.on_construct<CircleColliderComponent> ().connect<&OnBoxCollider2DAdded>();
         registry.on_destroy  <Rigidbody2DComponent>    ().connect<&OnRigidbody2DRemoved>();
     }
 
     void OnDestroy()
     {
         Registry& registry = World::GetRegistry();
-        registry.on_construct<BoxCollider2DComponent>  ().disconnect<&OnBoxCollider2DAdded>();
-        registry.on_construct<CircleColliderComponent> ().disconnect<&OnCircleColliderAdded>();
         registry.on_destroy  <Rigidbody2DComponent>    ().disconnect<&OnRigidbody2DRemoved>();
-    }
-
-    void OnBoxCollider2DAdded(Registry&, RawEntity rawEntity)
-    {
-        Entity entity = rawEntity;
-        if (entity.Has<CircleColliderComponent>())
-        {
-            entity.Remove<BoxCollider2DComponent>();
-        }
-    }
-
-    void OnCircleColliderAdded(Registry&, RawEntity rawEntity)
-    {
-        Entity entity = rawEntity;
-        if (entity.Has<BoxCollider2DComponent>())
-        {
-            entity.Remove<CircleColliderComponent>();
-        }
     }
 
     void OnRigidbody2DRemoved(Registry&, RawEntity rawEntity)
     {
         Entity entity = rawEntity;
         auto& rb = entity.Get<Rigidbody2DComponent>();
+
+        if (!rb.BodyPtr)
+        {
+            return;
+        }
+        
         PhysicWorld->DestroyBody(static_cast<b2Body*>(rb.BodyPtr));
         if (entity.Has<BoxCollider2DComponent>())
         {
