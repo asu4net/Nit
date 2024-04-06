@@ -1,16 +1,6 @@
 #include "Color.h"
-
-RTTR_REGISTRATION
-{
-    using namespace Nit;
-
-    rttr::registration::class_<Color>("Color")
-        .constructor<>()
-        .property("r", &Color::r)
-        .property("g", &Color::g)
-        .property("b", &Color::b)
-        .property("a", &Color::a);
-}
+#include "Vector3.h"
+#include "Vector4.h"
 
 namespace Nit
 {
@@ -113,10 +103,5 @@ namespace Nit
     bool Color::operator!=(const Color& other) const
     {
         return r != other.r && g != other.g && b != other.b && a != other.a;
-    }
-
-    String Color::ToString() const
-    {
-        return std::to_string(r) + ", " + std::to_string(g) + ", " + std::to_string(b) + ", " + std::to_string(a);
     }
 }

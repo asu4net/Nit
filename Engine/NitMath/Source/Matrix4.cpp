@@ -1,13 +1,5 @@
 #include "Matrix4.h"
-
-RTTR_REGISTRATION
-{
-    using namespace Nit;
-    
-rttr::registration::class_<Matrix4>("Matrix4")
-.constructor<>();
-        //.property("n", &Matrix4::n);
-}
+#include "NitMath.h"
 
 namespace Nit
 {
@@ -60,7 +52,6 @@ namespace Nit
         float det = this->GetDeterminant();
 
         if (0.0f == det) {
-            NIT_LOG_WARN("Matrix has no determinant. Can not invert\n");
             return *this;
         }
 

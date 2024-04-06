@@ -2,7 +2,8 @@
 
 namespace Nit
 {
-    class Matrix4;
+    struct Matrix4;
+    struct Vector3;
 
     struct Vector4
     {
@@ -29,12 +30,7 @@ namespace Nit
         float Magnitude() const;
         Vector4 Normalized() const;
         void Normalize();
-        String ToString() const;
-
-        //static float Dot(const Vector3& a, const Vector3& b);
-
+        std::string ToString() const;
         static float Distance(const Vector4& a, const Vector4& b);
-
-        RTTR_ENABLE_NO_VIRTUAL
     };
 }

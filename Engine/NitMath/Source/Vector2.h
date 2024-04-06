@@ -28,7 +28,7 @@ namespace Nit
         float Magnitude() const;
         Vector2 Normalized() const;
         void Normalize();
-        String ToString() const;
+        std::string ToString() const;
         
         static Vector2 RotateAround(Vector2 pivot, float angle, Vector2 point);
         static Vector2 Multiply(const Vector2& a, const Vector2& b);
@@ -36,7 +36,5 @@ namespace Nit
         static float Dot(const Vector2& a, const Vector2& b);
         static float Distance(const Vector2& a, const Vector2& b);
         static float Angle(const Vector2& a, const Vector2& b);
-
-        RTTR_ENABLE_NO_VIRTUAL
     };
 }

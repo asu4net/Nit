@@ -77,12 +77,7 @@ namespace Nit
 #include "Core/Serialization.h"
 #include "Core/Time.h"
 
-#include "Math/Vector2.h"
-#include "Math/Vector3.h"
-#include "Math/Vector4.h"
-#include "Math/Matrix4.h"
-#include "Math/Color.h"
-#include "Math/Math.h"
+#include "NitMath.h"
 
 #include "Input/KeyCodes.h"
 #include "Input/Input.h"

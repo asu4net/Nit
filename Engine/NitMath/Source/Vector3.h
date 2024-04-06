@@ -39,7 +39,7 @@ namespace Nit
         float Magnitude() const;
         Vector3 Normalized() const;
         void Normalize();
-        String ToString() const;
+        std::string ToString() const;
 
         static Vector3 Multiply(const Vector3& a, const Vector3& b);
         static Vector3 Divide(const Vector3& a, const Vector3& b);
@@ -47,7 +47,5 @@ namespace Nit
         static float Dot(const Vector3& a, const Vector3& b);
         static float Distance(const Vector3& a, const Vector3& b);
         static Vector3 LookAt(const Vector3& rotation, const Vector3& axis);
-        
-        RTTR_ENABLE_NO_VIRTUAL
     };
 }

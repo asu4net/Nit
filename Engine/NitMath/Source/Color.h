@@ -1,10 +1,12 @@
 #pragma once
 
 namespace Nit
-{
+{   
+    struct Vector3;
+    struct Vector4;
+
     struct Color
     {
-
         static const Color Black;
         static const Color Blue;
         static const Color LightBlue;
@@ -41,9 +43,5 @@ namespace Nit
         bool operator<=(const Color& other) const;
         bool operator==(const Color& other) const;
         bool operator!=(const Color& other) const;
-
-        String ToString() const;
-
-        RTTR_ENABLE_NO_VIRTUAL
     };
 }

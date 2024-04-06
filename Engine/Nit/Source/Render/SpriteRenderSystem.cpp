@@ -32,7 +32,7 @@ namespace Nit
 
             RenderEntity entity = rawEntity;
             
-            SubmitShader(baseRenderData.shaderID);
+            SubmitShader(baseRenderData.ShaderID);
             
             uint32_t textureSlot = 0;
 

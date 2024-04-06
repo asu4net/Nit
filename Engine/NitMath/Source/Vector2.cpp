@@ -1,15 +1,6 @@
 #include "Vector2.h"
-
-RTTR_REGISTRATION
-{
-    using namespace Nit;
-
-    rttr::registration::class_<Vector2>("Vector2")
-        .constructor<>()
-        .property("x", &Vector2::x)
-        .property("y", &Vector2::y);
-}
-
+#include "Vector3.h"
+#include "NitMath.h"
 
 namespace Nit
 {
@@ -92,7 +83,7 @@ namespace Nit
         *this = this->Normalized();
     }
 
-    String Vector2::ToString() const
+    std::string Vector2::ToString() const
     {
         return std::to_string(x) + ", " + std::to_string(y);
     }

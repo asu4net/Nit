@@ -18,6 +18,7 @@ project "Nit"
 
     includedirs 
     { 
+        "%{IncludeDirs.NitMath}",
         "%{IncludeDirs.Nit}",
         "%{IncludeDirs.GLFW}",
         "%{IncludeDirs.GLAD}",
@@ -28,11 +29,12 @@ project "Nit"
         "%{IncludeDirs.OpenALInclude}",
         "%{IncludeDirs.OpenALSource}",
         "%{IncludeDirs.OpenALCommon}",
-        "%{IncludeDirs.Box2D}"
+        "%{IncludeDirs.Box2D}",
     }
     
     links
     {
+        "NitMath",
         "GLFW",
         "opengl32.lib",
         "GLAD",

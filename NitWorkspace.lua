@@ -6,6 +6,7 @@ workspace "Nit"
 include "NitDirectories.lua"
 
 group "Engine"
+    include "Engine/NitMath/NitMathProject.lua"
     include "Engine/Nit/NitProject.lua"
     include "Engine/NitEditor/NitEditorProject.lua"
 group ""

@@ -1,16 +1,6 @@
 #include "Vector4.h"
-
-RTTR_REGISTRATION
-{
-    using namespace Nit;
-
-    rttr::registration::class_<Vector4>("Vector4")
-        .constructor<>()
-        .property("x", &Vector4::x)
-        .property("y", &Vector4::y)
-        .property("z", &Vector4::z)
-        .property("w", &Vector4::w);
-}
+#include "Vector3.h"
+#include "Matrix4.h"
 
 namespace Nit
 {
@@ -113,7 +103,7 @@ namespace Nit
         *this = this->Normalized();
     }
 
-    String Vector4::ToString() const
+    std::string Vector4::ToString() const
     {
         return std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ", " + std::to_string(w);
     }

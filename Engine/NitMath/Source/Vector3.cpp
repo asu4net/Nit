@@ -1,15 +1,8 @@
 #include "Vector3.h"
-
-RTTR_REGISTRATION
-{
-    using namespace Nit;
-
-    rttr::registration::class_<Vector3>("Vector3")
-        .constructor<>()
-        .property("x", &Vector3::x)
-        .property("y", &Vector3::y)
-        .property("z", &Vector3::z);
-}
+#include "Vector2.h"
+#include "Vector4.h"
+#include "Matrix4.h"
+#include "NitMath.h"
 
 namespace Nit
 {
@@ -101,13 +94,6 @@ namespace Nit
         return !(*this == other);
     }
 
-    /*Vector3 Vector3::LookAt(const glm::quat& rot, const Vector3& axis)
-    {
-        const glm::mat4 matRot = glm::toMat4(rot);
-        const glm::vec4 dir = glm::vec4(axis.ToGlm(), 1);
-        return { matRot * dir };
-    }*/
-
     Vector3 Vector3::Abs() const
     {
         return { std::abs(x), std::abs(y), std::abs(z) };
@@ -129,7 +115,7 @@ namespace Nit
         *this = this->Normalized();
     }
 
-    String Vector3::ToString() const
+    std::string Vector3::ToString() const
     {
         return std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z);
     }

@@ -1,12 +1,11 @@
 #pragma once
+#include "Vector3.h"
+#include "Vector4.h"
 
 namespace Nit
 {
-    struct Vector4;
-
-    class Matrix4 // COLUMN MAJOR
+    struct Matrix4 // COLUMN MAJOR
     {
-    public:
         union
         {
             float m[4][4]; //i = column, j = row
@@ -42,7 +41,5 @@ namespace Nit
         static Matrix4 OrthoProjection(const float aspectRatio, const float size, float nearPlane, float farPlane);
         static Matrix4 OrthoProjection(float left, float right, float bottom, float top, float nearPlane, float farPlane);
         static Matrix4 ViewProjection(const Vector3& position, const Vector3& rotation);
-    
-        RTTR_ENABLE_NO_VIRTUAL
     };
 }

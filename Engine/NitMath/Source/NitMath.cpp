@@ -1,4 +1,4 @@
-#include "Math.h"
+#include "NitMath.h"
 
 namespace Nit::Math
 {
@@ -23,6 +23,11 @@ namespace Nit::Math
     Vector3 ToDegrees(const Vector3& radians)
     {
         return radians * RadiansToDegreesFactor;
+    }
+
+    float MapRange(float input, float inputMin, float inputMax, float outputMin, float outputMax)
+    {
+        return outputMin + (input - inputMin) * (outputMax - outputMin) / (inputMax - inputMin);
     }
 
     Vector3 ScreenToWorldPoint(const Matrix4& ProjectionViewMatrix, const Vector2& screenPoint, const Vector2& windowSize)
