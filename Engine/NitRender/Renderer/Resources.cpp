@@ -15,9 +15,9 @@ namespace Nit::Render
             settings.Height = 1;
             settings.Channels = 4;
         
-            m_WhiteTexture = Texture2D::Create(m_API->GetGraphicsAPI());
+            m_WhiteTexture2D = Texture2D::Create(m_API->GetGraphicsAPI());
             constexpr uint32_t whiteTextureData = 0xffffffff;
-            m_WhiteTexture->UploadToGPU(settings, &whiteTextureData);
+            m_WhiteTexture2D->UploadToGPU(settings, &whiteTextureData);
         }
         
         // Default sprite shader creation
@@ -51,21 +51,21 @@ namespace Nit::Render
 
         m_Shaders           .clear();
         m_Textures2D        .clear();
-        m_WhiteTexture      .reset();
+        m_WhiteTexture2D      .reset();
         m_ErrorShader       .reset();
         DefaultSpriteShader .reset();
         DefaultCircleShader .reset();
         DefaultLineShader   .reset();
     }
 
-    WeakTexture2DPtr Resources::CreateTexture()
+    WeakTexture2DPtr Resources::CreateTexture2D()
     {
         Texture2DPtr texture = Texture2D::Create(m_API->GetGraphicsAPI());
         m_Textures2D.push_back(texture);
         return texture;
     }
     
-    bool Resources::DestroyTexture(const WeakTexture2DPtr& texture2DWeak)
+    bool Resources::DestroyTexture2D(const WeakTexture2DPtr& texture2DWeak)
     {
         if (texture2DWeak.expired())
             return false;

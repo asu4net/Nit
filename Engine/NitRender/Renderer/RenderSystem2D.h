@@ -73,7 +73,7 @@ namespace Nit::Render
         
         bool                      bInitialized    = false;
         APIPtr                    m_API           = nullptr;
-        FunctionPtr<void()>     m_NextBatchFn   = nullptr;
+        FunctionPtr<void()>       m_NextBatchFn   = nullptr;
         SharedPtr<VertexArray>    VAO             = nullptr;
         SharedPtr<VertexBuffer>   VBO             = nullptr;
         SharedPtr<IndexBuffer>    IBO             = nullptr;

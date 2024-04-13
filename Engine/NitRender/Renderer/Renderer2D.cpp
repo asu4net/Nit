@@ -22,7 +22,7 @@ namespace Nit::Render::Renderer2D
         RenderAPI = API::Create(api);
         RenderSystems = CreateUniquePtr<RenderSystemMap>(RenderAPI, &NextBatch);
         RenderResources = CreateUniquePtr<Resources>(RenderAPI);
-        TexturesToBind[0] = RenderResources->GetWhiteTexture().lock();
+        TexturesToBind[0] = RenderResources->GetWhiteTexture2D().lock();
     }
 
     void Invalidate()

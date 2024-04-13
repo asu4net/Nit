@@ -10,14 +10,11 @@ project "RenderSandboxProject"
     includedirs
     { 
         "%{prj.dir}",
-        "%{IncludeDirs.RTTR}", 
-        "%{IncludeDirs.NitEngine}",
-        "%{IncludeDirs.entt}"
+        "%{IncludeDirs.NitEngine}"
     }
     
     links 
     { 
-        "RTTR",
         "NitRender"
     }
     

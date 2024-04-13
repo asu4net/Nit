@@ -8,12 +8,11 @@ project "NitRender"
     pchheader "NitRenderPCH.h"
     pchsource "NitRenderPCH.cpp"
     forceincludes { "NitRenderPCH.h" }
-
+    
     includedirs 
     {
         "%{prj.dir}", 
         "%{IncludeDirs.NitEngine}",
-        "%{IncludeDirs.RTTR}",
         "%{IncludeDirs.GLAD}",
         "%{IncludeDirs.GLFW}",
         "%{IncludeDirs.STB}"
@@ -21,7 +20,6 @@ project "NitRender"
 
     links
     {
-        "RTTR",
         "NitMath",
         "opengl32.lib",
         "GLAD",
