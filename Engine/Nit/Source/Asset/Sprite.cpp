@@ -84,8 +84,8 @@ namespace Nit
 
         m_RendererTextureId = Renderer::CreateTexture2D(settings, m_Data);
 
-        RenderUtils::FillQuadVertexPositions(m_Size, m_VertexPositions);
-        m_VertexUVs = RenderUtils::GetQuadVertexUVs();
+        Render::FillQuadVertexPositions(m_Size, m_VertexPositions);
+        m_VertexUVs = Render::GetQuadVertexUVs();
 
         return true;
     }
@@ -102,8 +102,8 @@ namespace Nit
         NIT_CHECK(!m_SubSprites.count(name), "Duplicated name found!");
         SubSprite subSprite;
         subSprite.Size = size;
-        RenderUtils::FillQuadVertexPositions(size, subSprite.VertexPositions);
-        RenderUtils::FillQuadVertexUVs(uvMin, uvMax, subSprite.VertexUVs);
+        Render::FillQuadVertexPositions(size, subSprite.VertexPositions);
+        Render::FillQuadVertexUVs(uvMin, uvMax, subSprite.VertexUVs);
         m_SubSprites[name] = subSprite;
         return m_SubSprites[name];
     }
@@ -123,8 +123,8 @@ namespace Nit
         topRight.x = (locationInAtlas.x + size.x) * (1 / m_Size.x);
         topRight.y = 1 - (locationInAtlas.y / m_Size.y);
         
-        RenderUtils::FillQuadVertexPositions(size, subSprite.VertexPositions);
-        RenderUtils::FillQuadVertexUVs(bottomLeft, topRight, subSprite.VertexUVs);
+        Render::FillQuadVertexPositions(size, subSprite.VertexPositions);
+        Render::FillQuadVertexUVs(bottomLeft, topRight, subSprite.VertexUVs);
         m_SubSprites[name] = subSprite;
         
         return m_SubSprites[name];

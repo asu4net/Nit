@@ -283,7 +283,7 @@ namespace Nit::Renderer
                 vertex.Position = Vector4(localVertexPos, 1.f) * line.Transform * ProjectionViewMatrix;
                 vertex.Size = size;
                 //------
-                vertex.LocalPosition   = RenderUtils::GetQuadVertexUVs()[i];
+                vertex.LocalPosition   = Render::GetQuadVertexUVs()[i];
                 vertex.Time            = Time::GetApplicationTime();
                 vertex.TintColor       = line.TintColor;
                 vertex.Fade            = line.Fade;

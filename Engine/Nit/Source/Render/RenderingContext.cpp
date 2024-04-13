@@ -3,7 +3,7 @@
 
 namespace Nit
 {
-    UniquePtr<RenderingContext> RenderingContext::Create(GraphicsAPI api, void* windowHandler)
+    UniquePtr<Context> Context::Create(GraphicsAPI api, void* windowHandler)
     {
         switch (api)
         {

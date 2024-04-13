@@ -2,10 +2,10 @@
 
 namespace Nit
 {
-    class RenderingContext
+    class Context
     {
     public:
-        static UniquePtr<RenderingContext> Create(GraphicsAPI api, void* windowHandler);
+        static UniquePtr<Context> Create(GraphicsAPI api, void* windowHandler);
         
         virtual void SwapBuffers() const = 0;
     };

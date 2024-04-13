@@ -1,6 +1,6 @@
 #include "RenderUtils.h"
 
-namespace Nit::RenderUtils
+namespace Nit::Render
 {
     const Array<Vector3, 4>& GetQuadVertexPositions()
     {

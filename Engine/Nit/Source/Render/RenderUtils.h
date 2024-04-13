@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Nit::RenderUtils
+namespace Nit::Render
 {
     // Utility
     const Array<Vector3, 4>& GetQuadVertexPositions();

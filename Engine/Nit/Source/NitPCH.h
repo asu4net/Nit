@@ -77,7 +77,7 @@ namespace Nit
 #include "Core/Serialization.h"
 #include "Core/Time.h"
 
-#include "NitMath.h"
+#include "NitMath/NitMath.h"
 
 #include "Input/KeyCodes.h"
 #include "Input/Input.h"

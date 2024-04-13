@@ -24,7 +24,7 @@ namespace Nit::Engine
         ExecutionContext               Context            = ExecutionContext::Invalid;
         bool                           bIsEnabled         = false;
         bool                           bDestroyRequested  = false;
-        Map<SystemStage, FunctionPtr>  Callbacks;
+        Map<SystemStage, RawFunctionPtr>  Callbacks;
     };
 
     bool                  bIsInitialized                     = false;
@@ -70,7 +70,7 @@ namespace Nit::Engine
         if (!system || !system->Callbacks.count(stage))
             return;
 
-        if (FunctionPtr callback = system->Callbacks[stage])
+        if (RawFunctionPtr callback = system->Callbacks[stage])
         {
             callback();
             return;
@@ -184,7 +184,7 @@ namespace Nit::Engine
         bCreatingSystem = true;
     }
 
-    void SetSystemCallback(SystemStage stage, FunctionPtr callback)
+    void SetSystemCallback(SystemStage stage, RawFunctionPtr callback)
     {
         NIT_CHECK(CurrentSystem, "Not system ID pushed!");
 

@@ -22,7 +22,7 @@ namespace Nit
                {ShaderDataType::Float,  "a_EntityID"      }
            });
     }
-
+    
     void SpriteRenderSystem::SubmitVertices()
     {
         auto view = Renderer::GetRegistry().view<RenderComponent, Primitive2DComponent, SpriteShapeComponent>();
@@ -42,7 +42,7 @@ namespace Nit
             }
 
             Array<Vector2, 4> vertexUV = primitive.VertexUVs;
-            RenderUtils::FlipQuadVertexUVs(sprite.bFlipX, sprite.bFlipY, vertexUV);
+            Render::FlipQuadVertexUVs(sprite.bFlipX, sprite.bFlipY, vertexUV);
 
             const float appTime = Time::GetApplicationTime();
             const Matrix4 projectionViewMatrix = Renderer::GetProjectionViewMatrix(); //this could data

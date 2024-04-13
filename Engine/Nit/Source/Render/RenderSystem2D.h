@@ -29,7 +29,7 @@ namespace Nit
     class IRenderSystem2D
     {
     public:
-        virtual const String&    GetPrimitiveID()    const = 0;
+        virtual String GetPrimitiveID()    const = 0;
         virtual const ShaderPtr& GetDefaultShader()  const = 0;
 
         virtual void Init()          = 0;

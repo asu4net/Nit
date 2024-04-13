@@ -19,7 +19,7 @@ namespace Nit
 
 namespace Nit::Engine
 {
-    using FunctionPtr = void(*)();
+    using RawFunctionPtr = void(*)();
 
     Window&           GetWindow();
     bool              HasWindow();
@@ -27,7 +27,7 @@ namespace Nit::Engine
     void PushSystemID(const String& name);
     void PopSystemID();
     void CreateSystem(const String& name, uint32_t executionOrder = 0, ExecutionContext context = ExecutionContext::Runtime, bool startDisabled = false);
-    void SetSystemCallback(SystemStage stage, FunctionPtr callback);
+    void SetSystemCallback(SystemStage stage, RawFunctionPtr callback);
     void DestroySystem(const String& name);
     void SetSystemEnabled(const String& name, bool bEnabled = true);
 

@@ -25,7 +25,7 @@ namespace Nit
         
         glfwMakeContextCurrent(m_WindowHandler);
 
-        m_RenderContext = RenderingContext::Create(m_Config.API, m_WindowHandler);
+        m_RenderContext = Context::Create(m_Config.API, m_WindowHandler);
         NIT_LOG_TRACE("Windows window created!\n");
 
         m_IsOpened = true;

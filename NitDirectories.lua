@@ -5,9 +5,10 @@ workingdir                     = "..\\Assets"
 
 IncludeDirs                    = {}
 
+IncludeDirs["NitEngine"]       = "%{wks.location}/Engine"
+
 IncludeDirs["Nit"]             = "%{wks.location}/Engine/Nit/Source"
 IncludeDirs["NitEditor"]       = "%{wks.location}/Engine/NitEditor/Source"
-IncludeDirs["NitMath"]         = "%{wks.location}/Engine/NitMath/Source"
 IncludeDirs["Game"]            = "%{wks.location}/Game/Game/Source"
 IncludeDirs["GameApp"]         = "%{wks.location}/Game/GameApp/Source"
 IncludeDirs["GameEditorApp"]   = "%{wks.location}/Game/GameEditorApp/Source"

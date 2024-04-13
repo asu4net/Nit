@@ -31,8 +31,8 @@ namespace Nit
         bool              bIsVisible      = false;
         Matrix4           Transform;      // Identity
         Color             TintColor       = Color::White;
-        Array<Vector3, 4> VertexPositions = RenderUtils::GetQuadVertexPositions();
-        Array<Vector2, 4> VertexUVs       = RenderUtils::GetQuadVertexUVs();
+        Array<Vector3, 4> VertexPositions = Render::GetQuadVertexPositions();
+        Array<Vector2, 4> VertexUVs       = Render::GetQuadVertexUVs();
         Id                ShaderID        =  0;
         int               EntityID        = -1;
         int               SortingLayer    =  0;

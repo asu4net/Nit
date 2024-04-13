@@ -5,7 +5,7 @@ struct GLFWwindow;
 
 namespace Nit
 {
-    class RenderingContext;
+    class Context;
 
     class WindowsWindow : public Window
     {
@@ -54,7 +54,7 @@ namespace Nit
         Configuration m_Config;
         GLFWwindow* m_WindowHandler;
         WindowEvents m_Events;
-        UniquePtr<RenderingContext> m_RenderContext;
+        UniquePtr<Context> m_RenderContext;
         bool m_IsOpened;
     };
 }

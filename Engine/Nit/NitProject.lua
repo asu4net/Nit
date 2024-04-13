@@ -18,7 +18,7 @@ project "Nit"
 
     includedirs 
     { 
-        "%{IncludeDirs.NitMath}",
+        "%{IncludeDirs.NitEngine}",
         "%{IncludeDirs.Nit}",
         "%{IncludeDirs.GLFW}",
         "%{IncludeDirs.GLAD}",
@@ -34,6 +34,7 @@ project "Nit"
     
     links
     {
+        "NitRender",
         "NitMath",
         "GLFW",
         "opengl32.lib",

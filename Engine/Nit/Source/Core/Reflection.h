@@ -2,7 +2,7 @@
 #include <RTTR/registration_friend.h>
 #include <RTTR/registration>
 #include <RTTR/type>
-#include "NitMath.h"
+#include "NitMath/NitMath.h"
 
 namespace Nit
 {
@@ -62,5 +62,4 @@ namespace MathRegistration
         .property("z", &Vector4::z)
         .property("w", &Vector4::w);
     }
-
 }

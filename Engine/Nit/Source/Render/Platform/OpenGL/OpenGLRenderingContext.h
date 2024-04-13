@@ -5,7 +5,7 @@ struct GLFWwindow;
 
 namespace Nit
 {
-    class OpenGLRenderingContext : public RenderingContext
+    class OpenGLRenderingContext : public Context
     {
     public:
 #ifdef NIT_DEBUG

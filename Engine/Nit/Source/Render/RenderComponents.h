@@ -15,8 +15,8 @@ namespace Nit
     {
         Color             TintColor       = Color::White;
         int               SortingLayer    =  0;
-        Array<Vector3, 4> VertexPositions = RenderUtils::GetQuadVertexPositions();
-        Array<Vector2, 4> VertexUVs       = RenderUtils::GetQuadVertexUVs();
+        Array<Vector3, 4> VertexPositions = Render::GetQuadVertexPositions();
+        Array<Vector2, 4> VertexUVs       = Render::GetQuadVertexUVs();
     };
 
     struct SpriteShapeComponent
