@@ -5,7 +5,6 @@
 #include "NitRender/Objects/VertexBuffer.h"
 #include "NitRender/Objects/IndexBuffer.h"
 #include "NitRender/Objects/Shader.h"
-#include "NitRender/Renderer/Primitive2D.h"
 
 #define NIT_RENDER_SYSTEM(_TYPE) \
        public:  \
@@ -14,12 +13,28 @@
 
 namespace Nit::Render
 {
+    struct Primitive2D
+    {
+        virtual String GetID() const = 0;
+        
+        bool              bIsVisible      = false;
+        Matrix4           Transform;      // Identity
+        Matrix4           ProjectionView; // Identity
+        float             Time            = 0.f;
+        Color             TintColor       = Color::White;
+        Array<Vector3, 4> VertexPositions = GetQuadVertexPositions();
+        Array<Vector2, 4> VertexUVs       = GetQuadVertexUVs();
+        ShaderPtr         ShaderToBind    = nullptr;
+        int               EntityID        = -1;
+        int               SortingLayer    =  0;
+    };
+    
     class IRenderSystem2D
     {
     public:
         virtual String    GetPrimitiveID()    const = 0;
         
-        virtual void Init(const APIPtr& api, const FunctionPtr<void()>& nextBatchFn) = 0;
+        virtual void Init(const APIPtr& api, const FunctionPtr<void()>& nextBatchFn)   = 0;
         virtual void Finish()                                                          = 0;
         virtual void SubmitPrimitive(const Primitive2D& primitive2D)                   = 0;
         virtual void ResetBatch()                                                      = 0;

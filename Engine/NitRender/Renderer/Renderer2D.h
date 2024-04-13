@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include "NitRender/Core/Command.h"
-#include "Objects/Texture2D.h"
-#include "Objects/Shader.h"
-#include "NitRender/Renderer/Primitive2D.h"
+#include "NitRender/Objects/Texture2D.h"
+#include "NitRender/Objects/Shader.h"
 #include "NitRender/Renderer/Resources.h"
 #include "NitRender/Renderer/RenderSystemMap.h"
 #include "NitRender/Renderer/SpriteRenderSystem.h"
