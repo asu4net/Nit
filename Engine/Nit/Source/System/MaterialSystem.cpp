@@ -91,7 +91,7 @@ namespace Nit::MaterialSystem
 
                     if (shaderRef.IsValid())
                     {
-                        Shader& shader = shaderRef.As<Shader>();
+                        CShader& shader = shaderRef.As<CShader>();
                         primitive->ShaderID = shader.GetRendererId();
                     }
                 }

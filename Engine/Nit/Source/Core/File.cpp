@@ -12,13 +12,13 @@ namespace Nit
 
     bool File::m_bInitialized = false;
 
-    void File::Init(const UniquePtr<Window>& window)
+    void File::Init(const TUniquePtr<CWindow>& window)
     {
         m_WindowHandler = static_cast<GLFWwindow*>(window->GetHandler());
         m_bInitialized = true;
     }
 
-    String File::OpenFile(const String& filter)
+    TString File::OpenFile(const TString& filter)
     {
         NIT_CHECK(m_bInitialized, "File system not initialized!");
         if (!m_bInitialized)
@@ -47,7 +47,7 @@ namespace Nit
         return {};
     }
 
-    String File::SaveFile(const String& filter)
+    TString File::SaveFile(const TString& filter)
     {
         NIT_CHECK(m_bInitialized, "File system not initialized!");
         if (!m_bInitialized)
@@ -102,7 +102,7 @@ namespace Nit
         return 0;
     }
 
-    String File::SelectFolder(const String& title, const String& defaultPath)
+    TString File::SelectFolder(const TString& title, const TString& defaultPath)
     {
         static char file_response[1024];
         static wchar_t lBuff[256];

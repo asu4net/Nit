@@ -3,10 +3,10 @@
 
 namespace Nit
 {
-    class Shader : public Asset
+    class CShader : public Asset
     {
     public:
-        Shader() = default;
+        CShader() = default;
 
         bool Load() override;
         void Unload() override;
@@ -15,10 +15,10 @@ namespace Nit
 
     private:
         Id m_RendererShaderId = 0;
-        String m_VertexSource;
-        String m_FragmentSource;
+        TString m_VertexSource;
+        TString m_FragmentSource;
 
-        bool ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource);
+        bool ReadFromFile(const TString& fileLocation, TString& vertexSource, TString& fragmentSource);
         
         RTTR_ENABLE(Asset)
         RTTR_REGISTRATION_FRIEND
@@ -28,7 +28,7 @@ namespace Nit
     {
         RTTR_REGISTRATION
         {
-            rttr::registration::class_<Shader>("Shader")
+            rttr::registration::class_<CShader>("Shader")
                 .constructor<>();
         }
     }

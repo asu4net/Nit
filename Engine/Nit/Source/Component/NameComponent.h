@@ -4,11 +4,11 @@ namespace Nit
 {
     struct NameComponent
     {
-        String Name;
+        TString Name;
 
         NameComponent() = default;
         
-        NameComponent(const String& name)
+        NameComponent(const TString& name)
             : Name(name)
         {}
 
@@ -18,8 +18,8 @@ namespace Nit
 
         bool IsEmpty() const { return Name.empty(); }
 
-        bool Contains(const String& other) const { return Name.find(other) != String::npos; }
-        bool Contains(const char* other) const { return Name.find(other) != String::npos; }
+        bool Contains(const TString& other) const { return Name.find(other) != TString::npos; }
+        bool Contains(const char* other) const { return Name.find(other) != TString::npos; }
         const char* GetRawString() const { return Name.c_str(); }
 
         bool operator ==(const NameComponent& other) const { return Name == other.Name; }

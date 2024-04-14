@@ -42,7 +42,7 @@ namespace Nit
         static void RegisterComponentType()
         {
             Type type = Type::get<T>();
-            SharedPtr<ComponentType> componentType = CreateSharedPtr<ComponentType>(
+            TSharedPtr<ComponentType> componentType = CreateSharedPtr<ComponentType>(
                 type,
                 FnHas([](const Entity& actor) -> bool { return actor.Has<T>(); }),
                 FnGetByCopy([](const Entity& actor) -> Instance { return actor.Get<T>(); }),
@@ -54,11 +54,11 @@ namespace Nit
             m_Components[type] = componentType;
         }
 
-        static const SharedPtr<ComponentType>& GetComponentOfType(Type type);
+        static const TSharedPtr<ComponentType>& GetComponentOfType(Type type);
 
-        static void Each(Delegate<void(Type, const SharedPtr<ComponentType>&)> iterateFunc);
+        static void Each(Delegate<void(Type, const TSharedPtr<ComponentType>&)> iterateFunc);
 
     private:
-        inline static Map<Type, SharedPtr<ComponentType>> m_Components;
+        inline static TMap<Type, TSharedPtr<ComponentType>> m_Components;
     };
 }

@@ -17,7 +17,7 @@ namespace Nit::SpritePackerWindow
 
     struct SpriteData
     {
-        String filename;
+        TString filename;
         Frame frame;
         bool rotated;
         bool trimmed;
@@ -27,18 +27,18 @@ namespace Nit::SpritePackerWindow
 
     struct Meta
     {
-        String app;
-        String version;
-        String image;
-        String format;
+        TString app;
+        TString version;
+        TString image;
+        TString format;
         Size size;
         int scale;
-        String smartupdate;
+        TString smartupdate;
     };
 
     struct Sheet
     {
-        DynamicArray<SpriteData> frames;
+        TDynamicArray<SpriteData> frames;
         Meta meta;
     };
 
@@ -81,10 +81,10 @@ namespace Nit::SpritePackerWindow
             .property("meta", &Sheet::meta);
     }
 
-        String Execute(const char* cmd)
+        TString Execute(const char* cmd)
     {
-        Array<char, 128> buffer;
-        String result;
+        TArray<char, 128> buffer;
+        TString result;
         std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
 
         NIT_CHECK(pipe, "popen() failed!");
@@ -105,13 +105,13 @@ namespace Nit::SpritePackerWindow
             Input::SetEnabled(false);
 
         // source
-        static String source;
+        static TString source;
         ImGui::InputFolder("Source", source);
 
-        static String dest = Nit::GetWorkingDirectory().string() + "\\" + Sprite::DefaultFolder();
+        static TString dest = Nit::GetWorkingDirectory().string() + "\\" + CSprite::DefaultFolder();
         ImGui::InputFolder("Destination", dest);
 
-        static String name;
+        static TString name;
         ImGui::InputText("Asset Name", name);
 
         if (ImGui::Button("Generate"))
@@ -123,11 +123,11 @@ namespace Nit::SpritePackerWindow
                 return;
             }
 
-            StringStream ss;
+            TStringStream ss;
             ss << "cd ../../ThirdParty/TexturePacker && TexturePacker";
             ss << " " << source;
 
-            String fullDest = dest + "\\" + name + ".json";
+            TString fullDest = dest + "\\" + name + ".json";
 
             ss << " --data " << fullDest;
 
@@ -137,7 +137,7 @@ namespace Nit::SpritePackerWindow
             ss << " --png-opt-level 0 --extrude 0 --algorithm Basic --trim-mode None --disable-auto-alias"; //free version cfg
 
             NIT_LOG_TRACE("Generating sprite atlas...\n");
-            const String result = Execute(ss.str().c_str());
+            const TString result = Execute(ss.str().c_str());
             NIT_LOG_TRACE("%s\n", result.c_str());
 
             if (result.empty())
@@ -148,7 +148,7 @@ namespace Nit::SpritePackerWindow
             }
 
             std::ifstream atlasFile(fullDest);
-            StringStream atlasStream;
+            TStringStream atlasStream;
             atlasStream << atlasFile.rdbuf();
 
             /*if (!std::filesystem::remove(fullDest.c_str()))
@@ -170,17 +170,17 @@ namespace Nit::SpritePackerWindow
                 AssetData spriteAssetData;
                 spriteAssetData.Name = name;
 
-                const String absolutePath = dest + "\\" + name + ".png";
-                const String relativePath = std::filesystem::relative(absolutePath, Nit::GetWorkingDirectory()).string();
+                const TString absolutePath = dest + "\\" + name + ".png";
+                const TString relativePath = std::filesystem::relative(absolutePath, Nit::GetWorkingDirectory()).string();
                 spriteAssetData.Path = relativePath;
             
-                spriteRef = Content::CreateAsset<Sprite>(spriteAssetData);
+                spriteRef = Content::CreateAsset<CSprite>(spriteAssetData);
                 Content::TryLoadAsset(spriteRef);
             }
             else
             {
                 spriteRef = Content::GetAssetByName(name);
-                Sprite& sprite = spriteRef.As<Sprite>();
+                CSprite& sprite = spriteRef.As<CSprite>();
                 sprite.Load();
                 sprite.ClearSubSprites();
             }
@@ -192,7 +192,7 @@ namespace Nit::SpritePackerWindow
                 return;
             }
 
-            Sprite& sprite = spriteRef.As<Sprite>();
+            CSprite& sprite = spriteRef.As<CSprite>();
             
             for (const SpriteData& data : sheet.frames)
             {

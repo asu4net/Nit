@@ -30,7 +30,7 @@ namespace Nit::CircleSystem
     {
         Entity circleEntity = entity;
         CircleComponent& circleComponent = circleEntity.Get<CircleComponent>();
-        circleComponent.Primitive = Renderer::CreatePrimitive<CirclePrimitive>();
+        circleComponent.Primitive = Renderer::CreatePrimitive<CCirclePrimitive>();
     }
 
     void OnCircleComponentRemoved(Registry&, RawEntity entity)

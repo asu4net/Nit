@@ -5,23 +5,23 @@ namespace Nit
 {
     struct TransformComponent
     {
-        Vector3 Position;
-        Vector3 Rotation;
-        Vector3 Scale = Vector3::One;
+        CVector3 Position;
+        CVector3 Rotation;
+        CVector3 Scale = CVector3::One;
 
         TransformComponent() = default;
 
-        TransformComponent(const Vector3& position, const Vector3& rotation, const Vector3& scale)
+        TransformComponent(const CVector3& position, const CVector3& rotation, const CVector3& scale)
             : Position(position)
             , Rotation(rotation)
             , Scale(scale)
         {
         }
 
-        Matrix4 GetMatrix()  const { return Matrix4::CreateTransform(Position, Rotation, Scale); }
-        Vector3 GetUp()      const { return Vector3::LookAt(Rotation, Vector3::Up); }
-        Vector3 GetRight()   const { return Vector3::LookAt(Rotation, Vector3::Right); }
-        Vector3 GetForward() const { return Vector3::LookAt(Rotation, Vector3::Forward); }
+        CMatrix4 GetMatrix()  const { return CMatrix4::CreateTransform(Position, Rotation, Scale); }
+        CVector3 GetUp()      const { return CVector3::LookAt(Rotation, CVector3::Up); }
+        CVector3 GetRight()   const { return CVector3::LookAt(Rotation, CVector3::Right); }
+        CVector3 GetForward() const { return CVector3::LookAt(Rotation, CVector3::Forward); }
         
         RTTR_ENABLE_NO_VIRTUAL
     };

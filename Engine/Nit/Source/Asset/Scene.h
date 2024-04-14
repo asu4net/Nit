@@ -5,13 +5,13 @@
 namespace Nit
 {
     class ComponentType;
-    using EntityArray = DynamicArray<Entity>;
+    using EntityArray = TDynamicArray<Entity>;
     
     class Scene : public Asset
     {
     public:
-        static String GetSceneExstension();
-        static String DefaultFolder();
+        static TString GetSceneExstension();
+        static TString DefaultFolder();
 
         Scene  ();
         ~Scene ();
@@ -22,18 +22,18 @@ namespace Nit
         void        Serialize     ();
         void        Deserialize   ();
         bool        IsStartScene  ()                                   const { return m_bIsStartScene; }
-        String      GetData       ()                                   const { return m_Data; }
+        TString      GetData       ()                                   const { return m_Data; }
         void        PushEntity    (Entity entity);
         EntityArray GetEntities   ()                                   const { return m_Entities; }
         void        EachEntity    (Delegate<void(Entity& e)> callback);
-        Entity      FindEntity    (const String& name)                 const;
+        Entity      FindEntity    (const TString& name)                 const;
         void        PopEntity     (Entity entity);
         void        ClearEntities ();
     
     private:
-        String               m_Data;
+        TString               m_Data;
         bool                 m_bIsStartScene = false;
-        DynamicArray<Entity> m_Entities;
+        TDynamicArray<Entity> m_Entities;
         
         RTTR_ENABLE(Asset)
         RTTR_REGISTRATION_FRIEND

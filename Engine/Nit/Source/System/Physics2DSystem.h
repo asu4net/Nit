@@ -9,8 +9,8 @@ namespace Nit
 
 namespace Nit::Physics2DSystem
 {
-    void    SetGravity(const Vector2& gravity);
-    Vector2 GetGravity();
+    void    SetGravity(const CVector2& gravity);
+    CVector2 GetGravity();
 
     void    SetVelocityIterations(float velocityIterations);
     float   GetVelocityIterations();
@@ -18,7 +18,7 @@ namespace Nit::Physics2DSystem
     void    SetPositionIterations(float positionIterations);
     float   GetPositionIterations();
     
-    void    ApplyForce(Rigidbody2DComponent& body, const Vector2& force, const Vector2& position, bool impulse);
+    void    ApplyForce(Rigidbody2DComponent& body, const CVector2& force, const CVector2& position, bool impulse);
     void    ApplyTorque(Rigidbody2DComponent& body, float torque, bool impulse);
     
     void Register();    

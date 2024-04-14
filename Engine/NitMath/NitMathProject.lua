@@ -6,9 +6,14 @@ project "NitMath"
     objdir (intermediatesdir)
     defines { "NIT_ENGINE" }
     pchheader "NitMathPCH.h"
-    pchsource "NitMathPCH.cpp"
+    pchsource "NitMath/NitMathPCH.cpp"
     forceincludes { "NitMathPCH.h" }
     
+    includedirs 
+    {
+        "%{IncludeDirs.NitMath}"
+    }
+
     files { "**.h", "**.cpp" }
 
     filter "configurations:Debug"

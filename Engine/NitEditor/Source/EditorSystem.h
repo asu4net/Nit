@@ -5,6 +5,6 @@ namespace Nit::EditorSystem
 {
     void SetSelectedEntity(Entity entity);
     Entity GetSelectedEntity();
-    String GetID();
+    TString GetID();
     void Register();
 }

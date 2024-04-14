@@ -9,7 +9,7 @@ namespace Nit
     public:
         struct Key
         {
-            String KeyRef;
+            TString KeyRef;
             float KeyTime;
         };
 
@@ -27,7 +27,7 @@ namespace Nit
         void Clear();
 
     private:
-        DynamicArray<Key> m_Keys;
+        TDynamicArray<Key> m_Keys;
         float m_Time = 0.f;
         void SortKeys();
 

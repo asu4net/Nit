@@ -51,7 +51,7 @@ namespace Nit::HierarchyWindow
         }
     }
 
-    void ShowSceneNode(const String& sceneName, Scene* scene)
+    void ShowSceneNode(const TString& sceneName, Scene* scene)
     {
         const bool bIsExpanded = ImGui::TreeNodeEx(sceneName.c_str(), ImGuiTreeNodeFlags_DefaultOpen);
 

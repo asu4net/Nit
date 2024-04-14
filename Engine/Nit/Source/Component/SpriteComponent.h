@@ -5,7 +5,7 @@
 
 namespace Nit
 {
-    struct SpritePrimitive;
+    struct CSpritePrimitive;
 
     struct SpriteComponent
     {
@@ -14,12 +14,12 @@ namespace Nit
 
         AssetRef SpriteAssetRef;
         bool bUseSubsprite = false;
-        String SubSpriteName = "";
-        Vector2 Size = Vector2::One;
-        Color TintColor = Color::White;
+        TString SubSpriteName = "";
+        CVector2 Size = CVector2::One;
+        CColor TintColor = CColor::White;
         bool bFlipX = false;
         bool bFlipY = false;
-        Vector2 UVScale = Vector2::One;
+        CVector2 UVScale = CVector2::One;
         RenderEntity renderEntity;
 
         SpriteComponent() = default;
@@ -30,9 +30,9 @@ namespace Nit
         {
         }
         
-        SpriteComponent(const String& spriteAssetName, bool bSubsprite = false);
+        SpriteComponent(const TString& spriteAssetName, bool bSubsprite = false);
 
-        SpriteComponent(const Color tintColor)
+        SpriteComponent(const CColor tintColor)
             : TintColor(tintColor)
         {
         }

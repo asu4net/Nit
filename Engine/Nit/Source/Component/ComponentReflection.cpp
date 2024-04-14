@@ -44,12 +44,12 @@ namespace Nit
         m_SetFunction(actor, instance);
     }
 
-    const SharedPtr<ComponentType>& ComponentReflection::GetComponentOfType(Type type)
+    const TSharedPtr<ComponentType>& ComponentReflection::GetComponentOfType(Type type)
     {
         return m_Components[type];
     }
 
-    void ComponentReflection::Each(Delegate<void(Type, const SharedPtr<ComponentType>&)> iterateFunc)
+    void ComponentReflection::Each(Delegate<void(Type, const TSharedPtr<ComponentType>&)> iterateFunc)
     {
         for (auto& [type, componentType] : m_Components)
         {

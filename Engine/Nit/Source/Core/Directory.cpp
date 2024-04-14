@@ -2,7 +2,7 @@
 
 namespace Nit
 {
-    String GetAssetsFolderName()
+    TString GetAssetsFolderName()
     {
         return "Assets";
     }

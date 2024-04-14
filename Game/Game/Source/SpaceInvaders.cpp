@@ -21,23 +21,23 @@ namespace Nit::SpaceInvaders
     uint32_t NumOfMissiles = 20;
     constexpr float PlayerMoveSpeed = 3.f;
     constexpr float MissileMoveSpeed = 5.f;
-    const String SpaceInvadersSceneName = "SpaceInvaders";
+    const TString SpaceInvadersSceneName = "SpaceInvaders";
     
     Entity Player;
     InputAction* ShootAction;
     Entity MissileTemplate;
-    DynamicArray<Entity> MissilePool;
-    DynamicArray<Entity> FiredMissiles;
-    WeakPtr<AudioClip> MissileClip;
+    TDynamicArray<Entity> MissilePool;
+    TDynamicArray<Entity> FiredMissiles;
+    TWeakPtr<AudioClip> MissileClip;
     
-    DynamicArray<AudioSource> AudioSources;
-    DynamicArray<AudioSource> PlayingAudioSources;
+    TDynamicArray<AudioSource> AudioSources;
+    TDynamicArray<AudioSource> PlayingAudioSources;
     
     int LastMissileIdx = 0;
     
     void SpawnMissile()
     {
-        StringStream missileName;
+        TStringStream missileName;
         missileName << "Missile " << MissilePool.size();
         Entity missile = World::CloneEntity(MissileTemplate, missileName.str());
         auto& missileSprite = missile.Get<SpriteComponent>();
@@ -89,9 +89,9 @@ namespace Nit::SpaceInvaders
         
         LinePrimitive* line = Renderer::CreatePrimitive<LinePrimitive>();
         line->bIsVisible = true;
-        line->TintColor = Color::Red;
-        line->Start = Vector2::Right;
-        line->End = line->Start + Vector2(0.7, 0.2);
+        line->TintColor = CColor::Red;
+        line->Start = CVector2::Right;
+        line->End = line->Start + CVector2(0.7, 0.2);
     }
     
     void OnStart()
@@ -136,11 +136,11 @@ namespace Nit::SpaceInvaders
         const int left  = Input::IsKeyPressed(Key_A) ? -1 : 0;
         const int right = Input::IsKeyPressed(Key_D) ?  1 : 0;
         const float dir = (float) (left + right);
-        Player.GetTransform().Position += Vector2::Right * dir * PlayerMoveSpeed * Time::GetDeltaTime();
+        Player.GetTransform().Position += CVector2::Right * dir * PlayerMoveSpeed * Time::GetDeltaTime();
 
         for (Entity missile : FiredMissiles)
         {
-            missile.GetTransform().Position += Vector2::Up * MissileMoveSpeed * Time::GetDeltaTime();
+            missile.GetTransform().Position += CVector2::Up * MissileMoveSpeed * Time::GetDeltaTime();
         }
         
         PlayingAudioSources.erase(std::remove_if(PlayingAudioSources.begin(), PlayingAudioSources.end(),

@@ -11,7 +11,7 @@
 namespace Nit::ImGuiRenderer
 {
     static const char* OpenGLVersion = "#version 410";
-    static String FontLocation = "Fonts\\AlbertSans-VariableFont_wght.ttf";
+    static TString FontLocation = "Fonts\\AlbertSans-VariableFont_wght.ttf";
     static uint8_t FontSize = 17;
 
 #ifdef NIT_EDITOR_DOCKSPACE
@@ -144,7 +144,7 @@ namespace Nit::ImGuiRenderer
         
         if (Engine::HasWindow())
         {
-            const Vector2 windowSize = Engine::GetWindow().GetSize();
+            const CVector2 windowSize = Engine::GetWindow().GetSize();
             io.DisplaySize = { windowSize.x, windowSize.y };
         }
 

@@ -2,12 +2,12 @@
 
 namespace Nit
 {
-    enum class GraphicsAPI
+    enum class EGraphicsAPI
     {
         None, OpenGL
     };
 
-    enum class BlendingMode
+    enum class EBlendingMode
     {
         Alpha,
         Solid,
@@ -51,10 +51,10 @@ namespace Nit
         AudioExecutionOrder     = 90000
     };
 
-    enum class MinificationFilter { Linear, Nearest };
-    enum class MagnificationFilter { Linear, Nearest };
-    enum class TextureWrapMode { Repeat, ClampToEdge };
-    enum class TextureCoordinate { U, V };
+    enum class EMinificationFilter { Linear, Nearest };
+    enum class EMagnificationFilter { Linear, Nearest };
+    enum class ETextureWrapMode { Repeat, ClampToEdge };
+    enum class ETextureCoordinate { U, V };
 
     namespace EnumsRegistration
     {
@@ -63,20 +63,20 @@ namespace Nit
             using namespace Nit;
             using namespace rttr;
 
-            registration::enumeration<MinificationFilter>("TextureMinFilter")
+            registration::enumeration<EMinificationFilter>("TextureMinFilter")
             (
-                value("Linear", MinificationFilter::Linear),
-                value("Nearest", MinificationFilter::Nearest)
+                value("Linear", EMinificationFilter::Linear),
+                value("Nearest", EMinificationFilter::Nearest)
             );
-            registration::enumeration<MagnificationFilter>("TextureMagFilter")
+            registration::enumeration<EMagnificationFilter>("TextureMagFilter")
             (
-                value("Linear", MagnificationFilter::Linear),
-                value("Nearest", MagnificationFilter::Nearest)
+                value("Linear", EMagnificationFilter::Linear),
+                value("Nearest", EMagnificationFilter::Nearest)
             );
-            registration::enumeration<TextureWrapMode>("TextureWrapMode")
+            registration::enumeration<ETextureWrapMode>("TextureWrapMode")
             (
-                value("Repeat", TextureWrapMode::Repeat),
-                value("ClampToEdge", TextureWrapMode::ClampToEdge)
+                value("Repeat", ETextureWrapMode::Repeat),
+                value("ClampToEdge", ETextureWrapMode::ClampToEdge)
             );
         }
     }

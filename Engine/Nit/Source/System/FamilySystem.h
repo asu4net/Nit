@@ -5,7 +5,7 @@
 
 namespace Nit::FamilySystem
 {
-    Matrix4 GetMatrix(Entity entity);
+    CMatrix4 GetMatrix(Entity entity);
 
     void ReconcileTransformWithParent(Entity entity);
     void ReconcileTransformWithParent(FamilyComponent& familyComponent, TransformComponent& transform);

@@ -13,12 +13,12 @@ namespace Nit::SceneWindow
         ImGui::Begin("Scene", bShow, ImGuiWindowFlags_NoCollapse);
 
         static const auto& allScenes = World::GetAllScenes();
-        DynamicArray<String> allSceneNames;
+        TDynamicArray<TString> allSceneNames;
 
         for (const auto& [name, scene] : allScenes)
             allSceneNames.push_back(name);
         
-        static String selectedScene = !World::GetOpenedScenes().empty() ?
+        static TString selectedScene = !World::GetOpenedScenes().empty() ?
             World::GetOpenedScenes().begin()->second->GetAssetData().Name : "";
 
         ImGui::Combo("All Scenes", selectedScene, allSceneNames);
@@ -35,7 +35,7 @@ namespace Nit::SceneWindow
 
         ImGui::Spacing(2); ImGui::Separator(); ImGui::Spacing(2);
 
-        static String sceneToCreate; ImGui::InputText("New Scene", sceneToCreate); ImGui::SameLine();
+        static TString sceneToCreate; ImGui::InputText("New Scene", sceneToCreate); ImGui::SameLine();
         ImGui::Spacing(2);
         if (ImGui::Button("Create") && !sceneToCreate.empty() && !World::IsSceneCreated(sceneToCreate)) World::CreateScene(sceneToCreate);
 

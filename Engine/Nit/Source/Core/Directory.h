@@ -5,6 +5,6 @@ namespace Nit
 {
     using Path = std::filesystem::path;
 
-    String GetAssetsFolderName();
+    TString GetAssetsFolderName();
     Path GetWorkingDirectory();
 }

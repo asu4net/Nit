@@ -8,7 +8,7 @@ namespace Nit
         CircleColliderComponent() = default;
         
         float    Radius            = 0.5f;
-        Vector2  Center            = Vector2::Zero;
+        CVector2  Center            = CVector2::Zero;
         AssetRef PhysicMaterialRef;
         float    PrevRadius        = 1;
         void*    FixturePtr        = nullptr;

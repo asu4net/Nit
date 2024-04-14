@@ -11,57 +11,57 @@ RTTR_REGISTRATION
 {
     using namespace Nit;
 
-    rttr::registration::class_<SubSprite>("SubSprite")
+    rttr::registration::class_<CSubSprite>("SubSprite")
         .constructor<>()
         (
             rttr::policy::ctor::as_object
         )
-        .property("Size", &SubSprite::Size)
-        .property("VertexPositions", &SubSprite::VertexPositions)
-        .property("VertexUVs", &SubSprite::VertexUVs);
+        .property("Size", &CSubSprite::Size)
+        .property("VertexPositions", &CSubSprite::VertexPositions)
+        .property("VertexUVs", &CSubSprite::VertexUVs);
 
-    rttr::registration::class_<Sprite>("Sprite")
+    rttr::registration::class_<CSprite>("Sprite")
         .constructor<>()
-        .property("MagFilter", &Sprite::m_MagFilter)
-        .property("MinFilter", &Sprite::m_MinFilter)
-        .property("WrapModeU", &Sprite::m_WrapModeU)
-        .property("WrapModeV", &Sprite::m_WrapModeV)
-        .property("VertexPositions", &Sprite::m_VertexPositions)
-        .property("VertexUVs", &Sprite::m_VertexUVs)
-        .property("SubSprites", &Sprite::m_SubSprites);
+        .property("MagFilter", &CSprite::m_MagFilter)
+        .property("MinFilter", &CSprite::m_MinFilter)
+        .property("WrapModeU", &CSprite::m_WrapModeU)
+        .property("WrapModeV", &CSprite::m_WrapModeV)
+        .property("VertexPositions", &CSprite::m_VertexPositions)
+        .property("VertexUVs", &CSprite::m_VertexUVs)
+        .property("SubSprites", &CSprite::m_SubSprites);
 }
 
 namespace Nit
 {
-    NIT_FORCE_LINK_IMPL(Sprite)
+    NIT_FORCE_LINK_IMPL(CSprite)
 
-    String Sprite::DefaultFolder()
+    TString CSprite::DefaultFolder()
     {
-        static const String s_SpritesFolder = "Sprites";
+        static const TString s_SpritesFolder = "Sprites";
         return s_SpritesFolder;
     }
 
-    Sprite::Sprite()
+    CSprite::CSprite()
     {
         Init();
     };
 
-    void Sprite::Init(const SpriteInitSettings& initSettings)
+    void CSprite::Init(const CSpriteInitSettings& initSettings)
     {
-        m_MagFilter = initSettings.magFilter;
-        m_MinFilter = initSettings.minFilter;
-        m_WrapModeU = initSettings.wrapModeU;
-        m_WrapModeV = initSettings.wrapModeV;
+        m_MagFilter = initSettings.MagFilter;
+        m_MinFilter = initSettings.MinFilter;
+        m_WrapModeU = initSettings.WrapModeU;
+        m_WrapModeV = initSettings.WrapModeV;
     }
 
-    bool Sprite::Load()
+    bool CSprite::Load()
     {
         if (m_Data)
         {
             Unload();
         }
         
-        const String absolutePath = GetAssetData().AbsolutePath;
+        const TString absolutePath = GetAssetData().AbsolutePath;
 
         int width, height, channels;
         stbi_set_flip_vertically_on_load(1);
@@ -90,17 +90,17 @@ namespace Nit
         return true;
     }
     
-    void Sprite::Unload()
+    void CSprite::Unload()
     {
         stbi_image_free(m_Data);
         m_Data = nullptr;
         Renderer::DestroyTexture2D(m_RendererTextureId);
     }
     
-    const SubSprite& Sprite::PushSubSprite(const String& name, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size)
+    const CSubSprite& CSprite::PushSubSprite(const TString& name, const CVector2& uvMin, const CVector2& uvMax, const CVector2& size)
     {
         NIT_CHECK(!m_SubSprites.count(name), "Duplicated name found!");
-        SubSprite subSprite;
+        CSubSprite subSprite;
         subSprite.Size = size;
         Render::FillQuadVertexPositions(size, subSprite.VertexPositions);
         Render::FillQuadVertexUVs(uvMin, uvMax, subSprite.VertexUVs);
@@ -108,18 +108,18 @@ namespace Nit
         return m_SubSprites[name];
     }
 
-    const SubSprite& Sprite::PushSubSprite(const String& name, const Vector2& locationInAtlas, const Vector2& size)
+    const CSubSprite& CSprite::PushSubSprite(const TString& name, const CVector2& locationInAtlas, const CVector2& size)
     {
         NIT_CHECK(!m_SubSprites.count(name), "Duplicated name found!");
         
-        SubSprite subSprite;
+        CSubSprite subSprite;
         subSprite.Size = size;
 
-        Vector2 bottomLeft;
+        CVector2 bottomLeft;
         bottomLeft.x = locationInAtlas.x * (1 / m_Size.x);
         bottomLeft.y = 1 - ((locationInAtlas.y + size.y) / m_Size.y);
 
-        Vector2 topRight;
+        CVector2 topRight;
         topRight.x = (locationInAtlas.x + size.x) * (1 / m_Size.x);
         topRight.y = 1 - (locationInAtlas.y / m_Size.y);
         
@@ -130,40 +130,40 @@ namespace Nit
         return m_SubSprites[name];
     }
 
-    void Sprite::PushSpriteSheet(const Vector2& atlasTileSize, uint32_t numOfTiles, bool atlasIsHorizontal)
+    void CSprite::PushSpriteSheet(const CVector2& atlasTileSize, uint32_t numOfTiles, bool atlasIsHorizontal)
     {
         for (uint32_t i = 0; i < numOfTiles; ++i)
         {
-            Vector2 tileLocation = { (float) i, 0.f };
+            CVector2 tileLocation = { (float) i, 0.f };
 
             if (!atlasIsHorizontal)
             {
                 tileLocation = { 0.f, (float) i };
             }
 
-            const String tileName = GetAssetData().Name + " [" + std::to_string(i) + "]";
+            const TString tileName = GetAssetData().Name + " [" + std::to_string(i) + "]";
             PushSubSprite(tileName, tileLocation, atlasTileSize);
         }
     }
 
-    void Sprite::PopSubSprite(const String& name)
+    void CSprite::PopSubSprite(const TString& name)
     {
         NIT_CHECK(m_SubSprites.count(name), "There is not a SubSprite called %s!", name.c_str());
         m_SubSprites.erase(name);
     }
 
-    const SubSprite& Sprite::GetSubSprite(const String& name)
+    const CSubSprite& CSprite::GetSubSprite(const TString& name)
     {
         NIT_CHECK(m_SubSprites.count(name), "There is not a SubSprite called %s!", name.c_str());
         return m_SubSprites[name];
     }
 
-    bool Sprite::ContainsSubSprite(const String& name)
+    bool CSprite::ContainsSubSprite(const TString& name)
     {
         return m_SubSprites.count(name);
     }
 
-    void Sprite::ForEachSubSprite(Delegate<void(const String&, const SubSprite&)> eachDelegate)
+    void CSprite::ForEachSubSprite(Delegate<void(const TString&, const CSubSprite&)> eachDelegate)
     {
         for (const auto& [name, subSprite] : m_SubSprites)
         {
@@ -171,7 +171,7 @@ namespace Nit
         }
     }
 
-    void Sprite::ClearSubSprites()
+    void CSprite::ClearSubSprites()
     {
         m_SubSprites.clear();
     }

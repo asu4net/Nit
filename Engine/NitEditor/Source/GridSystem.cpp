@@ -20,14 +20,14 @@ namespace Nit::GridSystem
     }
 
     // Actual code
-    const Color GridColor = { Color::Grey.r, Color::Grey.g, Color::Grey.b, 0.5f };
+    const CColor GridColor = { CColor::Grey.r, CColor::Grey.g, CColor::Grey.b, 0.5f };
     const int   GridLines = 30;
     const float LineLenght = 3.f;
     const float LineThickness = 0.005f;
     const float LinePadding = 0.1f;
-    DynamicArray<LinePrimitive*> Lines;
+    TDynamicArray<LinePrimitive*> Lines;
     
-    void SubmitGridLine(const Vector2& start, const Vector2& end)
+    void SubmitGridLine(const CVector2& start, const CVector2& end)
     {
         LinePrimitive* line = Renderer::CreatePrimitive<LinePrimitive>();
 

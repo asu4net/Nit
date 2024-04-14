@@ -40,10 +40,10 @@ namespace Nit
 
     void Animation::PushKeysFromSpriteSheet(const AssetRef spriteSheetRef, float keyTime)
     {
-        Sprite& spriteSheet = spriteSheetRef.As<Sprite>();
+        CSprite& spriteSheet = spriteSheetRef.As<CSprite>();
         float currentKeyTime = 0.f;
         
-        spriteSheet.ForEachSubSprite({[&](const String& name, const SubSprite& subSprite) {
+        spriteSheet.ForEachSubSprite({[&](const TString& name, const CSubSprite& subSprite) {
             m_Keys.push_back({name, currentKeyTime});
             currentKeyTime += keyTime;
         }});
@@ -61,7 +61,7 @@ namespace Nit
             return;
         }
 
-        DynamicArray<Key> keys(m_Keys.size());
+        TDynamicArray<Key> keys(m_Keys.size());
         keys = m_Keys;
         
         std::sort(keys.begin(), keys.end(), [](const Key& a, const Key& b) {

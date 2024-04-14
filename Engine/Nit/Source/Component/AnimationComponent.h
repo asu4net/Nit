@@ -18,7 +18,7 @@ namespace Nit
             : CurrentAnimation(animationRef)
         {}
 
-        AnimationComponent(const String& animationAssetName);
+        AnimationComponent(const TString& animationAssetName);
 
         RTTR_ENABLE_NO_VIRTUAL
     };

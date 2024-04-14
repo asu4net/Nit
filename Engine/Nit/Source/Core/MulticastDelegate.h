@@ -102,6 +102,6 @@ namespace Nit
         }
         
     private:
-        DynamicArray<Delegate<void(TArgs...)>> m_delegates;
+        TDynamicArray<Delegate<void(TArgs...)>> m_delegates;
     };
 }

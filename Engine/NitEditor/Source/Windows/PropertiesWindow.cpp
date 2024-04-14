@@ -14,7 +14,7 @@ namespace Nit::PropertiesWindow
 {
     void ShowComponent(Entity owner, const Type& type)
     {
-        const SharedPtr<ComponentType> componentType = ComponentReflection::GetComponentOfType(type);
+        const TSharedPtr<ComponentType> componentType = ComponentReflection::GetComponentOfType(type);
 
         if (!componentType || !componentType->HasComponent(owner))
         {
@@ -80,7 +80,7 @@ namespace Nit::PropertiesWindow
             ShowComponent(selectedEntity, Type::get<TransformComponent>());
 
             ComponentReflection::Each({
-            [&selectedEntity](Type type, const SharedPtr<ComponentType>& componentType)
+            [&selectedEntity](Type type, const TSharedPtr<ComponentType>& componentType)
             {
                 if (type == Type::get<TransformComponent>() 
                     || type == Type::get<IDComponent>() 
@@ -100,7 +100,7 @@ namespace Nit::PropertiesWindow
             if (ImGui::BeginPopup("AddComponent"))
             {
                 ComponentReflection::Each({
-                [&selectedEntity](Type type, const SharedPtr<ComponentType>& componentType)
+                [&selectedEntity](Type type, const TSharedPtr<ComponentType>& componentType)
                 {
                   if (!componentType->HasComponent(selectedEntity) && ImGui::MenuItem(type.get_name().to_string().c_str()))
                   {

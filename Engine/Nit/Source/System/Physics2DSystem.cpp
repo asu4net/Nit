@@ -15,26 +15,26 @@
 namespace Nit::Physics2DSystem
 {
     b2World* PhysicWorld        = nullptr;
-    Vector2  Gravity            = { 0.f, -9.8f };
+    CVector2  Gravity            = { 0.f, -9.8f };
     uint32_t VelocityIterations = 6;
     uint32_t PositionIterations = 2;
 
-    b2Vec2 ToBox2D(const Vector2& vec)
+    b2Vec2 ToBox2D(const CVector2& vec)
     {
         return b2Vec2(vec.x, vec.y);
     }
 
-    Vector2 FromBox2D(const b2Vec2& vec)
+    CVector2 FromBox2D(const b2Vec2& vec)
     {
-        return Vector2(vec.x, vec.y);
+        return CVector2(vec.x, vec.y);
     }
 
-    void SetGravity(const Vector2& gravity)
+    void SetGravity(const CVector2& gravity)
     {
         Gravity = gravity;
     }
 
-    Vector2 GetGravity()
+    CVector2 GetGravity()
     {
         return Gravity;
     }
@@ -59,7 +59,7 @@ namespace Nit::Physics2DSystem
         return PositionIterations;
     }
 
-    void ApplyForce(Rigidbody2DComponent& body, const Vector2& force, const Vector2& position, bool impulse)
+    void ApplyForce(Rigidbody2DComponent& body, const CVector2& force, const CVector2& position, bool impulse)
     {
         b2Body* b2Body = static_cast<::b2Body*>(body.BodyPtr);
         b2Body->ApplyForce({force.x, force.y}, {position.x, position.y}, impulse);
@@ -71,7 +71,7 @@ namespace Nit::Physics2DSystem
         b2Body->ApplyTorque(torque, impulse);
     }
     
-    void CreateBody(Rigidbody2DComponent& rb, const Vector2& position, float angle)
+    void CreateBody(Rigidbody2DComponent& rb, const CVector2& position, float angle)
     {
         b2BodyDef bodyDef;
         bodyDef.type      = static_cast<b2BodyType>(rb.BodyType);
@@ -126,7 +126,7 @@ namespace Nit::Physics2DSystem
         collider.PrevRadius = collider.Radius;
     }
 
-    void UpdateBodyData(Rigidbody2DComponent& rb, TransformComponent& transform, const Vector2& center)
+    void UpdateBodyData(Rigidbody2DComponent& rb, TransformComponent& transform, const CVector2& center)
     {
         b2Body* body = static_cast<b2Body*>(rb.BodyPtr);
 
@@ -146,7 +146,7 @@ namespace Nit::Physics2DSystem
         else
         {
             body->SetAwake(true);
-            transform.Position   = Vector3(FromBox2D(body->GetTransform().p - ToBox2D(center)), transform.Position.z);
+            transform.Position   = CVector3(FromBox2D(body->GetTransform().p - ToBox2D(center)), transform.Position.z);
             transform.Rotation.z = Math::ToDegrees(body->GetAngle());
         }
         

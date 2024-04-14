@@ -8,8 +8,8 @@ namespace Nit
         float Size = 1.f;
         float NearPlane = 0.f;
         float FarPlane = 1000.f;
-        Matrix4 ProjectionMatrix;
-        Matrix4 ViewMatrix;
+        CMatrix4 ProjectionMatrix;
+        CMatrix4 ViewMatrix;
 
         RTTR_ENABLE_NO_VIRTUAL
     };
@@ -21,8 +21,8 @@ namespace Nit
     struct CameraStatics 
     {
         static void UpdateCameraMatrices(Entity actor);
-        static void UpdateCameraMatrices(CameraComponent& camera, const Vector3& position, const Vector3& rotation);
-        static Vector3 ScreenToWorldPoint(CameraComponent& camera, const Vector2& screenPoint);
-        static Vector3 ScreenToWorldPoint(Entity actor, const Vector2& screenPoint);
+        static void UpdateCameraMatrices(CameraComponent& camera, const CVector3& position, const CVector3& rotation);
+        static CVector3 ScreenToWorldPoint(CameraComponent& camera, const CVector2& screenPoint);
+        static CVector3 ScreenToWorldPoint(Entity actor, const CVector2& screenPoint);
     };
 }

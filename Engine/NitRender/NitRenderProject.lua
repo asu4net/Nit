@@ -6,13 +6,13 @@ project "NitRender"
     objdir (intermediatesdir)
     defines { "NIT_ENGINE" }
     pchheader "NitRenderPCH.h"
-    pchsource "NitRenderPCH.cpp"
+    pchsource "NitRender/NitRenderPCH.cpp"
     forceincludes { "NitRenderPCH.h" }
     
     includedirs 
     {
-        "%{prj.dir}", 
-        "%{IncludeDirs.NitEngine}",
+        "%{IncludeDirs.NitRender}",
+        "%{IncludeDirs.NitMath}",
         "%{IncludeDirs.GLAD}",
         "%{IncludeDirs.GLFW}",
         "%{IncludeDirs.STB}"

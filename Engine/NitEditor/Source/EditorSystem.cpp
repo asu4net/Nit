@@ -19,8 +19,8 @@
 
 namespace Nit::EditorSystem
 {
-    const String ID = "EditorSystem";
-    SharedPtr<Framebuffer> TargetFramebuffer;
+    const TString ID = "EditorSystem";
+    TSharedPtr<CFramebuffer> TargetFramebuffer;
     Entity SelectedEntity;
 
     void SetSelectedEntity(Entity entity) 
@@ -34,7 +34,7 @@ namespace Nit::EditorSystem
     }
 
 
-    String GetID()
+    TString GetID()
     {
         return ID;
     }
@@ -45,7 +45,7 @@ namespace Nit::EditorSystem
         fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
         fbSpec.Width = Engine::GetScreenWidth();
         fbSpec.Height = Engine::GetScreenHeight();
-        TargetFramebuffer = Framebuffer::Create(Engine::GetGraphicsAPI(), fbSpec);
+        TargetFramebuffer = CFramebuffer::Create(Engine::GetGraphicsAPI(), fbSpec);
     }
 
     void OnCreate()

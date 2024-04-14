@@ -7,10 +7,10 @@
 
 namespace Nit::FamilySystem
 {
-    Matrix4 GetMatrix(Entity entity)
+    CMatrix4 GetMatrix(Entity entity)
     {
         auto& childTransform = entity.GetTransform();
-        const Matrix4 childMatrix = childTransform.GetMatrix();
+        const CMatrix4 childMatrix = childTransform.GetMatrix();
         
         if (!entity.Has<FamilyComponent>())
         {
@@ -33,19 +33,19 @@ namespace Nit::FamilySystem
         }
         
         auto& parentTransform = parent.GetTransform();
-        const Vector3 parentPosition = parentTransform.Position;
-        const Vector3 parentRotation = parentTransform.Rotation;
+        const CVector3 parentPosition = parentTransform.Position;
+        const CVector3 parentRotation = parentTransform.Rotation;
 
-        Vector3 childPosition = childTransform.Position + parentPosition;
+        CVector3 childPosition = childTransform.Position + parentPosition;
         
-        childPosition = Vector2::RotateAround(
+        childPosition = CVector2::RotateAround(
             parentPosition,   // pivot
             parentRotation.z, // angle
             childPosition     // point
         );
-        const Vector3 childRotation = childTransform.Rotation + parentRotation;
-        const Vector3 childScale = Vector3::Multiply(childTransform.Scale, parentTransform.Scale);        
-        return Matrix4::CreateTransform(childPosition, childRotation, childScale);
+        const CVector3 childRotation = childTransform.Rotation + parentRotation;
+        const CVector3 childScale = CVector3::Multiply(childTransform.Scale, parentTransform.Scale);        
+        return CMatrix4::CreateTransform(childPosition, childRotation, childScale);
     }
 
     void ReconcileTransformWithParent(Entity entity)
@@ -66,7 +66,7 @@ namespace Nit::FamilySystem
         TransformComponent& parentTransform = familyComponent.ParentRef.Get().GetTransform();
         transform.Position -= parentTransform.Position;
         transform.Rotation -= parentTransform.Rotation;
-        transform.Scale = Vector3::Divide(transform.Scale, parentTransform.Scale);
+        transform.Scale = CVector3::Divide(transform.Scale, parentTransform.Scale);
         familyComponent.PrevParentRef = EntityRef(familyComponent.ParentRef);
     }
 

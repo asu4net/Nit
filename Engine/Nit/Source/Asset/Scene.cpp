@@ -18,7 +18,7 @@ RTTR_REGISTRATION
 
 namespace Nit
 {
-    static void SerializeComponent(ComponentType& componentType, const Entity& actor, StringStream& outStream)
+    static void SerializeComponent(ComponentType& componentType, const Entity& actor, TStringStream& outStream)
     {
         if (!componentType.HasComponent(actor) 
             || componentType.GetType() == Type::get<SceneComponent>()
@@ -33,7 +33,7 @@ namespace Nit
         outStream << Serialization::ToJson(componentData) << std::endl;
     }
 
-    static void DeserializeComponent(const String& componentTypeStr, const String& componentDataStr, Entity entity)
+    static void DeserializeComponent(const TString& componentTypeStr, const TString& componentDataStr, Entity entity)
     {
         Type componentClassType = Type::get_by_name(componentTypeStr);
         if (!componentClassType.is_valid())
@@ -54,15 +54,15 @@ namespace Nit
 
     NIT_FORCE_LINK_IMPL(Scene)
 
-    String Scene::GetSceneExstension()
+    TString Scene::GetSceneExstension()
     {
-        static const String s_SceneExtension = ".nit";
+        static const TString s_SceneExtension = ".nit";
         return s_SceneExtension;
     }
 
-    String Scene::DefaultFolder()
+    TString Scene::DefaultFolder()
     {
-        static const String s_SceneFolder = "Scenes";
+        static const TString s_SceneFolder = "Scenes";
         return s_SceneFolder;
     }
 
@@ -78,7 +78,7 @@ namespace Nit
     void Scene::LoadData()
     {
         std::ifstream sceneFile(GetAssetData().Path);
-        StringStream sceneStream;
+        TStringStream sceneStream;
         sceneStream << sceneFile.rdbuf();
         m_Data = sceneStream.str();
     }
@@ -91,7 +91,7 @@ namespace Nit
 
     void Scene::Serialize()
     {
-        StringStream jsonSceneStream;
+        TStringStream jsonSceneStream;
 
         if (m_Entities.empty())
             return;
@@ -104,14 +104,14 @@ namespace Nit
                 !entity.Has<SceneComponent>() && entity.Get<SceneComponent>().IsSerializable)
                 return;
             
-            String name = entity.GetName().Name;
+            TString name = entity.GetName().Name;
             name.erase(std::remove_if(name.begin(), name.end(), isspace), name.end());
             jsonSceneStream << "#entity " << name << " " << std::to_string((uint64_t)entity.GetID().ID) << std::endl;
 
             ComponentType& transformCmpType = *ComponentReflection::GetComponentOfType(Type::get<TransformComponent>());
             SerializeComponent(transformCmpType, entity, jsonSceneStream);
 
-            ComponentReflection::Each({ [&](Type classType, SharedPtr<ComponentType> componentType) {
+            ComponentReflection::Each({ [&](Type classType, TSharedPtr<ComponentType> componentType) {
 
                 if (classType == transformCmpType.GetType())
                     return;
@@ -126,16 +126,16 @@ namespace Nit
     {
         Registry& registry = World::GetRegistry();
 
-        IStringStream jsonSceneStream{ GetData() };
+        TIStringStream jsonSceneStream{ GetData() };
 
         Entity entity;
-        String componentDataStr, componentTypeStr;
+        TString componentDataStr, componentTypeStr;
 
         bool bComponentCreated = false;
 
-        for (String line; std::getline(jsonSceneStream, line);)
+        for (TString line; std::getline(jsonSceneStream, line);)
         {
-            if (line.find("#entity") != String::npos)
+            if (line.find("#entity") != TString::npos)
             {
                 if (bComponentCreated)
                 {
@@ -150,17 +150,17 @@ namespace Nit
                 auto& nameComponent = entity.Add<NameComponent>();
                 entity.Add<SceneComponent>(Content::GetAssetByName(GetAssetData().Name), true);
 
-                IStringStream lineStream(line);
-                for (String word; std::getline(lineStream, word, ' ');)
+                TIStringStream lineStream(line);
+                for (TString word; std::getline(lineStream, word, ' ');)
                 {
-                    if (word.find("#entity") != String::npos) continue; //TODO: Allow spaces in names
+                    if (word.find("#entity") != TString::npos) continue; //TODO: Allow spaces in names
                     else if (nameComponent.IsEmpty()) nameComponent = word;
                     else idComponent = std::stoull(word);
                 }
                 PushEntity(entity);
                 World::PushEntity(entity);
             }
-            else if (line.find("#component") != String::npos)
+            else if (line.find("#component") != TString::npos)
             {
                 if (bComponentCreated)
                 {
@@ -170,10 +170,10 @@ namespace Nit
                     bComponentCreated = false;
                 }
 
-                IStringStream lineStream(line);
-                for (String word; std::getline(lineStream, word, ' ');)
+                TIStringStream lineStream(line);
+                for (TString word; std::getline(lineStream, word, ' ');)
                 {
-                    if (word.find("#component") != String::npos) continue;
+                    if (word.find("#component") != TString::npos) continue;
                     if (componentTypeStr.empty()) componentTypeStr = word;
                 }
                 bComponentCreated = true;
@@ -206,7 +206,7 @@ namespace Nit
         }
     }
 
-    Entity Scene::FindEntity(const String& name) const
+    Entity Scene::FindEntity(const TString& name) const
     {
         auto it = std::find_if(m_Entities.begin(), m_Entities.end(),
         [&name](const Entity& entity)

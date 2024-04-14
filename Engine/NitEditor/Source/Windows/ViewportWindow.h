@@ -3,11 +3,11 @@
 
 namespace Nit
 {
-    class Framebuffer;
+    class CFramebuffer;
 }
 
 namespace Nit::ViewportWindow
 {
-    Vector2 GetMousePosition();
-    void Show(bool* bShow, Framebuffer* TargetFramebuffer);
+    CVector2 GetMousePosition();
+    void Show(bool* bShow, CFramebuffer* TargetFramebuffer);
 }

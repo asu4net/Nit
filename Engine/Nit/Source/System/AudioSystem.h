@@ -21,7 +21,7 @@ namespace Nit
     {
         // *** UTILITY FUNCTIONS ***
         
-        AudioSource CreateSource(const SharedPtr<AudioClip>& clip);
+        AudioSource CreateSource(const TSharedPtr<AudioClip>& clip);
         void DestroySource(AudioSource& audioSource);
         void Play(const AudioSource& audioSource);
         void Stop(const AudioSource& audioSource);
@@ -29,12 +29,12 @@ namespace Nit
         void SetPitch(const AudioSource& audioSource, uint32_t pitch);
         void SetGain(const AudioSource& audioSource, uint32_t gain);
         void SetLoop(const AudioSource& audioSource, bool loop);
-        void Translate(const AudioSource& audioSource, const Vector3& position);
-        void SetVelocity(const AudioSource& audioSource, const Vector3& velocity);
-        void Rotate(const AudioSource& audioSource, const Vector3& orientation);
-        void TranslateListener(const Vector3& position);
-        void RotateListener(const Vector3& up, const Vector3& forward);
-        void SetListenerVelocity(const Vector3& velocity); 
+        void Translate(const AudioSource& audioSource, const CVector3& position);
+        void SetVelocity(const AudioSource& audioSource, const CVector3& velocity);
+        void Rotate(const AudioSource& audioSource, const CVector3& orientation);
+        void TranslateListener(const CVector3& position);
+        void RotateListener(const CVector3& up, const CVector3& forward);
+        void SetListenerVelocity(const CVector3& velocity); 
         
         // *** UTILITY FUNCTIONS END ***
         

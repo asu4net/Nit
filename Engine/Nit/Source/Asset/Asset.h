@@ -4,11 +4,11 @@ namespace Nit
 {
     struct AssetData
     {
-        String Name;
-        String Path;
-        String AbsolutePath;
+        TString Name;
+        TString Path;
+        TString AbsolutePath;
         Id AssetId;
-        String AssetType;
+        TString AssetType;
     };
     
     NIT_FORCE_LINK(AssetData)

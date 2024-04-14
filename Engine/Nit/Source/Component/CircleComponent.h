@@ -2,21 +2,21 @@
 
 namespace Nit
 {
-    struct CirclePrimitive;
+    struct CCirclePrimitive;
 
     struct CircleComponent
     {
         bool             IsVisible    = true;
         float            Radius       = .5f;
-        Color            TintColor    = Color::White;
+        CColor            TintColor    = CColor::White;
         float            Thickness    = .05f;
         float            Fade         = .01f;
         int              SortingLayer = 0;
-        CirclePrimitive* Primitive    = nullptr;
+        CCirclePrimitive* Primitive    = nullptr;
 
         CircleComponent() = default;
 
-        CircleComponent(float radius, const Color& tintColor = Color::White, float thickness = .05f, float fade = .01f, int sortingLayer = 0)
+        CircleComponent(float radius, const CColor& tintColor = CColor::White, float thickness = .05f, float fade = .01f, int sortingLayer = 0)
             : Radius(radius)
             , TintColor(tintColor)
             , Thickness(thickness)

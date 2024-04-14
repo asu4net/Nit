@@ -8,11 +8,11 @@ namespace Nit
 
     struct EntityCreationParams
     {
-        String Name;
-        String SceneOwner;
-        Vector3 Position;
-        Vector3 Rotation;
-        Vector3 Scale = Vector3::One;
+        TString Name;
+        TString SceneOwner;
+        CVector3 Position;
+        CVector3 Rotation;
+        CVector3 Scale = CVector3::One;
         Id SpecificId = 0;
         bool IsSerializable = true;
     };
@@ -26,28 +26,28 @@ namespace Nit::World
     void                  PopEntity         (Id entityId);
     void                  PopEntity         (Entity entity);
     Entity                FindEntity        (Id id);
-    DynamicArray<Entity>& GetGlobalEntities ();
-    Entity                FindEntityByName  (const String& entityName);
-    Entity                CloneEntity       (Entity sourceEntity, const String& name = "");
+    TDynamicArray<Entity>& GetGlobalEntities ();
+    Entity                FindEntityByName  (const TString& entityName);
+    Entity                CloneEntity       (Entity sourceEntity, const TString& name = "");
     void                  EachEntity        (Delegate<void(Entity& e)> callback);
     
     void Init();
     void Finish();
 
-    const Map<String, Scene*>& GetAllScenes();
-    const Map<String, Scene*>& GetOpenedScenes();
+    const TMap<TString, Scene*>& GetAllScenes();
+    const TMap<TString, Scene*>& GetOpenedScenes();
 
     bool HasRegistry();
     Registry* GetRegistryPtr();
     Registry& GetRegistry();
 
-    void CreateScene(const String& sceneName);
-    bool IsSceneOpened(const String& sceneName);
-    bool IsSceneCreated(const String& sceneName);
-    void OpenScene(const String& sceneName);
-    void ReloadScene(const String& sceneName);
-    void CloseScene(const String& sceneName);
-    void SaveScene(const String& sceneName);
+    void CreateScene(const TString& sceneName);
+    bool IsSceneOpened(const TString& sceneName);
+    bool IsSceneCreated(const TString& sceneName);
+    void OpenScene(const TString& sceneName);
+    void ReloadScene(const TString& sceneName);
+    void CloseScene(const TString& sceneName);
+    void SaveScene(const TString& sceneName);
     
     void OpenDefaultScene();
     void SerializeOpenedScenes();

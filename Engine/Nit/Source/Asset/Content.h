@@ -16,19 +16,19 @@ namespace Nit::Content
     AssetCreatedEvent& OnAssetCreated();
     AssetDestroyedEvent& OnAssetDestroyed();
 
-    void SerializeAsset(const SharedPtr<Asset>& asset, const String& path = "");
-    SharedPtr<Asset> DeserializeAsset(const std::filesystem::path& assetPath);
+    void SerializeAsset(const TSharedPtr<Asset>& asset, const TString& path = "");
+    TSharedPtr<Asset> DeserializeAsset(const std::filesystem::path& assetPath);
 
-    void GetAssetsOfType(const Type& type, DynamicArray<AssetRef>& assets);
+    void GetAssetsOfType(const Type& type, TDynamicArray<AssetRef>& assets);
     void EachAsset(Delegate<void(const AssetRef&)> iterateFunc);
 
-    WeakPtr<Asset> GetAssetById(Id id);
-    AssetRef GetAssetByName(const String& name);
+    TWeakPtr<Asset> GetAssetById(Id id);
+    AssetRef GetAssetByName(const TString& name);
 
-    bool HasAsset(const String& name);
+    bool HasAsset(const TString& name);
 
     void EnsureAssetDataConsistency(AssetData& assetData, bool bIgnoreChecks = false);
-    AssetRef RegistryAsset(const SharedPtr<Asset>& asset, const AssetData& assetData);
+    AssetRef RegistryAsset(const TSharedPtr<Asset>& asset, const AssetData& assetData);
     bool TryLoadAsset(AssetRef assetLink);
 
     template<typename T, typename... TArgs>
@@ -44,7 +44,7 @@ namespace Nit::Content
     }
 
     template<typename T, typename... TArgs>
-    AssetRef CreateAsset(const String& assetName, TArgs&&... args)
+    AssetRef CreateAsset(const TString& assetName, TArgs&&... args)
     {
         return CreateAsset<T>(AssetData{ assetName }, std::forward<TArgs>(args)...);
     }

@@ -8,10 +8,10 @@
 
 namespace Nit::World
 {
-    Map<String, Scene*> AllScenes;
-    Map<String, Scene*> OpenedScenes;
-    DynamicArray<Entity> GlobalEntities;
-    Map<Id, Entity> IdEntityMap;
+    TMap<TString, Scene*> AllScenes;
+    TMap<TString, Scene*> OpenedScenes;
+    TDynamicArray<Entity> GlobalEntities;
+    TMap<Id, Entity> IdEntityMap;
     
     Registry* EntityRegistry = nullptr;
     uint32_t CreatedEntitiesCount = 0;
@@ -26,7 +26,7 @@ namespace Nit::World
     Entity CreateEntity(const EntityCreationParams& params)
     {
         const auto& [id, rawEntity] = CreateEntity(params.SpecificId);
-        const String Name = params.Name.empty() ? String().append("Entity[" + std::to_string(CreatedEntitiesCount) + "]") : params.Name;
+        const TString Name = params.Name.empty() ? TString().append("Entity[" + std::to_string(CreatedEntitiesCount) + "]") : params.Name;
         EntityRegistry->emplace<NameComponent>(rawEntity, Name);
         EntityRegistry->emplace<IDComponent>(rawEntity, id);
         EntityRegistry->emplace<TransformComponent>(rawEntity, params.Position, params.Rotation, params.Scale);
@@ -66,7 +66,7 @@ namespace Nit::World
         if (entity.Has<SceneComponent>())
         {
             auto& sceneComponent = entity.Get<SceneComponent>();
-            SharedPtr<Scene> scene = sceneComponent.OwnerScene.GetAs<Scene>(); 
+            TSharedPtr<Scene> scene = sceneComponent.OwnerScene.GetAs<Scene>(); 
             OpenedScenes[scene->GetAssetData().Name]->PopEntity(entity);
         }
         // Remove entity from global entities
@@ -142,12 +142,12 @@ namespace Nit::World
         return IdEntityMap[id];
     }
 
-    DynamicArray<Nit::Entity>& GetGlobalEntities()
+    TDynamicArray<Nit::Entity>& GetGlobalEntities()
     {
         return GlobalEntities;
     }
     
-    Entity FindEntityByName(const String& entityName)
+    Entity FindEntityByName(const TString& entityName)
     {
         for (const Entity& entity : GlobalEntities)
         {
@@ -174,7 +174,7 @@ namespace Nit::World
         return Entity();
     }
 
-    Entity CloneEntity(Entity sourceEntity, const String& name)
+    Entity CloneEntity(Entity sourceEntity, const TString& name)
     {
         const RawEntity dstRawEntity = EntityRegistry->create();
 
@@ -225,7 +225,7 @@ namespace Nit::World
     {
         if (!assetRef.IsValid())
             return false;
-        const SharedPtr<Asset> asset = assetRef.GetWeak().lock();
+        const TSharedPtr<Asset> asset = assetRef.GetWeak().lock();
         return asset->GetAssetData().AssetType == Type::get<Scene>().get_name();
     }
 
@@ -262,8 +262,8 @@ namespace Nit::World
         }
     }
 
-    const Map<String, Scene*>& GetAllScenes() { return AllScenes; }
-    const Map<String, Scene*>& GetOpenedScenes() { return OpenedScenes; }
+    const TMap<TString, Scene*>& GetAllScenes() { return AllScenes; }
+    const TMap<TString, Scene*>& GetOpenedScenes() { return OpenedScenes; }
 
     bool HasRegistry()
     {
@@ -281,7 +281,7 @@ namespace Nit::World
         return *EntityRegistry;
     }
 
-    void OpenScene(const String& sceneName)
+    void OpenScene(const TString& sceneName)
     {
         if (!AllScenes.count(sceneName))
         {
@@ -302,7 +302,7 @@ namespace Nit::World
         NIT_LOG_TRACE("Scene opened! %s\n", sceneName.c_str());
     }
 
-    void ReloadScene(const String& sceneName)
+    void ReloadScene(const TString& sceneName)
     {
         if (!AllScenes.count(sceneName))
         {
@@ -320,7 +320,7 @@ namespace Nit::World
         OpenScene(sceneName);
     }
 
-    void CloseScene(const String& sceneName)
+    void CloseScene(const TString& sceneName)
     {
         if (!AllScenes.count(sceneName))
         {
@@ -341,7 +341,7 @@ namespace Nit::World
         NIT_LOG_TRACE("Scene closed! %s\n", sceneName.c_str());
     }
 
-    void SaveScene(const String& sceneName)
+    void SaveScene(const TString& sceneName)
     {
         if (!AllScenes.count(sceneName))
         {
@@ -378,12 +378,12 @@ namespace Nit::World
         }
     }
 
-    bool IsSceneOpened(const String& sceneName)
+    bool IsSceneOpened(const TString& sceneName)
     {
         return OpenedScenes.count(sceneName);
     }
 
-    void CreateScene(const String& sceneName)
+    void CreateScene(const TString& sceneName)
     {
         if (IsSceneCreated(sceneName))
         {
@@ -395,7 +395,7 @@ namespace Nit::World
         data.Name = sceneName;
         data.Path = Scene::DefaultFolder() + "/" + sceneName + Scene::GetSceneExstension();
         AssetRef sceneRef = Content::CreateAsset<Scene>(data);
-        SharedPtr<Scene> scene = sceneRef.GetWeakAs<Scene>().lock();
+        TSharedPtr<Scene> scene = sceneRef.GetWeakAs<Scene>().lock();
         scene->Serialize();
         scene->SaveData();
         Content::TryLoadAsset(sceneRef);
@@ -403,7 +403,7 @@ namespace Nit::World
         OpenScene(sceneName);
     }
 
-    bool IsSceneCreated(const String& sceneName)
+    bool IsSceneCreated(const TString& sceneName)
     {
         return AllScenes.count(sceneName);
     }

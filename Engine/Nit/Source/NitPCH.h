@@ -18,16 +18,16 @@ using RawEntity = entt::entity;
 namespace Nit
 {
     template<typename T, size_t N>
-    using Array = std::array<T, N>;
+    using TArray = std::array<T, N>;
 
     template<typename T>
-    using DynamicArray = std::vector<T>;
+    using TDynamicArray = std::vector<T>;
 
     template<typename K, typename V>
-    using OrderedMap = std::map<K, V>;
+    using TOrderedMap = std::map<K, V>;
 
     template<typename K, typename V>
-    using Map = std::unordered_map<K, V>;
+    using TMap = std::unordered_map<K, V>;
 }
 
 #include <string>
@@ -36,9 +36,9 @@ namespace Nit
 
 namespace Nit
 {
-    using String = std::string;
-    using StringStream = std::stringstream;
-    using IStringStream = std::istringstream;
+    using TString = std::string;
+    using TStringStream = std::stringstream;
+    using TIStringStream = std::istringstream;
 }
 
 #include <memory>
@@ -46,25 +46,25 @@ namespace Nit
 namespace Nit
 {
     template<typename T>
-    using UniquePtr = std::unique_ptr<T>;
+    using TUniquePtr = std::unique_ptr<T>;
 
     template<typename T, typename ... Args>
-    constexpr UniquePtr<T> CreateUniquePtr(Args&& ... args)
+    constexpr TUniquePtr<T> CreateUniquePtr(Args&& ... args)
     {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
 
     template<typename T>
-    using SharedPtr = std::shared_ptr<T>;
+    using TSharedPtr = std::shared_ptr<T>;
 
     template<typename T, typename ... Args>
-    constexpr SharedPtr<T> CreateSharedPtr(Args&& ... args)
+    constexpr TSharedPtr<T> CreateSharedPtr(Args&& ... args)
     {
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
 
     template<typename T>
-    using WeakPtr = std::weak_ptr<T>;
+    using TWeakPtr = std::weak_ptr<T>;
 }
 
 #include "Core/MulticastDelegate.h"

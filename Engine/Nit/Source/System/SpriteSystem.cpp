@@ -9,7 +9,7 @@
 
 namespace Nit::SpriteSystem
 {
-    const String SystemID = "SpriteSystem";
+    const TString SystemID = "SpriteSystem";
 
     void OnCreate();
     void OnSpriteComponentAdded(Registry&, RawEntity entity);
@@ -66,13 +66,13 @@ namespace Nit::SpriteSystem
                 return;
             }
 
-            if (sprite.SpriteAssetRef.Is<Sprite>())
+            if (sprite.SpriteAssetRef.Is<CSprite>())
             {
-                Sprite& spriteAsset = sprite.SpriteAssetRef.As<Sprite>();
+                CSprite& spriteAsset = sprite.SpriteAssetRef.As<CSprite>();
 
                 if (sprite.bUseSubsprite && spriteAsset.ContainsSubSprite(sprite.SubSpriteName))
                 {
-                    SubSprite subSprite = spriteAsset.GetSubSprite(sprite.SubSpriteName);
+                    CSubSprite subSprite = spriteAsset.GetSubSprite(sprite.SubSpriteName);
                     primitive2DComponent.VertexPositions = subSprite.VertexPositions;
                     primitive2DComponent.VertexUVs = subSprite.VertexUVs;
                 }
@@ -86,7 +86,7 @@ namespace Nit::SpriteSystem
             }
             else
             {
-                SpritePrimitive defaultSprite;
+                CSpritePrimitive defaultSprite;
                 primitive2DComponent.VertexPositions = defaultSprite.VertexPositions; 
                 primitive2DComponent.VertexUVs   = defaultSprite.VertexUVs;
                 spriteShapeComponent.TextureID       = 0;

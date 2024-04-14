@@ -26,8 +26,8 @@ mejorar el sistema de assets.
 . unificar assets de render con los otros
 
 Tener un render system que renderice todas las entidades que llevan un componente relacionado.
-almacenar la información de las primitivas en los propios componentes. Que tenga funciones de
-draw y demás que pueda usar el usuario desde fuera. Lo único que si lo hace tendrá que funcionar
+almacenar la informaciÃ³n de las primitivas en los propios componentes. Que tenga funciones de
+draw y demÃ¡s que pueda usar el usuario desde fuera. Lo Ãºnico que si lo hace tendrÃ¡ que funcionar
 en inmediate mode. (usando begin - end) por su cuenta.
 
 */
@@ -36,7 +36,7 @@ namespace Nit
 {
     NIT_FORCE_LINK_IMPL(SpriteComponent);
 
-    SpriteComponent::SpriteComponent(const String& spriteAssetName, bool bSubsprite)
+    SpriteComponent::SpriteComponent(const TString& spriteAssetName, bool bSubsprite)
         : SpriteAssetRef(Content::GetAssetByName(spriteAssetName))
         , bUseSubsprite(bSubsprite)
     {

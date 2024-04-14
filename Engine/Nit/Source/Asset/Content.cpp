@@ -3,27 +3,27 @@
 
 namespace Nit::Content
 {
-    const String AssetExtension = ".nitAsset";
+    const TString AssetExtension = ".nitAsset";
     
     AssetCreatedEvent m_AssetCreatedEvent;
     AssetDestroyedEvent m_AssetDestroyedEvent;
-    Map<Id, SharedPtr<Asset>> m_IdAssetMap;
-    Map<String, Id> m_AssetNameIdMap;
+    TMap<Id, TSharedPtr<Asset>> m_IdAssetMap;
+    TMap<TString, Id> m_AssetNameIdMap;
 
-    void SerializeAsset(const SharedPtr<Asset>& asset, const String& path)
+    void SerializeAsset(const TSharedPtr<Asset>& asset, const TString& path)
     {
         AssetData assetData = asset->GetAssetData();
         EnsureAssetDataConsistency(assetData, true);
         asset->SetAssetData(assetData);
-        const String jsonNitAsset = Serialization::ToJson(asset);
+        const TString jsonNitAsset = Serialization::ToJson(asset);
 
-        const String assetStr = assetData.Name + AssetExtension;
+        const TString assetStr = assetData.Name + AssetExtension;
         std::ofstream fileNitAssetBinaries(path.empty() ? assetStr : path + "\\" + assetStr);
         
         fileNitAssetBinaries << jsonNitAsset;
     }
 
-    SharedPtr<Asset> DeserializeAsset(const std::filesystem::path& assetPath)
+    TSharedPtr<Asset> DeserializeAsset(const std::filesystem::path& assetPath)
     {
         if (assetPath.extension() != AssetExtension)
         {
@@ -37,7 +37,7 @@ namespace Nit::Content
             return nullptr;
         }
 
-        StringStream assetDataStream;
+        TStringStream assetDataStream;
         assetDataStream << fileStream.rdbuf();
 
         Asset assetData;
@@ -55,11 +55,11 @@ namespace Nit::Content
         
         Instance instance = variant;
         Serialization::FromJson(assetDataStream.str(), instance);
-        SharedPtr<Asset> asset = variant.get_value<SharedPtr<Asset>>();
+        TSharedPtr<Asset> asset = variant.get_value<TSharedPtr<Asset>>();
         return asset;
     }
 
-    void GetAssetsOfType(const Type& type, DynamicArray<AssetRef>& assets)
+    void GetAssetsOfType(const Type& type, TDynamicArray<AssetRef>& assets)
     {
         for (auto& [id, asset] : m_IdAssetMap)
         {
@@ -78,15 +78,15 @@ namespace Nit::Content
         }
     }
 
-    WeakPtr<Asset> GetAssetById(Id id)
+    TWeakPtr<Asset> GetAssetById(Id id)
     {
         if (!m_IdAssetMap.count(id))
-            return WeakPtr<Asset>();
+            return TWeakPtr<Asset>();
 
         return m_IdAssetMap[id];
     }
 
-    AssetRef GetAssetByName(const String& name)
+    AssetRef GetAssetByName(const TString& name)
     {
         if (!m_AssetNameIdMap.count(name))
             return {};
@@ -96,7 +96,7 @@ namespace Nit::Content
         return AssetRef(assetId);
     }
 
-    bool HasAsset(const String& name)
+    bool HasAsset(const TString& name)
     {
         return m_AssetNameIdMap.count(name);
     }
@@ -113,7 +113,7 @@ namespace Nit::Content
             if (dirEntry.is_directory()) 
                 continue;
 
-            SharedPtr<Asset> asset = DeserializeAsset(dirPath);
+            TSharedPtr<Asset> asset = DeserializeAsset(dirPath);
             
             if (!asset)
                 continue;
@@ -167,7 +167,7 @@ namespace Nit::Content
         assetData.AbsolutePath = GetWorkingDirectory().string() + "\\" + assetData.Path;
     }
 
-    AssetRef RegistryAsset(const SharedPtr<Asset>& asset, const AssetData& assetData)
+    AssetRef RegistryAsset(const TSharedPtr<Asset>& asset, const AssetData& assetData)
     {
         AssetData finalAssetData = assetData;
         EnsureAssetDataConsistency(finalAssetData);
@@ -180,7 +180,7 @@ namespace Nit::Content
 
     bool TryLoadAsset(AssetRef assetRef)
     {
-        SharedPtr<Asset> asset = assetRef.GetWeak().lock();
+        TSharedPtr<Asset> asset = assetRef.GetWeak().lock();
 
         const AssetData assetData = asset->GetAssetData();
         const char* fileName = assetData.Name.c_str();

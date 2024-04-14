@@ -34,32 +34,32 @@ namespace MathRegistration
     {
         using namespace Nit;
         
-        rttr::registration::class_<Color>("Color")
+        rttr::registration::class_<CColor>("Color")
         .constructor<>()
-        .property("r", &Color::r)
-        .property("g", &Color::g)
-        .property("b", &Color::b)
-        .property("a", &Color::a);
+        .property("r", &CColor::r)
+        .property("g", &CColor::g)
+        .property("b", &CColor::b)
+        .property("a", &CColor::a);
 
-        rttr::registration::class_<Matrix4>("Matrix4")
+        rttr::registration::class_<CMatrix4>("Matrix4")
         .constructor<>();
 
-        rttr::registration::class_<Vector2>("Vector2")
+        rttr::registration::class_<CVector2>("Vector2")
         .constructor<>()
-        .property("x", &Vector2::x)
-        .property("y", &Vector2::y);
+        .property("x", &CVector2::x)
+        .property("y", &CVector2::y);
         
-        rttr::registration::class_<Vector3>("Vector3")
+        rttr::registration::class_<CVector3>("Vector3")
         .constructor<>()
-        .property("x", &Vector3::x)
-        .property("y", &Vector3::y)
-        .property("z", &Vector3::z);
+        .property("x", &CVector3::x)
+        .property("y", &CVector3::y)
+        .property("z", &CVector3::z);
 
-        rttr::registration::class_<Vector4>("Vector4")
+        rttr::registration::class_<CVector4>("Vector4")
         .constructor<>()
-        .property("x", &Vector4::x)
-        .property("y", &Vector4::y)
-        .property("z", &Vector4::z)
-        .property("w", &Vector4::w);
+        .property("x", &CVector4::x)
+        .property("y", &CVector4::y)
+        .property("z", &CVector4::z)
+        .property("w", &CVector4::w);
     }
 }

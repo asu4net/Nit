@@ -14,22 +14,22 @@ namespace Nit::ContentSystem
         Engine::SetSystemCallback(SystemStage::Create, &OnCreate);
     }
 
-    String GetRelativeAssetPath(const String& filePath)
+    TString GetRelativeAssetPath(const TString& filePath)
     {
-        DynamicArray<String> splitPath;
-        String subString;
-        StringStream ss(filePath);
+        TDynamicArray<TString> splitPath;
+        TString subString;
+        TStringStream ss(filePath);
         bool bProceed{ false };
         while (std::getline(ss, subString, '\\'))
         {
-            if (subString.find(Nit::GetAssetsFolderName()) != String::npos)
+            if (subString.find(Nit::GetAssetsFolderName()) != TString::npos)
             {
                 bProceed = true;
                 continue;
             }
             if (bProceed) splitPath.push_back(subString + "/");
         }
-        String res;
+        TString res;
         for (int i = 0; i < splitPath.size(); i++)
             res += splitPath[i];
         res = res.substr(0, res.size() - 1);
@@ -38,7 +38,7 @@ namespace Nit::ContentSystem
 
     bool TryImportAsset(const std::filesystem::path& path)
     {
-        const String assetName = path.stem().string();
+        const TString assetName = path.stem().string();
 
         if (Content::GetAssetByName(assetName).IsValid())
         {
@@ -54,7 +54,7 @@ namespace Nit::ContentSystem
 
         if (path.extension() == ".png" || path.extension() == ".jpg")
         {
-            ref = Content::CreateAsset<Sprite>(assetData);
+            ref = Content::CreateAsset<CSprite>(assetData);
         }
         else if (path.extension() == ".wav")
         {
@@ -67,7 +67,7 @@ namespace Nit::ContentSystem
         }
         else
         {
-            SharedPtr<Asset> asset = ref.Get();
+            TSharedPtr<Asset> asset = ref.Get();
             Content::SerializeAsset(asset, "");
             return true;
         }
@@ -81,7 +81,7 @@ namespace Nit::ContentSystem
         {
             const auto& path = directoryEntry.path();
             auto relativePath = relative(path, currentDirectory);
-            String fileName = relativePath.filename().string();
+            TString fileName = relativePath.filename().string();
 
             if (!directoryEntry.is_directory())
             {

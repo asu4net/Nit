@@ -76,7 +76,7 @@ namespace ImGui
         return ImGui::Button(label);
     }
 
-    bool InputText(const char* label, String& text)
+    bool InputText(const char* label, TString& text)
     {
         BeginProperty(label);
         static constexpr uint32_t MAX_CHARS = 300;
@@ -91,7 +91,7 @@ namespace ImGui
         return bTextChanged;
     }
 
-    bool InputFolder(const char* label, Nit::String& text)
+    bool InputFolder(const char* label, Nit::TString& text)
     {
         BeginProperty(label);
         static constexpr uint32_t MAX_CHARS = 300;
@@ -102,7 +102,7 @@ namespace ImGui
 
         if (ImGui::Button("Find"))
         {
-            const String path = File::SelectFolder("", text);
+            const TString path = File::SelectFolder("", text);
 
             if (!path.empty())
             {
@@ -182,7 +182,7 @@ namespace ImGui
         return bChanged;
     }
 
-    void Combo(const char* label, String& selected, const DynamicArray<String>& options)
+    void Combo(const char* label, TString& selected, const TDynamicArray<TString>& options)
     {
         BeginProperty(label);
         if (selected.empty())
@@ -190,7 +190,7 @@ namespace ImGui
 
         if (ImGui::BeginCombo("##combo", selected.c_str()))
         {
-            for (const String& option : options)
+            for (const TString& option : options)
             {
                 const bool isSelected = selected == option;
                 if (ImGui::Selectable(option.c_str()))
@@ -206,7 +206,7 @@ namespace ImGui
         EndProperty();
     }
 
-    bool DragFloatWithButton(const char* label, float& value, const Color& resetColor, float resetValue, float speed)
+    bool DragFloatWithButton(const char* label, float& value, const CColor& resetColor, float resetValue, float speed)
     {
         ImGui::PushID(label);
         const float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.f;
@@ -231,7 +231,7 @@ namespace ImGui
         return bChanged || bReset;
     }
 
-    bool DragVector2(const char* label, Nit::Vector2& vector, const Nit::Vector2& resetValue, float speed)
+    bool DragVector2(const char* label, Nit::CVector2& vector, const Nit::CVector2& resetValue, float speed)
     {
         BeginProperty(label, 2);
         bool bXChanged = DragFloatWithButton("X", vector.x, Styles.ColorX, resetValue.x, speed);
@@ -241,7 +241,7 @@ namespace ImGui
         return bXChanged || bYChanged;
     }
 
-    bool DragVector3(const char* label, Nit::Vector3& vector, const Nit::Vector3& resetValue /*= Nit::Vector3::Zero*/, float speed /*= 0.05f*/)
+    bool DragVector3(const char* label, Nit::CVector3& vector, const Nit::CVector3& resetValue /*= Nit::Vector3::Zero*/, float speed /*= 0.05f*/)
     {
         BeginProperty(label, 3);
         bool bXChanged = DragFloatWithButton("X", vector.x, Styles.ColorX, resetValue.x, speed);
@@ -267,7 +267,7 @@ namespace ImGui
         return bXChanged || bYChanged || bZChanged || bWChanged;
     }
 
-    bool ColorPalette(const char* label, Nit::Color& color)
+    bool ColorPalette(const char* label, Nit::CColor& color)
     {
         BeginProperty(label);
         float floatColor[] = { color.r, color.g, color.b, color.a };
@@ -290,12 +290,12 @@ namespace ImGui
             if (!variant.is_valid())
                 continue;
 
-            const String propertyName = property.get_name().to_string();
+            const TString propertyName = property.get_name().to_string();
             const Type propertyType = property.get_type();
 
-            if (propertyType == Type::get<Vector2>())
+            if (propertyType == Type::get<CVector2>())
             {
-                Vector2 propValue = variant.get_value<Vector2>();
+                CVector2 propValue = variant.get_value<CVector2>();
 
                 if (ImGui::DragVector2(propertyName.c_str(), propValue))
                 {
@@ -304,9 +304,9 @@ namespace ImGui
                 continue;
             }
 
-            if (propertyType == Type::get<Vector3>())
+            if (propertyType == Type::get<CVector3>())
             {
-                Vector3 propValue = variant.get_value<Vector3>();
+                CVector3 propValue = variant.get_value<CVector3>();
 
                 if (ImGui::DragVector3(propertyName.c_str(), propValue))
                 {
@@ -326,9 +326,9 @@ namespace ImGui
                 continue;
             }
 
-            if (propertyType == Type::get<Color>())
+            if (propertyType == Type::get<CColor>())
             {
-                Color propValue = variant.get_value<Color>();
+                CColor propValue = variant.get_value<CColor>();
 
                 if (ImGui::ColorPalette(propertyName.c_str(), propValue))
                 {
@@ -392,9 +392,9 @@ namespace ImGui
                 continue;
             }
 
-            if (propertyType == Type::get<String>())
+            if (propertyType == Type::get<TString>())
             {
-                String propValue = variant.get_value<String>();
+                TString propValue = variant.get_value<TString>();
 
                 if (ImGui::InputText(propertyName.c_str(), propValue))
                 {
@@ -410,14 +410,14 @@ namespace ImGui
                     continue;
 
                 auto enumNames = propEnum.get_names();
-                DynamicArray<String> enumNamesStr;
+                TDynamicArray<TString> enumNamesStr;
 
                 for (const auto& enumName : enumNames)
                 {
                     enumNamesStr.push_back(enumName.to_string());
                 }
 
-                String selectedEnum = variant.to_string();
+                TString selectedEnum = variant.to_string();
                 ImGui::Combo(propertyName.c_str(), selectedEnum, enumNamesStr);
                 Variant enumValue = propEnum.name_to_value(selectedEnum);
                 property.set_value(instance, enumValue);
@@ -432,7 +432,7 @@ namespace ImGui
 
             if (propertyType == Type::get<AssetRef>())
             {
-                DynamicArray<String> assetNames;
+                TDynamicArray<TString> assetNames;
                 assetNames.push_back("None");
                 Content::EachAsset({
                     [&assetNames](const AssetRef& asset) {
@@ -441,7 +441,7 @@ namespace ImGui
                 });
 
                 AssetRef ref = variant.get_value<AssetRef>();
-                String selectedAsset = !ref.IsValid() ? "None" : ref.Get()->GetAssetData().Name;
+                TString selectedAsset = !ref.IsValid() ? "None" : ref.Get()->GetAssetData().Name;
                 ImGui::Combo(propertyName.c_str(), selectedAsset, assetNames);
                 AssetRef assetRef = Content::GetAssetByName(selectedAsset);
                 property.set_value(instance, assetRef);
@@ -450,7 +450,7 @@ namespace ImGui
 
             if (propertyType == Type::get<EntityRef>())
             {
-                DynamicArray<String> entityNames;
+                TDynamicArray<TString> entityNames;
                 entityNames.push_back("None");
                 World::EachEntity({
                 [&entityNames](const Entity& entity)
@@ -460,7 +460,7 @@ namespace ImGui
 
                 EntityRef ref = variant.get_value<EntityRef>();
 
-                String selectedEntityName = !ref.IsValid() ? "None" : ref.Get().GetName().Name;
+                TString selectedEntityName = !ref.IsValid() ? "None" : ref.Get().GetName().Name;
                 ImGui::Combo(propertyName.c_str(), selectedEntityName, entityNames);
                 Entity selectedEntity = World::FindEntityByName(selectedEntityName);
                 EntityRef selectedEntityRef = EntityRef(selectedEntity); 

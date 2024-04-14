@@ -18,7 +18,8 @@ project "Nit"
 
     includedirs 
     { 
-        "%{IncludeDirs.NitEngine}",
+        "%{IncludeDirs.NitRender}",
+        "%{IncludeDirs.NitMath}",
         "%{IncludeDirs.Nit}",
         "%{IncludeDirs.GLFW}",
         "%{IncludeDirs.GLAD}",

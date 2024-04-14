@@ -19,8 +19,8 @@ namespace Nit
         
         Id GetAssetId() const { return m_AssetId; }
         bool IsValid() const { return !m_Asset.expired(); }
-        WeakPtr<Asset> GetWeak() const { return m_Asset; }
-        SharedPtr<Asset> Get() const { return m_Asset.lock(); }
+        TWeakPtr<Asset> GetWeak() const { return m_Asset; }
+        TSharedPtr<Asset> Get() const { return m_Asset.lock(); }
 
         template<typename T>
         bool Is() const
@@ -29,14 +29,14 @@ namespace Nit
         }
         
         template<typename T>
-        WeakPtr<T> GetWeakAs() const
+        TWeakPtr<T> GetWeakAs() const
         { 
-            WeakPtr<Asset> asset = GetWeak();
+            TWeakPtr<Asset> asset = GetWeak();
             return Is<T>() ? std::static_pointer_cast<T>(Get()) : nullptr;
         }
 
         template<typename T>
-        SharedPtr<T> GetAs() const
+        TSharedPtr<T> GetAs() const
         {
             return Is<T>() ? std::static_pointer_cast<T>(Get()) : nullptr;
         }
@@ -44,7 +44,7 @@ namespace Nit
         template<typename T>
         T& As() const
         {
-            SharedPtr<T> ptr = GetAs<T>();
+            TSharedPtr<T> ptr = GetAs<T>();
             NIT_CHECK(ptr, "Type missmatch!");
             return *ptr.get();
         }
@@ -58,6 +58,6 @@ namespace Nit
 
     private:
         Id m_AssetId;
-        WeakPtr<Asset> m_Asset;
+        TWeakPtr<Asset> m_Asset;
     };
 }

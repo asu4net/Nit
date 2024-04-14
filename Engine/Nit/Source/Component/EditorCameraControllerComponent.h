@@ -11,9 +11,9 @@ namespace Nit
         
         // Internal stuff
         float DesiredZoom;
-        Vector3 AuxPosition;
+        CVector3 AuxPosition;
         bool MouseDown = false;
-        Vector3 OffsetPos;
+        CVector3 OffsetPos;
         bool bIsRightMousePressed;
         CameraComponent AuxCamera;
 

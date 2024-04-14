@@ -11,7 +11,7 @@ namespace Nit::AudioSystem
     
     // *** UTILITY FUNCTIONS ***
 
-    AudioSource CreateSource(const SharedPtr<AudioClip>& clip)
+    AudioSource CreateSource(const TSharedPtr<AudioClip>& clip)
     {
         uint32_t audioSourceHandler = 0;
         alGenSources(1, &audioSourceHandler);
@@ -61,36 +61,36 @@ namespace Nit::AudioSystem
         alSourcei(audioSource.GetHandler(), AL_LOOPING, loop);
     }
 
-    void Translate(const AudioSource& audioSource, const Vector3& position)
+    void Translate(const AudioSource& audioSource, const CVector3& position)
     {
         alSource3f(audioSource.GetHandler(), AL_POSITION,
             position.x, position.y, position.z);
     }
 
-    void SetVelocity(const AudioSource& audioSource, const Vector3& velocity)
+    void SetVelocity(const AudioSource& audioSource, const CVector3& velocity)
     {
         alSource3f(audioSource.GetHandler(), AL_VELOCITY,
             velocity.x, velocity.y, velocity.z);
     }
 
-    void Rotate(const AudioSource& audioSource, const Vector3& orientation)
+    void Rotate(const AudioSource& audioSource, const CVector3& orientation)
     {
         alSource3f(audioSource.GetHandler(), AL_ORIENTATION,
             orientation.x, orientation.y, orientation.z);
     }
 
-    void TranslateListener(const Vector3& position)
+    void TranslateListener(const CVector3& position)
     {
         alListener3f(AL_POSITION, position.x, position.y, position.z);
     }
   
-    void RotateListener(const Vector3& up, const Vector3& forward)
+    void RotateListener(const CVector3& up, const CVector3& forward)
     {
         const float values[] = {up.x, up.y, up.z, forward.x, forward.y, forward.z};
         alListenerfv(AL_ORIENTATION, values);
     }
 
-    void SetListenerVelocity(const Vector3& velocity)
+    void SetListenerVelocity(const CVector3& velocity)
     {
         alListener3f(AL_VELOCITY, velocity.x, velocity.y, velocity.z);
     }

@@ -8,7 +8,7 @@ namespace Nit
 {
     NIT_FORCE_LINK_IMPL(AnimationComponent)
 
-    AnimationComponent::AnimationComponent(const String& animationAssetName)
+    AnimationComponent::AnimationComponent(const TString& animationAssetName)
         : CurrentAnimation(Content::GetAssetByName(animationAssetName))
     {}
 }

@@ -5,7 +5,7 @@
 
 namespace Nit::InputSystem
 {
-    DynamicArray<InputAction*> m_InputActions;
+    TDynamicArray<InputAction*> m_InputActions;
     
     void OnUpdate();
     void OnDestroy();

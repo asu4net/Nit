@@ -15,7 +15,7 @@ namespace Nit
 {
     bool AudioClip::Load()
     {
-        const String absolutePath = GetAssetData().AbsolutePath;
+        const TString absolutePath = GetAssetData().AbsolutePath;
 
         if (absolutePath.empty())
             return false;

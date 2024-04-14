@@ -14,19 +14,19 @@
 
 namespace Nit::ViewportWindow
 {
-    Vector2 ViewportSize;
-    Vector2 ViewportMinBound;
-    Vector2 ViewportMaxBound;
-    Vector2 MousePosition;
+    CVector2 ViewportSize;
+    CVector2 ViewportMinBound;
+    CVector2 ViewportMaxBound;
+    CVector2 MousePosition;
 
     bool bWasUsingGizmo = false;
     
-    Vector2 GetMousePosition()
+    CVector2 GetMousePosition()
     {
         return MousePosition;
     }
 
-    void Show(bool* bShow, Framebuffer* targetFramebuffer)
+    void Show(bool* bShow, CFramebuffer* targetFramebuffer)
     {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 
@@ -39,7 +39,7 @@ namespace Nit::ViewportWindow
         const ImVec2 viewportOffset = ImGui::GetCursorPos();
         const ImVec2 panelSize = ImGui::GetContentRegionAvail();
 
-        if (const Vector2 viewportSize = { panelSize.x, panelSize.y }; viewportSize != ViewportSize)
+        if (const CVector2 viewportSize = { panelSize.x, panelSize.y }; viewportSize != ViewportSize)
         {
             ViewportSize = viewportSize;
             Engine::SetScreenSize(ViewportSize);

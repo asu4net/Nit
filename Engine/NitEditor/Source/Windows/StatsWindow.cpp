@@ -38,7 +38,7 @@ namespace Nit::StatsWindow
         ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
         if (ImGui::Begin("Stats", bShow, windowFlags))
         {
-            String statsText;
+            TString statsText;
             statsText.append("MousePos: " + Input::GetMousePosition().ToString());
             statsText.append("\nFPS: " + std::to_string(Time::GetFrameRate()));
             statsText.append("\nAppTime: " + std::to_string(Time::GetApplicationTime()));

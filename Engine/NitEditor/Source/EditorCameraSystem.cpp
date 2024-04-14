@@ -25,7 +25,7 @@ namespace Nit::EditorCameraSystem
 
     Entity editorCameraEntity;
 
-    void SetPosition(const Vector3& position)
+    void SetPosition(const CVector3& position)
     {
         editorCameraEntity.GetTransform().Position = position;
     }
@@ -42,7 +42,7 @@ namespace Nit::EditorCameraSystem
 
         controller.DesiredZoom = camera.Size;
 
-        Engine::GetWindow().Events().ScrollEvent.Add([&](const Vector2& offset) {
+        Engine::GetWindow().Events().ScrollEvent.Add([&](const CVector2& offset) {
 
             if (!Input::IsEnabled()) return;
 
@@ -89,7 +89,7 @@ namespace Nit::EditorCameraSystem
         if (!controller.MouseDown && IsRightMousePressed)
         {
             controller.MouseDown = true;
-            Vector2 mouseWorld = CameraStatics::ScreenToWorldPoint(controller.AuxCamera, Input::GetMousePosition());
+            CVector2 mouseWorld = CameraStatics::ScreenToWorldPoint(controller.AuxCamera, Input::GetMousePosition());
             controller.OffsetPos = mouseWorld + controller.AuxPosition;
         }
 
@@ -103,10 +103,10 @@ namespace Nit::EditorCameraSystem
         // Mouse hold
         if (IsRightMousePressed)
         {
-            CameraStatics::UpdateCameraMatrices(controller.AuxCamera, controller.AuxPosition, Vector3::Zero);
+            CameraStatics::UpdateCameraMatrices(controller.AuxCamera, controller.AuxPosition, CVector3::Zero);
 
-            Vector2 mouseWorld = CameraStatics::ScreenToWorldPoint(controller.AuxCamera, Input::GetMousePosition());
-            transform.Position = Vector3(mouseWorld * -1, transform.Position.z) + Vector3(controller.OffsetPos.x, controller.OffsetPos.y, 0);
+            CVector2 mouseWorld = CameraStatics::ScreenToWorldPoint(controller.AuxCamera, Input::GetMousePosition());
+            transform.Position = CVector3(mouseWorld * -1, transform.Position.z) + CVector3(controller.OffsetPos.x, controller.OffsetPos.y, 0);
         }
 
         controller.AuxCamera = camera;

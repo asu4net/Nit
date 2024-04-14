@@ -7,7 +7,7 @@
 
 namespace Nit::AnimationSystem
 {
-    const String SystemID = "AnimationSystem";
+    const TString SystemID = "AnimationSystem";
 
     void Register()
     {

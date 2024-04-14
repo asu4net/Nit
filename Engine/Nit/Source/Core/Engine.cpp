@@ -19,36 +19,36 @@ namespace Nit::Engine
 {
     struct System
     {
-        String                         Name               = "Invalid";
+        TString                         Name               = "Invalid";
         uint32_t                       ExecutionOrder     = 0;
         ExecutionContext               Context            = ExecutionContext::Invalid;
         bool                           bIsEnabled         = false;
         bool                           bDestroyRequested  = false;
-        Map<SystemStage, RawFunctionPtr>  Callbacks;
+        TMap<SystemStage, RawFunctionPtr>  Callbacks;
     };
 
     bool                  bIsInitialized                     = false;
     bool                  bIsRunning                         = false;
     bool                  bIsPaused                          = false;
     bool                  bIsStopped                         = false;
-    UniquePtr<Window>     MainWindow                         = nullptr;
-    GraphicsAPI           API                                = GraphicsAPI::None;
+    TUniquePtr<CWindow>     MainWindow                         = nullptr;
+    EGraphicsAPI           API                                = EGraphicsAPI::None;
     uint32_t              ScreenWidth                        = 0;
     uint32_t              ScreenHeight                       = 0;
-    Vector2               ScreenSize;
+    CVector2               ScreenSize;
     bool                  bUseWindowScreenSize               = true;
     Entity                FreeLookCameraEntity;              
-    Map<String, System*>  SystemMap;                         
+    TMap<TString, System*>  SystemMap;                         
     System*               CurrentSystem                      = nullptr;
     bool                  bCreatingSystem                    = false;
-    DynamicArray<System*> IterableSystems;
-    DynamicArray<System*> PendingToDestroySystems;
+    TDynamicArray<System*> IterableSystems;
+    TDynamicArray<System*> PendingToDestroySystems;
     bool                  bInvalidateIterableSystemsRequested = false;
 
-    Window& GetWindow() { return *MainWindow; }
+    CWindow& GetWindow() { return *MainWindow; }
     bool HasWindow() { return MainWindow.get(); }
     
-    static System* GetSystem(const String& name)
+    static System* GetSystem(const TString& name)
     {
         NIT_CHECK(SystemMap.count(name), "Missing system!");
 
@@ -151,7 +151,7 @@ namespace Nit::Engine
         SystemMap.clear();
     }
 
-    void PushSystemID(const String& name)
+    void PushSystemID(const TString& name)
     {
         PopSystemID();
         CurrentSystem = GetSystem(name);
@@ -163,7 +163,7 @@ namespace Nit::Engine
         bCreatingSystem = false;
     }
 
-    void CreateSystem(const String& name, uint32_t executionOrder, ExecutionContext context, bool startDisabled)
+    void CreateSystem(const TString& name, uint32_t executionOrder, ExecutionContext context, bool startDisabled)
     {
         NIT_CHECK(!SystemMap.count(name), "A system with that name already exists!");
 
@@ -204,7 +204,7 @@ namespace Nit::Engine
         }
     }
 
-    void DestroySystem(const String& name)
+    void DestroySystem(const TString& name)
     {
         if (System* system = GetSystem(name))
         {
@@ -218,7 +218,7 @@ namespace Nit::Engine
         }
     }
     
-    void SetSystemEnabled(const String& name, bool bEnabled)
+    void SetSystemEnabled(const TString& name, bool bEnabled)
     {
         if (System* system = GetSystem(name))
         {
@@ -265,7 +265,7 @@ namespace Nit::Engine
     }
 
 
-    GraphicsAPI GetGraphicsAPI()
+    EGraphicsAPI GetGraphicsAPI()
     {
         return API;
     }
@@ -298,7 +298,7 @@ namespace Nit::Engine
         return ScreenHeight;
     }
     
-    void SetScreenSize(const Vector2& screenSize)
+    void SetScreenSize(const CVector2& screenSize)
     {
         NIT_CHECK(!bUseWindowScreenSize, "should call SetUseWindowScreenSize");
         if (bUseWindowScreenSize)
@@ -310,7 +310,7 @@ namespace Nit::Engine
         RenderCommandQueue::Submit<SetViewPortCommand>(Renderer::GetAPI(), 0, 0, ScreenWidth, ScreenHeight);
     }
 
-    Vector2 GetScreenSize()
+    CVector2 GetScreenSize()
     {
         return ScreenSize;
     }
@@ -362,8 +362,8 @@ namespace Nit::Engine
         NIT_LOG_TRACE("Initializing Engine...\n");
         NIT_CHECK(!bIsInitialized, "Engine already initialized! \n");
 
-        const Window::Configuration windowCfg = config.WindowConfiguration;
-        MainWindow = Window::Create(windowCfg);
+        const CWindow::Configuration windowCfg = config.WindowConfiguration;
+        MainWindow = CWindow::Create(windowCfg);
         SetRawScreenSize(windowCfg.Width, windowCfg.Height);
 
         Time::Init();
@@ -395,23 +395,23 @@ namespace Nit::Engine
         // Set the default shaders
         {
             AssetRef shader = Content::GetAssetByName("SpriteShader");
-            if (shader.IsValid() && shader.Is<Shader>())
+            if (shader.IsValid() && shader.Is<CShader>())
             {
-                Renderer::SetSpriteShader(Renderer::GetShader(shader.As<Shader>().GetRendererId()));
+                Renderer::SetSpriteShader(Renderer::GetShader(shader.As<CShader>().GetRendererId()));
             }
         }
         {
             AssetRef shader = Content::GetAssetByName("CircleShader");
-            if (shader.IsValid() && shader.Is<Shader>())
+            if (shader.IsValid() && shader.Is<CShader>())
             {
-                Renderer::SetCircleShader(Renderer::GetShader(shader.As<Shader>().GetRendererId()));
+                Renderer::SetCircleShader(Renderer::GetShader(shader.As<CShader>().GetRendererId()));
             }
         }
         {
             AssetRef shader = Content::GetAssetByName("LineShader");
-            if (shader.IsValid() && shader.Is<Shader>())
+            if (shader.IsValid() && shader.Is<CShader>())
             {
-                Renderer::SetLineShader(Renderer::GetShader(shader.As<Shader>().GetRendererId()));
+                Renderer::SetLineShader(Renderer::GetShader(shader.As<CShader>().GetRendererId()));
             }
         }
 

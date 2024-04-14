@@ -7,7 +7,7 @@
 namespace Nit::CameraSystem
 {
     Entity MainCameraEntity;
-    const String SystemID = "CameraSystem";
+    const TString SystemID = "CameraSystem";
 
     void Register()
     {

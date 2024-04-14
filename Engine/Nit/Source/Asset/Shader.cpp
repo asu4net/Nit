@@ -4,9 +4,9 @@
 
 namespace Nit
 {
-    bool Shader::Load()
+    bool CShader::Load()
     {
-        const String absolutePath = GetAssetData().AbsolutePath;
+        const TString absolutePath = GetAssetData().AbsolutePath;
         if (absolutePath == "None")
             return true;
 
@@ -17,14 +17,14 @@ namespace Nit
         return true;
     }
 
-    void Shader::Unload()
+    void CShader::Unload()
     {
         Renderer::DestroyShader(m_RendererShaderId);
     }
 
-    bool Shader::ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource)
+    bool CShader::ReadFromFile(const TString& fileLocation, TString& vertexSource, TString& fragmentSource)
     {
-        static String content;
+        static TString content;
         std::ifstream fileStream(fileLocation, std::ios::in);
 
         if (!fileStream.is_open())
@@ -33,7 +33,7 @@ namespace Nit
             return false;
         }
 
-        String line;
+        TString line;
 
         enum class ShaderType { None, Vertex, Fragment };
         ShaderType currentShader = ShaderType::None;
@@ -42,15 +42,15 @@ namespace Nit
         {
             std::getline(fileStream, line);
 
-            if (line.find("#type") != String::npos)
+            if (line.find("#type") != TString::npos)
             {
-                if (line.find("vertex") != String::npos)
+                if (line.find("vertex") != TString::npos)
                 {
                     currentShader = ShaderType::Vertex;
                     continue;
                 }
 
-                if (line.find("fragment") != String::npos)
+                if (line.find("fragment") != TString::npos)
                 {
                     currentShader = ShaderType::Fragment;
                     continue;
