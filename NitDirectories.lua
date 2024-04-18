@@ -5,6 +5,7 @@ workingdir                     = "..\\Assets"
 
 IncludeDirs                    = {}
 
+IncludeDirs["NitCore"]         = "%{wks.location}/Engine/NitCore"
 IncludeDirs["NitMath"]         = "%{wks.location}/Engine/NitMath"
 IncludeDirs["NitRender"]       = "%{wks.location}/Engine/NitRender"
 

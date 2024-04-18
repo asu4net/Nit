@@ -1,36 +1,23 @@
-project "RenderSandboxProject"
-    kind "ConsoleApp"
+project "NitCore"
+    kind "StaticLib"
     language "C++"
     cppdialect "C++20"
     targetdir (binariesdir)
     objdir (intermediatesdir)
-    debugdir (workingdir)
-    defines { "NIT_GAME" }
-
-    includedirs
-    { 
-        "%{prj.dir}",
-        "%{IncludeDirs.NitCore}",
-        "%{IncludeDirs.NitMath}",
-        "%{IncludeDirs.NitRender}",
-    }
+    defines { "NIT_ENGINE" }
     
-    links 
+    includedirs 
     {
-        "NitCore",
-        "NitMath",
-        "NitRender"
+        "%{IncludeDirs.NitCore}"
     }
-    
+
     files { "**.h", "**.cpp" }
-    
+
     filter "configurations:Debug"
         defines { "NIT_DEBUG" }
         symbols "On"
 
     filter "configurations:Release"
-        kind "WindowedApp"
-        entrypoint "mainCRTStartup"
         defines { "NIT_RELEASE" }
         optimize "On"
 

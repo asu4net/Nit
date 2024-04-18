@@ -12,9 +12,6 @@ namespace Nit
         bool operator ==(const Id& other) const;
         bool operator !=(const Id& other) const;
 
-        RTTR_ENABLE_NO_VIRTUAL
-        RTTR_REGISTRATION_FRIEND
-
     private:
         uint64_t m_IdHandler;
     };

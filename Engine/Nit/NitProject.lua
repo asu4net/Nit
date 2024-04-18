@@ -18,6 +18,7 @@ project "Nit"
 
     includedirs 
     { 
+        "%{IncludeDirs.NitCore}",
         "%{IncludeDirs.NitRender}",
         "%{IncludeDirs.NitMath}",
         "%{IncludeDirs.Nit}",
@@ -35,6 +36,7 @@ project "Nit"
     
     links
     {
+        "NitCore",
         "NitRender",
         "NitMath",
         "GLFW",
