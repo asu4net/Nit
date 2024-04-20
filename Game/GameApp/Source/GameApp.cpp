@@ -1,6 +1,8 @@
 #include "Nit.h"
 #include "Game.h"
 
+using namespace Nit;
+
 int main(int argc, char* argv[])
 {
     InitConfig config;
