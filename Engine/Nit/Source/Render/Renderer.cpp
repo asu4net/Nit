@@ -569,6 +569,7 @@ namespace Nit::Renderer
         RenderCommandQueue::Submit<SetBlendingEnabledCommand>(API, true);
         RenderCommandQueue::Submit<SetBlendingModeCommand>(API, BlendingMode::Alpha);
         RenderCommandQueue::Submit<SetClearColorCommand>(API, Color::DarkGrey);
+        RenderCommandQueue::Submit<SetDepthTestEnabledCommand>(API, true);
 
         ErrorShader->Compile(g_ErrorVertexSource, g_ErrorFragmentSource);
         

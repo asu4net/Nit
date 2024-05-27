@@ -17,7 +17,9 @@ RTTR_REGISTRATION
     rttr::registration::class_<CameraComponent>("CameraComponent")
         .constructor<>()(rttr::policy::ctor::as_object)
         .property("IsStartCamera", &CameraComponent::IsStartCamera)
+        .property("Projection", &CameraComponent::Projection)
         .property("Size", &CameraComponent::Size)
+        .property("Fov", &CameraComponent::Fov)
         .property("NearPlane", &CameraComponent::NearPlane)
         .property("FarPlane", &CameraComponent::FarPlane);
 
@@ -34,7 +36,15 @@ namespace Nit
         
     void CameraStatics::UpdateCameraMatrices(CameraComponent& camera, const Vector3& position, const Vector3& rotation)
     {
-        camera.ProjectionMatrix = Matrix4::OrthoProjection(Engine::GetScreenAspect(), camera.Size, camera.NearPlane, camera.FarPlane);
+        if (camera.Projection == CameraProjection::Orthographic)
+        {
+            camera.ProjectionMatrix = Matrix4::OrthoProjection(Engine::GetScreenAspect(), camera.Size, camera.NearPlane, camera.FarPlane);
+        }
+        else if (camera.Projection == CameraProjection::Perspective)
+        {
+            camera.ProjectionMatrix = Matrix4::PerspectiveProjection(Engine::GetScreenAspect(), camera.Fov, camera.NearPlane, camera.FarPlane);
+        }
+        
         camera.ViewMatrix = Matrix4::ViewProjection(position, rotation);
     }
 

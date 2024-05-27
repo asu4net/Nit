@@ -5,9 +5,12 @@ namespace Nit
     struct CameraComponent
     {
         bool IsStartCamera = false;
+        CameraProjection Projection = CameraProjection::Orthographic; 
         float Size = 1.f;
+        float Fov = 90.f;
         float NearPlane = 0.f;
         float FarPlane = 1000.f;
+
         Matrix4 ProjectionMatrix;
         Matrix4 ViewMatrix;
 

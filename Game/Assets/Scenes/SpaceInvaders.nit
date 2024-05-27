@@ -67,7 +67,9 @@
 #component CameraComponent
 {
     "IsStartCamera": true,
+    "CameraProjection": "Orthographic",
     "Size": 3.0,
+    "Fov": 90.0,
     "NearPlane": 0.0,
     "FarPlane": 1000.0
 }

@@ -56,6 +56,12 @@ namespace Nit
     enum class TextureWrapMode { Repeat, ClampToEdge };
     enum class TextureCoordinate { U, V };
 
+    enum class CameraProjection
+    {
+        Orthographic,
+        Perspective
+    };
+
     namespace EnumsRegistration
     {
         RTTR_REGISTRATION
@@ -77,6 +83,11 @@ namespace Nit
             (
                 value("Repeat", TextureWrapMode::Repeat),
                 value("ClampToEdge", TextureWrapMode::ClampToEdge)
+            );
+            registration::enumeration<CameraProjection>("CameraProjection")
+            (
+                value("Orthographic", CameraProjection::Orthographic),
+                value("Perspective", CameraProjection::Perspective)
             );
         }
     }

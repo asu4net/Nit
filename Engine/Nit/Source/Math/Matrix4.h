@@ -42,7 +42,8 @@ namespace Nit
         static Matrix4 OrthoProjection(const float aspectRatio, const float size, float nearPlane, float farPlane);
         static Matrix4 OrthoProjection(float left, float right, float bottom, float top, float nearPlane, float farPlane);
         static Matrix4 ViewProjection(const Vector3& position, const Vector3& rotation);
-    
+        static Matrix4 PerspectiveProjection(float aspectRatio, float fov, float near, float far);
+
         RTTR_ENABLE_NO_VIRTUAL
     };
 }
