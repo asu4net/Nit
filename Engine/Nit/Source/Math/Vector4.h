@@ -13,12 +13,14 @@ namespace Nit
         Vector4(const Vector3& other, float w = 0);
 
         static const Vector4 Zero;
+        static const Vector4 One;
 
         Vector4 operator+(const Vector4& other) const;
         void operator+=(const Vector4& other);
         Vector4 operator-(const Vector4& other) const;
         void operator-=(const Vector4& other);
         Vector4 operator*(float num) const;
+        Vector4 operator*(const Vector4& other) const;
         Vector4 operator*(const Matrix4& other) const;
         void operator*=(float num);
         Vector4 operator/(float num) const;

@@ -15,6 +15,7 @@ RTTR_REGISTRATION
 namespace Nit
 {
     const Vector4 Vector4::Zero = { 0, 0, 0, 0 };
+    const Vector4 Vector4::One = { 1.f, 1.f, 1.f, 1.f };
 
     Vector4::Vector4()
         : x(0)
@@ -60,6 +61,11 @@ namespace Nit
     Vector4 Vector4::operator*(float num) const
     {
         return { x * num, y * num, z * num, w * num };
+    }
+
+    Vector4 Vector4::operator*(const Vector4& other) const
+    {
+        return Vector4(x * other.x, y * other.y, z * other.z, w * other.w);
     }
 
     Vector4 Vector4::operator*(const Matrix4& other) const

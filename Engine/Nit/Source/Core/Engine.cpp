@@ -14,6 +14,8 @@
 #include "System/FamilySystem.h"
 #include "System/MaterialSystem.h"
 #include "System/Physics2DSystem.h"
+#include "System/WiimoteInputSystem.h"
+#include "System/KeyboardInputSystem.h"
 
 namespace Nit::Engine
 {
@@ -332,9 +334,9 @@ namespace Nit::Engine
 
     static void OnStateInputPressed(const InputActionContext& context)
     {
-        if (!context.IsPressed) return;
+        if (!context.bIsPressed) return;
 
-        if (Input::IsKeyPressed(Key_LeftCtrl)) // play / stop
+        if (Input::IsKeyPressed(Key_LeftControl)) // play / stop
         {
             if (bIsStopped) Play();
             else Stop();
@@ -417,7 +419,7 @@ namespace Nit::Engine
 
         World::OpenDefaultScene();
 
-        InputSystem::CreateInputAction(Key_P)->OnPerformed().AddRaw(&OnStateInputPressed);
+        InputSystem::CreateInputAction(KeyboardKeyNames::Key_P)->OnPerformed().AddRaw(&OnStateInputPressed);
 
         bIsInitialized = true;
 

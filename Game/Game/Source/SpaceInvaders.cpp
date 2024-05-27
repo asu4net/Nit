@@ -1,6 +1,7 @@
 #include "SpaceInvaders.h"
 #include "Nit.h"
 #include "System/AudioSystem.h"
+#include "Input/InputModifiers.h"
 
 namespace Nit::SpaceInvaders
 {
@@ -25,6 +26,9 @@ namespace Nit::SpaceInvaders
     
     Entity Player;
     InputAction* ShootAction;
+    InputAction* MoveAction;
+    InputModifierScalar* ScalarInputModifier;
+    InputModifierNegate* NegateInputModifier;
     Entity MissileTemplate;
     DynamicArray<Entity> MissilePool;
     DynamicArray<Entity> FiredMissiles;
@@ -34,6 +38,11 @@ namespace Nit::SpaceInvaders
     DynamicArray<AudioSource> PlayingAudioSources;
     
     int LastMissileIdx = 0;
+
+    bool bIsFireRumbleOn = false;
+    float RumbleTimer = 0.f;
+    const float RumbleTime = 0.1f;
+    const float RumbleForce = 0.5f;
     
     void SpawnMissile()
     {
@@ -80,6 +89,10 @@ namespace Nit::SpaceInvaders
         
         AudioSystem::Play(source);
         PlayingAudioSources.push_back(source);
+
+        bIsFireRumbleOn = true;
+        RumbleTimer = 0.f;
+        InputSystem::SendForceFeedback(0, 0.f, RumbleForce);
     }
 
 
@@ -111,11 +124,24 @@ namespace Nit::SpaceInvaders
         
         Player = World::FindEntityByName("SpaceShip");
 
-        ShootAction = InputSystem::CreateInputAction(Key_Space);
-        ShootAction->OnPerformed().Add([] (const InputActionContext& context){
-            if (Engine::IsPaused() || context.IsReleased) return;
+        ShootAction = InputSystem::CreateInputAction(WiimoteKeyNames::Wiimote_Button_A);
+        ShootAction->OnPerformed().Add([](const InputActionContext& context) {
+            if (Engine::IsPaused()) return;
             FireMissile();
         });
+
+        MoveAction = InputSystem::CreateInputAction(WiimoteKeyNames::Wiimote_Pointer2D);
+        MoveAction->OnPerformed().Add([](const InputActionContext& context) {
+            if (Engine::IsPaused()) return;
+            Player.GetTransform().Position.x = context.inputValue.x - 4.5f;
+            Player.GetTransform().Position.y = context.inputValue.y + 2.5f;
+        });
+
+        ScalarInputModifier = new InputModifierScalar(8.9f, 5.f);
+        NegateInputModifier = new InputModifierNegate(false, true);
+
+        MoveAction->AddInputModifier(ScalarInputModifier);
+        MoveAction->AddInputModifier(NegateInputModifier);
 
         MissileTemplate = World::FindEntityByName("MissileTemplate");
 
@@ -155,6 +181,18 @@ namespace Nit::SpaceInvaders
                 return bHasFinished;
             }),
             PlayingAudioSources.end());
+
+
+        if(bIsFireRumbleOn)
+        {
+            RumbleTimer += Time::GetDeltaTime();
+            if(RumbleTimer >= RumbleTime)
+            {
+                bIsFireRumbleOn = false;
+                RumbleTimer = 0.f;
+                InputSystem::SendForceFeedback(0, 0.f, 0.f);
+            }
+        }
     }
 
     void OnFinish()
@@ -164,6 +202,12 @@ namespace Nit::SpaceInvaders
 
         if (ShootAction)
             InputSystem::DestroyInputAction(ShootAction);
+        if (MoveAction)
+            InputSystem::DestroyInputAction(MoveAction);
+        if (NegateInputModifier)
+            delete NegateInputModifier;
+        if (ScalarInputModifier)
+            delete ScalarInputModifier;
 
         LastMissileIdx = 0;
     }
