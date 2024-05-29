@@ -298,26 +298,24 @@ namespace Nit
     Matrix4 Matrix4::ViewProjection(const Vector3& position, const Vector3& rotation)
     {
         Vector3 tweakedPosition = position;
-        tweakedPosition.z *= -1;
+        //tweakedPosition.z *= -1;
         Matrix4 viewMatrix = Matrix4::CreateTransform(position, rotation);
         return viewMatrix.GetInverse();
     }
 
     Matrix4 Matrix4::PerspectiveProjection(float aspectRatio, float fov, float nearPlane, float farPlane)
     {
-        float fov_rad = Math::ToRadians(fov);
-        float range = tanf(fov_rad / 2.0f) * nearPlane;
-        float sx = (2.0f * nearPlane) / (range * aspectRatio + range * aspectRatio);
-        float sy = nearPlane / range;
-        float sz = -(farPlane + nearPlane) / (farPlane - nearPlane);
-        float pz = -(2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
+        const float tanHalfFovy = tan(Math::ToRadians(fov) / 2.f);
+        const float range = farPlane - nearPlane;
+
         Matrix4 m; // make sure bottom-right corner is zero
         m.SetZero();
-        m.n[0] = sx;
-        m.n[5] = sy;
-        m.n[10] = sz;
-        m.n[14] = pz;
-        m.n[11] = -1.0f;
+
+        m.m[0][0] = 1.f / (aspectRatio * tanHalfFovy);
+        m.m[1][1] = 1.f / (tanHalfFovy);
+        m.m[2][2] = -(farPlane + nearPlane) / range;
+        m.m[2][3] = -1.f;
+        m.m[3][2] = -2.f * farPlane * nearPlane / range;
         
         return m;
     }

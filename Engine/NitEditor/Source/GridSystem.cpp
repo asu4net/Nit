@@ -43,7 +43,7 @@ namespace Nit::GridSystem
 
     void OnCreate()
     {
-        if (!Engine::IsPaused() || !Engine::IsStopped())
+        //if (!Engine::IsPaused() || !Engine::IsStopped())
             return;
 
         for (int i = 0; i < GridLines; i++)

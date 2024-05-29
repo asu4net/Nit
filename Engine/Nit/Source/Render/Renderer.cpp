@@ -145,7 +145,7 @@ namespace Nit::Renderer
                 localVertexPos.x *= sprite.Size.x;
                 localVertexPos.y *= sprite.Size.y;
 
-                vertex.Position = Vector4(localVertexPos, 1.f) * sprite.Transform * ProjectionViewMatrix;
+                vertex.Position = ProjectionViewMatrix * sprite.Transform * Vector4(localVertexPos, 1.f);
 
                 vertex.Time = Time::GetApplicationTime();
                 vertex.UVCoords = vertexUV[i];
@@ -280,7 +280,7 @@ namespace Nit::Renderer
                 Vector3 localVertexPos = circle.VertexPositions[i];
                 vertex.Time = Time::GetApplicationTime();
                 vertex.LocalPosition = localVertexPos;
-                vertex.Position = Vector4(localVertexPos * circle.Radius * 2, 1.f) * circle.Transform * ProjectionViewMatrix;
+                vertex.Position = ProjectionViewMatrix * circle.Transform * Vector4(localVertexPos * circle.Radius * 2, 1.f);
                 vertex.TintColor = circle.TintColor;
                 vertex.Thickness = circle.Thickness;
                 vertex.Fade = circle.Fade;
@@ -424,7 +424,7 @@ namespace Nit::Renderer
                 case 3: localVertexPos = line.Start + lineNormal * -halfThickness; break; 
                 }
                 
-                vertex.Position = Vector4(localVertexPos, 1.f) * line.Transform * ProjectionViewMatrix;
+                vertex.Position = ProjectionViewMatrix * line.Transform * Vector4(localVertexPos, 1.f);
                 vertex.Size = size;
                 //------
                 vertex.LocalPosition   = RenderUtils::GetQuadVertexUVs()[i];
